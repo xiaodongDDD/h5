@@ -2,49 +2,28 @@
   <section>
     <div class="teacherCircle-container">
       <!--轮播图-->
-      <div class="swiper-container swiper-container-c">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="#">
-              <div class="circle-slide">
-                <img src="../../assets/img/65064295_p4.jpg" alt="">
-              </div>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="#">
-              <div class="circle-slide">
-                <img src="../../assets/img/65064295_p4.jpg" alt="">
-              </div>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="#">
-              <div class="circle-slide">
-                <img src="../../assets/img/65064295_p4.jpg" alt="">
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
+      <mt-swipe :auto="4000" class="swipeContent">
+        <mt-swipe-item> <img :src="swipeImage.image1" alt=""></mt-swipe-item>
+        <mt-swipe-item> <img :src="swipeImage.image2" alt=""></mt-swipe-item>
+        <mt-swipe-item> <img :src="swipeImage.image3" alt=""></mt-swipe-item>
+      </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
         <ul>
           <li>
-            <div @click="toSerach()"  style="display: inline-block;">
+            <div @click="goNext('search')"  style="display: inline-block;">
               <img src="../../assets/img/ic_search@2x.png" alt="">
               <span>搜索</span>
             </div>
           </li>
           <li>
-            <div @click="toFollow()" to="/follow" style="display: inline-block;">
+            <div @click="goNext('follow')" style="display: inline-block;">
               <img src="../../assets/img/ic_follow@2x.png" alt="">
               <span>关注</span>
             </div>
           </li>
           <li>
-            <div @click="toFavorite()" to="/favorite" style="display: inline-block;">
+            <div @click="goNext('favorite')" style="display: inline-block;">
               <img src="../../assets/img/ic_favorite@2x.png" alt="">
               <span>收藏</span>
             </div>
@@ -103,11 +82,17 @@
 </template>
 
 <script>
+  import swipeImage from '../../assets/img/65000275_p0.jpg'
+  import { API } from '../../service/api'
   export default {
     name: "index",
     data(){
-      return{
-
+          return {
+            swipeImage: {
+              image1: swipeImage,
+              image2: swipeImage,
+              image3: swipeImage
+            }
       }
     },
     methods:{
@@ -115,27 +100,27 @@
       getDetails(){
         console.log('点我了点我了')
       },
-      //搜索页面
-      toSerach(){
-
-        // window.WebViewJavascriptBridge.callHandler('AndroisVipFun',params);
-        this.$router.push('/search')
-      },
-      //关注页面
-      toFollow(){
-        this.$router.push('/follow')
-      },
-      //收藏页面
-      toFavorite(){
-        this.$router.push('/favorite')
+      goNext(path) {
+        // this.$router.push({path: path})
+        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+        JSAction.openUrl(url)
       }
     },
-    mounted(){},
-    created(){}
+    mounted() {
+      let token = '59a4e43d0179b04b5056178b'
+      API.get(`http://quan-test.xiaoheiban.cn/api/Quan/index?token=${token}`)
+        .then(res => {
+          console.log(res)
+        })
+    },
   }
 </script>
 
 <style scoped>
+  .swipeContent {
+    width: 100%;
+    height: 19vh;
+  }
 .index-list li{
   width: 100%;
   height: 154px;
@@ -205,6 +190,4 @@
 .recommend-list .recommend-content{
 
 }
-
-
 </style>
