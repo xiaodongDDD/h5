@@ -1,0 +1,25 @@
+.down{
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  background: url("../img/triangle_down_fill.svg") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
+.back{
+  display: inline-block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.svg") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
+.search{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url("../img/ic_blank_search@2x.png");
+  background-size: cover;
+  position: absolute;
+}
+
