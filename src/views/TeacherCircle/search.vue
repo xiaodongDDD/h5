@@ -1,20 +1,21 @@
 <template>
   <section>
-    <commonHeader title="搜索"></commonHeader>
+    <!--<commonHeader title="搜索"></commonHeader>-->
     <div class="main">
       <div class="search-head">
         <input type="text" class="content"><i class="search left"></i>
+        <button class="btn">搜索</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-  import commonHeader from '../../components/CommonHeader'
+  // import commonHeader from '../../components/CommonHeader'
   export default {
     name: "search",
     components:{
-      commonHeader
+      // commonHeader
     }
   }
 </script>
@@ -46,6 +47,17 @@
   z-index: 10;
   top: 50%;
   margin-top: -15px;
+}
+.btn{
+  width: 60px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #ddd;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #AAAAAA;
+  /*letter-spacing: -0.34px;*/
+  line-height: 30px;
 }
 
 
