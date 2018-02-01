@@ -157,20 +157,16 @@
         this.$router.push('/detail');
       },
       goNext(path) {
-<<<<<<< HEAD
-         this.$router.push({path: path})
-//        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-//        JSAction.openUrl(url)
-=======
-        //调试路由
-        this.$router.push(`/${path}`)
-
-        //原生方法
-        // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-        // JSAction.openUrl(url)
+         //this.$router.push({path: path})
+        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+        if(path === 'follow') {
+          const shareFlag = 'share';
+          JSAction.getWebShareElement(shareFlag)
+        }
+        JSAction.openUrl(url)
       },
       toTeacherDetails(){
-        console.log('教师详情');
+       // console.log('教师详情');
       },
       follow(item){
         // console.log(item)
@@ -179,14 +175,13 @@
           position: 'middle',
           duration: 2000
         });
->>>>>>> c29f5d891f43e0b04fb40857c253e5c2fc3d621a
       }
     },
     mounted() {
       let token = '59a4e43d0179b04b5056178b'
       API.get(`/index?token=${token}`)
         .then(res => {
-          console.log(res)
+          //console.log(res)
         })
     },
   }

@@ -91,7 +91,7 @@
       isDel(data) {
         if(data) {
           this.teacherMessages.splice(this.deleteIndex, 1)
-          console.log(this.teacherMessages)
+          //console.log(this.teacherMessages)
         }
       }
     },
@@ -99,7 +99,7 @@
       let token =  '59a4e43d0179b04b5056178b'
       API.get(`/followClick?token=${token}`).then(res => {
        // this.teacherMessages = res.response.teacher_list
-        console.log(this.teacherMessages[0])
+        //console.log(this.teacherMessages[0])
       })
     }
   }
