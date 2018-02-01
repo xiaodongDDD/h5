@@ -153,16 +153,22 @@
     methods:{
       //列表内容点击的详情
       getDetails(){
-        console.log('点我了点我了')
+        // console.log('点我了点我了')
         this.$router.push('/detail');
+
+        // let url = `http://quan-test.xiaoheiban.cn/#/detail`;
+        // const shareFlag = '';
+        // JSAction.openUrl(url);
+        // JSAction.getWebShareElement(shareFlag)
+
       },
       goNext(path) {
         //调试路由
-        this.$router.push(`/${path}`)
+        // this.$router.push(`/${path}`)
 
         //原生方法
-        // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-        // JSAction.openUrl(url)
+        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+        JSAction.openUrl(url)
       },
       toTeacherDetails(){
         console.log('教师详情');

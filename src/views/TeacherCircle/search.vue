@@ -1,6 +1,5 @@
 <template>
   <section>
-    <!--<commonHeader title="搜索"></commonHeader>-->
     <div class="main">
       <div class="search-head">
         <input type="text" class="content"><i class="search left"></i>
@@ -11,11 +10,10 @@
 </template>
 
 <script>
-  // import commonHeader from '../../components/CommonHeader'
   export default {
     name: "search",
     components:{
-      // commonHeader
+
     }
   }
 </script>
