@@ -101,14 +101,14 @@
         console.log('点我了点我了')
       },
       goNext(path) {
-        // this.$router.push({path: path})
-        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-        JSAction.openUrl(url)
+         this.$router.push({path: path})
+//        let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+//        JSAction.openUrl(url)
       }
     },
     mounted() {
       let token = '59a4e43d0179b04b5056178b'
-      API.get(`http://quan-test.xiaoheiban.cn/api/Quan/index?token=${token}`)
+      API.get(`/index?token=${token}`)
         .then(res => {
           console.log(res)
         })
@@ -120,6 +120,10 @@
   .swipeContent {
     width: 100%;
     height: 19vh;
+  }
+  .swipeContent img {
+    height: 19vh;
+    width: 100%;
   }
 .index-list li{
   width: 100%;

@@ -21,6 +21,7 @@ export default {
 
 <style>
   @import "assets/css/reset.css";
+  @import "../node_modules/mint-ui/lib/style.css";
   @import "assets/css/common.css";
   @import "assets/css/style.css";
   @import "assets/css/swiper.min.css";
