@@ -2,12 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '../views/Home'
 import TeacherCircle from '../views/TeacherCircle/index';
-import GrowthRecord from '../views/GrowthRecord/index';
 import Favorite from '../views/TeacherCircle/favorite';
 import Follow from '../views/TeacherCircle/follow';
 import Search from '../views/TeacherCircle/search';
-import Class from '../views/GrowthRecord/class'
-import Origin from '../views/GrowthRecord/origin'
+import Detail from '../views/Details/index'
 
 Vue.use(Router)
 
@@ -17,13 +15,8 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/growthRecord',
+      redirect: '/teacherCircle',
       children: [
-        {
-          path: '/growthRecord',
-          name: 'GrowthRecord',
-          component: GrowthRecord,
-        },
         {
           path: '/teacherCircle',
           name: 'TeacherCircle',
@@ -47,14 +40,9 @@ export default new Router({
       component: Search
     },
     {
-      path: '/class',
-      name: 'Class',
-      component: Class
-    },
-    {
-      path: '/origin',
-      name: 'Origin',
-      component: Origin
+      path: '/detail',
+      name: 'Detail',
+      component: Detail
     }
   ]
 })

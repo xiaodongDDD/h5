@@ -18,7 +18,31 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  background: url("../img/ic_blank_search@2x.png");
+  background: url("../img/ic_blank_search@2x.png") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
+.follow-heart{
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: url("../img/follow_list_ic@2x.png") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
+.follow-ok{
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  background: url("../img/follow_list_ic_ok@2x.png") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
+.is-buy{
+  display: inline-block;
+  width: 9px;
+  height: 12px;
+  background: url("../img/ic_buy@2x.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }

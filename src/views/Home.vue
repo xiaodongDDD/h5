@@ -1,15 +1,5 @@
 <template>
   <section>
-    <div>
-      <ul class="nav">
-        <li class="left">
-          <router-link to="/growthRecord">成长记录</router-link>
-        </li>
-        <li class="right">
-          <router-link to="/teacherCircle">教师圈</router-link>
-        </li>
-      </ul>
-    </div>
     <router-view/>
   </section>
 </template>

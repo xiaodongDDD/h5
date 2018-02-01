@@ -4,9 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import MintUI from 'mint-ui'
-// import 'jquery'
-import { Navbar, TabItem } from 'mint-ui';
 
+
+import { Navbar, TabItem } from 'mint-ui';
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
 Vue.use(MintUI)
