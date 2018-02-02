@@ -157,10 +157,11 @@
 
       },
       goNext(path) {
-         this.$router.push({path: path})
+         //this.$router.push({path: path})
         // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
         // if(path === 'follow') {
-        //   const shareFlag = ""||null;
+        //   console.log('aaa')
+        //   const shareFlag = 'share';
         //   JSAction.getWebShareElement(shareFlag)
         // }
         // JSAction.openUrl(url)

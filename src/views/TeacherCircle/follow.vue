@@ -1,6 +1,5 @@
 <template>
   <section>
-    <commonHeader title="关注"></commonHeader>
     <ul class="follow-list">
       <li v-for="(tm, index) in teacherMessages" class="follow" @touchmove="getIndex(index)">
         <mt-cell-swipe
@@ -102,8 +101,8 @@
     mounted() {
       let token =  '59a4e43d0179b04b5056178b'
       API.get(`/followClick?token=${token}`).then(res => {
-       // this.teacherMessages = res.response.teacher_list
-        //console.log(this.teacherMessages[0])
+//        this.teacherMessages = res.response.teacher_list
+//        console.log(this.teacherMessages[0])
       })
     }
   }
