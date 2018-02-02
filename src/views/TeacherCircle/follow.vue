@@ -81,6 +81,10 @@
       commonHeader,
       Prompt
     },
+    created(){
+      const shareFlag = ""||null;
+      JSAction.getWebShareElement(shareFlag)
+    },
     methods :{
       cancel() {
          this.myMessage.isShow = true

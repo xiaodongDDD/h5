@@ -18,7 +18,7 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  background: url("../img/ic_blank_search@2x.png") no-repeat center center;
+  background: url("../img/search-o.svg") no-repeat center center;
   background-size: cover;
   position: absolute;
 }
