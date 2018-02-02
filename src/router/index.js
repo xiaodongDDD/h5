@@ -5,6 +5,7 @@ import TeacherCircle from '../views/TeacherCircle/index';
 import Favorite from '../views/TeacherCircle/favorite';
 import Follow from '../views/TeacherCircle/follow';
 import Search from '../views/TeacherCircle/search';
+import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/teachers',
+      name: 'TDetail',
+      component: TDetail
     },
   ]
 })
