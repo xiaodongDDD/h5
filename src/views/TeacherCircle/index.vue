@@ -157,7 +157,7 @@
 
       },
       goNext(path) {
-         //this.$router.push({path: path})
+         this.$router.push({path: path})
         // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
         // if(path === 'follow') {
         //   console.log('aaa')

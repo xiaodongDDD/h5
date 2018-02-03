@@ -21,29 +21,44 @@ export default new Router({
         {
           path: '/teacherCircle',
           name: 'TeacherCircle',
-          component: TeacherCircle
+          component: TeacherCircle,
+          meta:{
+            title:"教师圈"
+          }
         }
       ]
     },
     {
       path: '/favorite',
       name: 'Favorite',
-      component: Favorite
+      component: Favorite,
+      meta:{
+        title:"我的收藏"
+      }
     },
     {
       path: '/follow',
       name: 'Follow',
-      component: Follow
+      component: Follow,
+      meta:{
+        title:"关注"
+      }
     },
     {
       path: '/search',
       name: 'Search',
-      component: Search
+      component: Search,
+      meta:{
+        title:"搜索"
+      }
     },
     {
       path: '/teachers',
       name: 'TDetail',
-      component: TDetail
+      component: TDetail,
+      meta:{
+        title:"教师详情"
+      }
     },
   ]
 })
