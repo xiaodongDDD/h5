@@ -81,7 +81,7 @@
       Prompt
     },
     created(){
-      const shareFlag = ""||null;
+      const shareFlag = "caonima";
       JSAction.getWebShareElement(shareFlag)
     },
     methods :{
@@ -104,6 +104,8 @@
 //        this.teacherMessages = res.response.teacher_list
 //        console.log(this.teacherMessages[0])
       })
+
+      document.title = '关注'
     }
   }
 </script>
