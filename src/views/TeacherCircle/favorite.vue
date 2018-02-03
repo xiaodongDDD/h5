@@ -78,8 +78,11 @@
     methods: {
       cancel() {
          this.myMessage.isShow = true
-      },
+      }
     },
+    mounted() {
+      document.title = '收藏'
+    }
 
   }
 </script>

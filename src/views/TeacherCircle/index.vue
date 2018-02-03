@@ -147,24 +147,19 @@
     methods:{
       //列表内容点击的详情
       getDetails(){
-        console.log('点我了点我了')
-        this.$router.push('/detail');
+//        console.log('点我了点我了')
+  //      this.$router.push('/articles');
 
-        // let url = `http://quan-test.xiaoheiban.cn/#/detail`;
+         let url = `http://quan-test.xiaoheiban.cn/#/articles`;
         // const shareFlag = '';
-        // JSAction.openUrl(url);
+         JSAction.openUrl(url);
         // JSAction.getWebShareElement(shareFlag)
 
       },
       goNext(path) {
-         this.$router.push({path: path})
-        // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-        // if(path === 'follow') {
-        //   console.log('aaa')
-        //   const shareFlag = 'share';
-        //   JSAction.getWebShareElement(shareFlag)
-        // }
-        // JSAction.openUrl(url)
+         //this.$router.push({path: path})
+         let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+         JSAction.openUrl(url)
       },
       toTeacherDetails(){
        // console.log('教师详情');

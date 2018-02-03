@@ -5,7 +5,7 @@ import TeacherCircle from '../views/TeacherCircle/index';
 import Favorite from '../views/TeacherCircle/favorite';
 import Follow from '../views/TeacherCircle/follow';
 import Search from '../views/TeacherCircle/search';
-
+import Article from '../views/TeacherCircle/Details/articleDetail.vue'
 import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
 
 Vue.use(Router)
@@ -59,6 +59,11 @@ export default new Router({
       meta:{
         title:"教师详情"
       }
+    },
+    {
+      path: '/articles',
+      name: 'Article',
+      component: Article
     },
   ]
 })

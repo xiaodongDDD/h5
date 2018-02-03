@@ -1,6 +1,9 @@
 <script>
   import headers from '../../../assets/logo.png'
   import Production from '../../../components/production.vue'
+  import heartOK from '../../../assets/img/list_follow_ok@2x.png'
+  import heartNO from '../../../assets/img/list_follow@2x.png'
+  import { Toast } from 'mint-ui';
   export default {
     components: { Production },
     data: () => ({
@@ -15,22 +18,21 @@
       noBB: '作为一个新媒体艺术家，影片制作人，游戏创作者，我热爱结合一切，打破界限，去创造一种沉自身与环境本身是一个互相影响的系统，好设计全是从我想说的是，自身与环境本身是一个互相影响的系统，好设计全是从好环境里长出来也许我们能遇到很多突然从时光鞋子里杀出来的很特别的人，但是很少。文化是结果，是一个与智慧互相凝结的东西，它生长在人和物互相作用中，而不存在于设计的标榜。',
       isFollow: true,
       isAll: true,
-      list: [1,2,3,4,5,6,7,8,9,10]
+      followImage: heartNO,
     }),
     methods: {
       showAll() {
         this.teacher.teacherSay = this.noBB
         this.isAll = false
       },
-      loadMore() {
-        this.loading = true;
-        setTimeout(() => {
-          let last = this.list[this.list.length - 1];
-          for (let i = 1; i <= 4; i++) {
-            this.list.push(last + i);
-          }
-          this.loading = false;
-        }, 2500);
+      cancelFollow() {
+        if(this.followImage === heartNO) {
+          this.followImage = heartOK
+          Toast('关注成功,教师圈将会优先推荐他的文章');
+        } else {
+          this.followImage = heartNO
+          Toast('取消关注成功');
+        }
       }
     },
     mounted() {
@@ -60,7 +62,7 @@
       <div class="detail-bottom">
         <span><img src="../../../assets/img/list_txt@2x.png">
         <span>已发表文章{{ teacher.articleNum }}篇</span></span>
-        <span><span>已有{{ teacher.followNum }}人关注</span>  <img src="../../../assets/img/list_follow_ok@2x.png"></span>
+        <span><span>已有{{ teacher.followNum }}人关注</span>  <img :src="followImage" @click="cancelFollow"></span>
       </div>
     </div>
     <Production></Production>

@@ -15,7 +15,7 @@
           headers: articleImage,
           title: '高中化学教育教学过程的优化策略太实用了',
           comment: 1234,
-          integration: 30,
+          integration: 'ok',
           time: '9:40'
         },
         {
@@ -85,7 +85,7 @@
             this.articleList.push(last + i);
           }
           this.loading = false;
-        }, 2500);
+        }, 2000);
       },
     },
   }
@@ -101,13 +101,15 @@
             <p>{{item.title}}</p>
             <div class="product-bar">
               <span>{{item.comment}}评论</span>
-              <span>{{item.integration}}积分</span>
+              <span v-if="item.integration != 'ok'">{{item.integration}}积分</span>
+              <span class="isHave" v-if="item.integration === 'ok'"><img src="../assets/img/ic_buy@2x.png"><a>已购</a></span>
               <span>{{item.time}}</span>
             </div>
           </div>
           <img :src="item.headers">
       </li>
     </ul>
+    <div style="text-align: center" class="loadings"><img src="../assets/img/loading.jpeg">    加载中....</div>
   </div>
 </template>
 
@@ -149,5 +151,19 @@
   }
   .product-bar span:last-of-type {
     margin-left: 35%;
+  }
+  .isHave img {
+    width: 3vw;
+    height: 2vh;
+  }
+  .loadings img {
+    height: 30px;
+    width: 30px;
+    animation: loading 1000ms infinite linear;
+    margin-right: 10px;
+  }
+  @keyframes loading {
+    0%   { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
   }
 </style>
