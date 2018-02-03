@@ -22,7 +22,7 @@ export default new Router({
           path: '/teacherCircle',
           name: 'TeacherCircle',
           component: TeacherCircle,
-          meta:{
+          meta: {
             title:"教师圈"
           }
         }
@@ -32,7 +32,7 @@ export default new Router({
       path: '/favorite',
       name: 'Favorite',
       component: Favorite,
-      meta:{
+      meta: {
         title:"我的收藏"
       }
     },
@@ -40,7 +40,7 @@ export default new Router({
       path: '/follow',
       name: 'Follow',
       component: Follow,
-      meta:{
+      meta: {
         title:"关注"
       }
     },
@@ -48,7 +48,7 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: Search,
-      meta:{
+      meta: {
         title:"搜索"
       }
     },
@@ -56,14 +56,17 @@ export default new Router({
       path: '/teachers',
       name: 'TDetail',
       component: TDetail,
-      meta:{
+      meta: {
         title:"教师详情"
       }
     },
     {
       path: '/articles',
       name: 'Article',
-      component: Article
+      component: Article,
+      meta: {
+        title: "文章详情"
+      }
     },
   ]
 })
