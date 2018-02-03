@@ -60,11 +60,8 @@
       }
     },
     created() {
-      const shareFlag = "xixi";
-      JSAction.getWebShareElement(shareFlag)
     },
     mounted() {
-      document.title = '搜索'
     }
 
 

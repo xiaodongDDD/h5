@@ -81,7 +81,6 @@
       }
     },
     mounted() {
-      document.title = '收藏'
     }
 
   }
