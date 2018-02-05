@@ -37,6 +37,12 @@
     },
     mounted() {
       this.teacher.teacherSay = this.noBB.substring(0, 67) + '...'
+    },
+    metaInfo: {
+      meta: [{
+        name: 'xiaoheiban_disable_share',
+        content: 'true'
+      }]
     }
   }
 </script>

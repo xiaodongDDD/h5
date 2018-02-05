@@ -62,6 +62,13 @@
     created() {
     },
     mounted() {
+    },
+    metaInfo: {
+      title: "搜索",
+      meta: [{
+        name: 'xiaoheiban_disable_share',
+        content: 'true'
+      }]
     }
 
 

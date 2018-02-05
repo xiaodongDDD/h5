@@ -81,6 +81,13 @@
       }
     },
     mounted() {
+    },
+    metaInfo: {
+      title: "我的收藏",
+      meta: [{
+        name: 'xiaoheiban_disable_share',
+        content: 'true'
+      }]
     }
 
   }

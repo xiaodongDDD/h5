@@ -7,25 +7,30 @@ import MintUI from 'mint-ui'
 
 
 import { Navbar, TabItem } from 'mint-ui';
+// import Vue from 'vue'
+import MetaInfo from 'vue-meta-info'
+
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
-Vue.use(MintUI)
+Vue.use(MintUI);
+Vue.use(MetaInfo);
 
-Vue.config.productionTip = false
+
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
-    document.title = to.meta.title
+    document.title = to.meta.title;
   }
   next()
-})
+});
 
 new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-})
+});

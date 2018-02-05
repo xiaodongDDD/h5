@@ -105,7 +105,13 @@
 //        console.log(this.teacherMessages[0])
       })
 
-      // document.title = '关注'
+    },
+    metaInfo: {
+      title: "关注",
+      meta: [{
+        name: 'xiaoheiban_disable_share',
+        content: 'true'
+      }]
     }
   }
 </script>

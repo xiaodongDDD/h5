@@ -4,15 +4,13 @@
     data: () => ({}),
     methods: {},
     created() {
-      const shareFlag = ""||null;
-      JSAction.getWebShareElement(shareFlag)
-    }
+    },
   }
 </script>
 
 <template>
   <div>
-
+    文章详情测试页面
   </div>
 </template>
 
