@@ -5,10 +5,12 @@
         <img src="../assets/img/64089713_p1.jpg" class="head-image">
         <div class="detail-word">
           <h5 class="name">李明平</h5>
+          <ul>
+            <li>市重点中学初中数学教研组长</li>
+            <li>市重点太多年初三把关老师</li>
+            <li>新课标教育中心资深教师</li>
+          </ul>
         </div>
-      </div>
-      <div class="detail-bottom">
-
       </div>
     </div>
   </div>

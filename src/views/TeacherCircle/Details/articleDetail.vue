@@ -15,7 +15,8 @@
       }
     }),
     methods: {},
-
+    created() {
+    },
   }
 </script>
 
