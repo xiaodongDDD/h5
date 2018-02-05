@@ -7,6 +7,7 @@ import Follow from '../views/TeacherCircle/follow';
 import Search from '../views/TeacherCircle/search';
 import Article from '../views/TeacherCircle/Details/articleDetail.vue'
 import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
+import Blank from '../views/blank'
 
 Vue.use(Router)
 
@@ -16,7 +17,7 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/teacherCircle',
+      redirect: '/blank',
       children: [
         {
           path: '/teacherCircle',
@@ -59,5 +60,10 @@ export default new Router({
         title: "文章详情"
       }
     },
+    {
+      path: '/blank',
+      name: 'Blank',
+      component: Blank,
+    }
   ]
 })
