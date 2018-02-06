@@ -1,8 +1,8 @@
-const basic = 'http://quan-test.xiaoheiban.cn/api/Quan'
+// const basic = 'http://quan-test.xiaoheiban.cn/api/Quan'
 
 export const API = {
   get: (url) => {
-    return window.fetch(`${basic}${url}`, {
+    return window.fetch(`?method=${url}`, {
       method: "GET",
       mode: "cors",
       redirect: "follow",
@@ -13,10 +13,14 @@ export const API = {
     })
       .then(res => {
         return res.json();
-      });
+      },
+        err => {
+        return err.json()
+        }
+      );
   },
   post: (url, body) => {
-    return window.fetch(`${basic}${url}`, {
+    return window.fetch(`${url}`, {
       method: "POST",
       mode: "cors",
       redirect: "follow",
@@ -27,7 +31,11 @@ export const API = {
     })
       .then(res => {
         return res.json()
-      })
+      },
+        err => {
+          return err.json()
+        }
+        )
   },
 };
 

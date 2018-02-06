@@ -30,6 +30,14 @@
   background-size: cover;
   position: absolute;
 }
+.follow-heart-gray{
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: url("../img/list_follow@2x.png") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}
 .follow-ok{
   display: inline-block;
   width: 16px;
@@ -46,4 +54,11 @@
   background-size: cover;
   position: absolute;
 }
-
+.article{
+  display: inline-block;
+  width: 10px;
+  height: 11px;
+  background: url("../img/list_txt@2x.png") no-repeat center center;
+  background-size: cover;
+  position: absolute;
+}

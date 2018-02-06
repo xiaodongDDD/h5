@@ -150,16 +150,16 @@
 //        console.log('点我了点我了')
   //      this.$router.push('/articles');
 
-         let url = `http://quan-test.xiaoheiban.cn/#/articles`;
+         // let url = `http://quan-test.xiaoheiban.cn/#/articles`;
         // const shareFlag = '';
-         JSAction.openUrl(url);
+        //  JSAction.openUrl(url);
         // JSAction.getWebShareElement(shareFlag)
 
       },
       goNext(path) {
-         //this.$router.push({path: path})
-         let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-         JSAction.openUrl(url)
+         this.$router.push({path: path})
+         // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+         // JSAction.openUrl(url)
       },
       toTeacherDetails(){
        // console.log('教师详情');
@@ -183,9 +183,11 @@
     },
     mounted() {
       let token = '59a4e43d0179b04b5056178b'
-      API.get(`/index?token=${token}`)
+      API.get(`quan.index&token=${token}`)
         .then(res => {
-          //console.log(res)
+          console.log(res)
+        },err => {
+          console.log(err)
         })
     },
   }
