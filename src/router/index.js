@@ -8,6 +8,7 @@ import Search from '../views/TeacherCircle/search';
 import Article from '../views/TeacherCircle/Details/articleDetail.vue'
 import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
 import Blank from '../views/blank'
+import VDetail from '../views/TeacherCircle/Details/videoDetail'
 
 Vue.use(Router)
 
@@ -58,6 +59,14 @@ export default new Router({
       component: Article,
       meta: {
         title: "文章详情"
+      }
+    },
+    {
+      path: '/videos',
+      name: 'VDetail',
+      component: VDetail,
+      meta: {
+        title: "视频详情"
       }
     },
     {

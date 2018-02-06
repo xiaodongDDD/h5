@@ -1,8 +1,9 @@
-// const basic = 'http://quan-test.xiaoheiban.cn/api/Quan'
+// const basic = 'http://quan-dev.xiaoheiban.cn'
+
 
 export const API = {
   get: (url) => {
-    return window.fetch(`?method=${url}`, {
+    return window.fetch(`${url}`, {
       method: "GET",
       mode: "cors",
       redirect: "follow",
@@ -34,8 +35,7 @@ export const API = {
       },
         err => {
           return err.json()
-        }
-        )
+        })
   },
 };
 

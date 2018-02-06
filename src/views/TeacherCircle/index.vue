@@ -182,12 +182,14 @@
       },
     },
     mounted() {
-      let token = '59a4e43d0179b04b5056178b'
-      API.get(`quan.index&token=${token}`)
+
+      let method = 'quan.index';
+      const url = `/api/?method=${method}`
+      API.get(url)
         .then(res => {
           console.log(res)
         },err => {
-          console.log(err)
+          console.log('err',err)
         })
     },
   }

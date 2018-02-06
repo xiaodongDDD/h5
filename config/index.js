@@ -6,16 +6,17 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/':{
-        target: 'http://quan-test.xiaoheiban.cn/api',
+      '/api':{
+        target: 'http://quan-dev.xiaoheiban.cn',
         changeOrigin: true,
+        pathRewrite:{
+          '^/api':''
+        }
       }
-
     },
 
     // Various Dev Server settings
