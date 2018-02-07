@@ -8,6 +8,7 @@ import Search from '../views/TeacherCircle/search';
 import Article from '../views/TeacherCircle/Details/articleDetail.vue'
 import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
 import Blank from '../views/blank'
+import Video from '../views/TeacherCircle/Details/vedioDetail.vue'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/blank',
       name: 'Blank',
       component: Blank,
+    },
+    {
+      path: '/video',
+      name: 'Video',
+      component: Video
     }
   ]
 })
