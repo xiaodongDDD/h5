@@ -3,12 +3,12 @@
     <div class="v-main">
       <!--视频-->
       <div class="v-video">
-        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" controls></video>
+        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" ></video>
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
-        <span class="videoTime">{{videoData.duration}}</span>
-        <div>
-          <div><img src="../../../assets/img/ic_video_play_video@2x.png" @click="play"></div>
-          <div><img src="../../../assets/img/stop.svg" @click="paused"></div>
+        <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
+        <div class="v-control" v-if="!originStatus">
+          <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
+          <div><img src="../../../assets/img/stop.svg" @click="paused" class="stop" v-if="!playStatus"></div>
         </div>
       </div>
       <!--标题-->
@@ -49,7 +49,14 @@
         videoData:{
           duration:30.50,
         },
+        originStatus: true,
+        playStatus:true,
         media:{}
+      }
+    },
+    watch:{
+      playStatus:function () {
+
       }
     },
     methods:{
@@ -57,9 +64,13 @@
         console.log(this.media);
         this.media.play();
         this.$refs.out.style = 'display:none;';
+        this.originStatus = false;
+        this.playStatus = false;
+        // console.log(this.media.loadedmetadata);
       },
       paused(){
         this.media.pause();
+        this.playStatus = true;
       }
     },
     mounted(){
@@ -78,6 +89,30 @@
   width: 100%;
   height: 210px;
   position: relative;
+}
+.v-main .v-video .v-control{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.7);
+  width: 100%;
+  height: 14px;
+  padding: 0 15px 14px 15px;
+  line-height: 14px;
+}
+.start{
+  width: 12px;
+  height: 13px;
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
+}
+.stop{
+  width: 12px;
+  height: 13px;
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
 }
 .v-main .outer{
   background-color: rgba(0,0,0,.5);
