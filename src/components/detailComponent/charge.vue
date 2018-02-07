@@ -1,4 +1,5 @@
 <script>
+  import bus from '../../service/bus'
   export default {
     components: {},
     data: () => ({
@@ -7,12 +8,17 @@
         haveScore: 5,
       },
     }),
-    methods: {},
+    props: { isShow: false },
+    methods: {
+      getShow() {
+         bus.$emit('showPrompt', true)
+      }
+    },
   }
 </script>
 
 <template>
-  <div class="charge">
+  <div class="charge" v-show="!isShow">
     <img src="../../assets/img/mask@2x.png" class="charge-hide">
     <div class="charge-message">
       <p class="need-score">阅读完整文章需要{{ score.needSore }}积分</p>
@@ -23,7 +29,7 @@
       <div class="score-less" v-show="score.haveScore-score.needSore < 0">
         <p class="have-score">{{`您的积分不足为${score.haveScore}`}}</p>
         <div>
-        <button>直接购买￥1</button><button>免费获取积分</button></div>
+        <button>直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
       </div>
     </div>
   </div>

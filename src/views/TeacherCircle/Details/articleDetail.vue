@@ -15,19 +15,29 @@
         + '年因为一项和上海世博会有关的工作任务来到上海，没到就此定居至今。</p> <p>' +
         '</p><p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;margin-bottom: 2vh">'
         +'他制作3D 虚拟影像，创作线下装置作品，为电子音乐活动设计海报，他通过自己“超·现实”的数码美学，为许多音乐人的作品提供视觉上的诠释和启发。同时，他还拥有一个名为Timefly的服装品牌。</p>'
+        +'<img style="width: 100%;" src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=2072fbcd5b6034a83defb0d3aa7a2231/4b90f603738da9778045f4e7b751f8198718e390.jpg">'
         +'<p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;">你可能不知道Kim Laughton，但你有很大的可能见过他的艺术项目“淘宝媒体”。如果你还不知道“淘宝媒体”，不要错过这个一定会让你笑到不能自已的图片集，而这又与他的“超·现实”的艺术表现相得益彰。</p>'
       +'<p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;">你可能不知道Kim Laughton，但你有很大的可能见过他的艺术项目“淘宝媒体”。如果你还不知道“淘宝媒体”，不要错过这个一定会让你笑到不能自已的图片集，而这又与他的“超·现实”的艺术表现相得益彰。</p>',
       time: '11/25'
-      }
+      },
+      isFree: false,
+      showContent: '',
+      isBuy: true,
     }),
     methods: {},
-    created() {
+    mounted() {
+      if(this.isFree || this.isBuy) {
+        this.showContent = this.article.content
+      } else {
+        this.showContent = this.article.content.substring(0, 800)
+      }
     },
   }
 </script>
 
 <template>
-  <div>
+  <div style="position: relative">
+    <img src="../../../assets/img/ic_buy@2x.png" class="buy-tab" v-show="isBuy">
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
@@ -36,16 +46,25 @@
       <span>{{article.time}}</span>
     </div>
     <div style="position: relative">
-      <div v-html="article.content"></div>
-      <charge></charge>
+      <div v-html="showContent"></div>
+      <div class="attachment">
+        <img src="../../../assets/img/triangle_down_fill.svg">
+      </div>
+      <charge :isShow = "isFree || isBuy"></charge>
     </div>
   </div>
-    <free-prompt></free-prompt>
     <comment></comment>
+    <free-prompt></free-prompt>
   </div>
 </template>
 
 <style lang="scss" scoped="">
+  .buy-tab {
+    position: fixed;
+    width: 2vw;
+    height: 1.6vh;
+    left: 4vw;
+  }
     .article-detail {
       padding: 2vh 4vw;
       background-color: #fff;
