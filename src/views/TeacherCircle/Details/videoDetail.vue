@@ -2,9 +2,15 @@
   <section>
     <div class="v-main">
       <!--视频-->
-      <video width="100%" height="210" controls>
-        <source src="../../../assets/img/test.mp4"  type="video/mp4">
-      </video>
+      <div class="v-video">
+        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" controls></video>
+        <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
+        <span class="videoTime">{{videoData.duration}}</span>
+        <div>
+          <div><img src="../../../assets/img/ic_video_play_video@2x.png" @click="play"></div>
+          <div><img src="../../../assets/img/stop.svg" @click="paused"></div>
+        </div>
+      </div>
       <!--标题-->
       <div class="v-title">
         <p>免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！</p>
@@ -24,19 +30,41 @@
         <p>你可能不知道Kim Laughton，但你有很大的可能见过他的艺术项目“淘宝媒体”。如果你还不知道“淘宝媒体”，而这又与他的“超·现实”的艺术表现相得益彰。</p>
       </div>
       <!--评论-->
-      <div class="v-comment">
-        <span>评论区</span>
-      </div>
       <div class="comment-main">
-
+        <comment></comment>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+  import Comment from '../../../components/detailComponent/comment'
   export default {
-    name: "video-detail"
+    name: "video-detail",
+    components:{
+      comment: Comment
+    },
+    data(){
+      return{
+        videoData:{
+          duration:30.50,
+        },
+        media:{}
+      }
+    },
+    methods:{
+      play(){
+        console.log(this.media);
+        this.media.play();
+        this.$refs.out.style = 'display:none;';
+      },
+      paused(){
+        this.media.pause();
+      }
+    },
+    mounted(){
+       this.media = this.$refs.media;
+    }
   }
 </script>
 
@@ -45,6 +73,43 @@
   width: 100%;
   height: 100%;
   background-color: #fff;
+}
+.v-main .v-video{
+  width: 100%;
+  height: 210px;
+  position: relative;
+}
+.v-main .outer{
+  background-color: rgba(0,0,0,.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.v-main .v-video .palyload{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px;
+  margin-left: -20px;
+}
+.v-main .videoTime{
+  position: absolute;
+  width: 42px;
+  height: 19px;
+  border-radius: 25px;
+  background-color: rgba(0,0,0,.71);
+  font-family: PingFangSC-Light;
+  font-size: 10px;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+  line-height: 19px;
+  text-align: center;
+  bottom: 10px;
+  right: 10px;
 }
 .v-main .v-title{
   padding: 20px 15px 15px 15px;

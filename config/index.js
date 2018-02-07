@@ -10,12 +10,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api':{
+      '/':{
         target: 'http://quan-dev.xiaoheiban.cn',
         changeOrigin: true,
-        pathRewrite:{
-          '^/api':''
-        }
+        // pathRewrite:{
+        //   '^/api':''
+        // }
       }
     },
 
