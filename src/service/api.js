@@ -1,11 +1,14 @@
-// const basic = 'http://quan-test.xiaoheiban.cn/api/Quan'
+// const basic = 'http://quan-dev.xiaoheiban.cn'
+
+
 
 export const API = {
   get: (url) => {
-    return window.fetch(`?method=${url}`, {
+    return window.fetch(`${url}`, {
       method: "GET",
       mode: "cors",
       redirect: "follow",
+      credentials: 'include',
       headers: {
         "Content-Type": 'application/json',
         //authorization: store.get("user") && store.get("user").clientToken,
@@ -24,6 +27,7 @@ export const API = {
       method: "POST",
       mode: "cors",
       redirect: "follow",
+      credentials: 'include',
       headers: {
         "Content-Type": 'application/json',
       },
@@ -34,8 +38,7 @@ export const API = {
       },
         err => {
           return err.json()
-        }
-        )
+        })
   },
 };
 

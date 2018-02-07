@@ -5,7 +5,7 @@
 </template>
 
 <script>
-
+  import { API } from './service/api'
 export default {
   name: 'App',
   components:{
@@ -13,8 +13,12 @@ export default {
   },
   data(){
     return{
-      selected: 1
     }
+  },
+  beforeCreate(){
+
+    API.get('?token=59a4e43d0179b04b5056178b').then(res=>{
+    },err=>{})
   }
 }
 </script>
