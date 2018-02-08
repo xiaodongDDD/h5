@@ -3,13 +3,28 @@
     <div class="v-main">
       <!--视频-->
       <div class="v-video">
-        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" ></video>
+        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg"></video>
         <experienceOver :tips="timeOver" v-show="isTryOver"></experienceOver>
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
           <div><img src="../../../assets/img/stop.svg" @click="paused" class="stop" v-if="!playStatus"></div>
+          <div class="v-progresss">
+            <mt-range
+              v-model="currentTime"
+              :max="maxTime"
+              :step="0.01"
+              :bar-height="2"
+            >
+              <div slot="start" class="v-word">{{currentTime}}</div>&nbsp;
+              <div slot="end" class="v-word">{{maxTime}}</div>
+            </mt-range>
+            <span class="hide-line"></span>
+            <!--<span class="v-word">{{currentTime}}</span>-->
+            <!--<progress :max="maxTime" :value="currentTime" class="processbar"></progress>-->
+            <!--<span class="v-word">{{maxTime}}</span>-->
+          </div>
         </div>
       </div>
       <charge></charge>
@@ -64,6 +79,8 @@
         media:{},
         timeOver: '试看时间结束',
         isTryOver: false,
+        maxTime:0,//总时间
+        currentTime: 0,//当前时间
       }
     },
     watch: {
@@ -71,33 +88,35 @@
     },
     methods:{
       play(){
-        console.log(this.media);
         this.$refs.media.play();
         this.$refs.out.style = 'display:none;';
         this.originStatus = false;
         this.playStatus = false;
-        // console.log(this.media.loadedmetadata);
       },
       paused(){
         this.$refs.media.pause();
         this.playStatus = true;
       }
     },
-
-      mounted() {
-        let video = document.getElementsByTagName('video')[0]
-        video.oncanplay = () => {
-          let videoTotalTime = video.duration
-          this.videoData.duration = `0${parseInt(video.duration/60)}:0${parseInt(video.duration%60)}`
-          video.addEventListener('timeupdate', () => {
-            if(video.currentTime > videoTotalTime/3) {
-              video.currentTime = 0
-              video.pause()
-              this.isTryOver = true
-            }
-          })
-        }
-
+    mounted() {
+      let video = document.getElementsByTagName('video')[0];
+      video.oncanplay = () => {
+        let videoTotalTime = video.duration;
+        this.maxTime = Number(videoTotalTime.toFixed(2));
+        this.videoData.duration = `0${parseInt(video.duration/60)}:0${parseInt(video.duration%60)}`;
+        video.addEventListener('timeupdate', () => {
+          this.currentTime = Number(video.currentTime.toFixed(2));
+          console.log( this.currentTime);
+          // if(video.currentTime > videoTotalTime/3) {
+          //   video.pause();
+          //   this.isTryOver = true;
+          //   this.playStatus = true;
+          // }
+        });
+        video.addEventListener('ended',()=>{
+          this.playStatus = true;
+        })
+      }
     }
   }
 </script>
@@ -117,7 +136,7 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  background-color: rgba(0,0,0,.7);
+  background-color: rgba(0,0,0,.5);
   width: 100%;
   height: 14px;
   padding: 0 15px 14px 15px;
@@ -214,18 +233,65 @@
   width: 100%;
   height: 194px;
 }
-.v-main .v-comment{
-  height: 34px;
-  width: 100%;
-  padding-left: 15px;
-  font-family: PingFangSC-Light;
-  font-size: 14px;
-  color: #AAAAAA;
-  line-height: 14px;
-  background-color: #EDEDED;
-  line-height: 34px;
+.v-progresss{
+  padding-left: 7%;
+  width: 83%;
+  /*position: absolute;*/
+  /*height: 14px;*/
+  /*margin-top: -14px;*/
+  /*top: 50%;*/
 }
-.v-main .comment-main{
+.processbar{
+  height: 2px;
+  width: 70%;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,.3);
+  color: #fff;
+}
+.v-word{
+  /*padding-top: 2px;*/
+  display: inline-block;
+  vertical-align: center;
+  font-family: PingFangSC-Light;
+  font-size: 10px;
+  color: #FFFFFF;
+  letter-spacing: -0.24px;
+  line-height: 14px;
+  padding-top: 8px;
+}
 
+progress::-webkit-progress-bar {
+  background-color: rgba(255,255,255,.3);
+}
+
+progress::-webkit-progress-value {
+  background-color: #fff;
+}
+
+progress::-moz-progress-bar {
+  background-color: rgba(255,255,255,.3);
+}
+.mt-range .mt-range-content .mt-range-runway{
+  margin: 0 20px;
+  /*border-top-width: 0 !important;*/
+}
+.mt-range .mt-range-content .mt-range-thumb{
+  width: 10px !important;
+  height: 10px !important;
+  top: 50%;
+  margin-top: -5px;
+}
+.mt-range-content{
+  margin-left: 4px;
+  margin-right:  16px !important;
+}
+.hide-line{
+  width: 12px;
+  height: 8px;
+  background-color: rgba(200,0,0,.5);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10000;
 }
 </style>

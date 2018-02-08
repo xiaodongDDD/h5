@@ -1,7 +1,10 @@
 <script>
-  import bus from '../../service/bus'
+  import bus from '../../service/bus';
+  import FreeIntegrate from './freeIntegrate'
   export default {
-    components: {},
+    components: {
+      FreeIntegrate
+    },
     data: () => ({
       score: {
         needSore: 10,
@@ -12,7 +15,7 @@
     methods: {
       getShow() {
          bus.$emit('showPrompt', true)
-      }
+      },
     },
   }
 </script>
@@ -30,9 +33,10 @@
       <div class="score-less" v-show="score.haveScore-score.needSore < 0">
         <p class="have-score">{{`您的积分不足为${score.haveScore}`}}</p>
         <div>
-        <button>直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
+        <button @click="getShow">直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
       </div>
     </div>
+    <FreeIntegrate></FreeIntegrate>
   </div>
 </template>
 

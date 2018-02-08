@@ -36,6 +36,7 @@
     height: 100%;
     top: 0;
     background: rgba(0,0,0,0.70);
+    z-index: 100;
   }
   .integrate-dialog {
     position: absolute;
