@@ -73,6 +73,6 @@ export default new Router({
       path: '/blank',
       name: 'Blank',
       component: Blank,
-    }
+    },
   ]
 })

@@ -22,14 +22,14 @@
       },
       isFree: false,
       showContent: '',
-      isBuy: true,
+      isBuy: false,
     }),
     methods: {},
     mounted() {
       if(this.isFree || this.isBuy) {
         this.showContent = this.article.content
       } else {
-        this.showContent = this.article.content.substring(0, 800)
+        this.showContent = this.article.content.substring(0, 900)
       }
     },
   }
@@ -47,10 +47,13 @@
     </div>
     <div style="position: relative">
       <div v-html="showContent"></div>
-      <div class="attachment">
-        <img src="../../../assets/img/triangle_down_fill.svg">
+      <!--<div class="attachment">-->
+        <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
+      <!--</div>-->
+      <div class="charge-content" v-show = "!(isFree || isBuy)">
+        <img src="../../../assets/img/mask@2x.png" class="charge-hide">
+        <charge></charge>
       </div>
-      <charge :isShow = "isFree || isBuy"></charge>
     </div>
   </div>
     <comment></comment>
@@ -59,6 +62,14 @@
 </template>
 
 <style lang="scss" scoped="">
+  .charge-content {
+    position: absolute;
+    bottom: 0;
+  }
+  .charge-hide {
+    width: 100%;
+    background-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #FFFFFF 100%);
+  }
   .buy-tab {
     position: fixed;
     width: 2vw;

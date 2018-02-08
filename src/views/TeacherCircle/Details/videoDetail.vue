@@ -3,14 +3,21 @@
     <div class="v-main">
       <!--视频-->
       <div class="v-video">
-        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" preload></video>
+        <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg"></video>
+        <experienceOver :tips="timeOver" v-show="isTryOver"></experienceOver>
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
           <div><img src="../../../assets/img/stop.svg" @click="paused" class="stop" v-if="!playStatus"></div>
+          <div class="v-progresss">
+            <span class="v-word">{{currentTime}}</span>
+            <progress :max="maxTime" :value="currentTime" class="processbar"></progress>
+            <span class="v-word">{{maxTime}}</span>
+          </div>
         </div>
       </div>
+      <charge></charge>
       <!--标题-->
       <div class="v-title">
         <p>免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！</p>
@@ -39,42 +46,62 @@
 
 <script>
   import Comment from '../../../components/detailComponent/comment'
+  import experienceOver from '../../../components/detailComponent/experienceTimeOver.vue'
+  import charge from '../../../components/detailComponent/charge.vue'
   export default {
     name: "video-detail",
     components:{
-      comment: Comment
+      comment: Comment,
+      experienceOver,
+      charge,
     },
     data(){
       return{
         videoData:{
           duration:30.50,
+          currentTime: '',
         },
         originStatus: true,
         playStatus:true,
-        media:{}
+        media:{},
+        timeOver: '试看时间结束',
+        isTryOver: false,
+        maxTime:0,//总时间
+        currentTime: 0,//当前时间
       }
     },
-    watch:{
-      playStatus:function () {
+    watch: {
 
-      }
     },
     methods:{
       play(){
-        console.log(this.media);
-        this.media.play();
+        this.$refs.media.play();
         this.$refs.out.style = 'display:none;';
         this.originStatus = false;
         this.playStatus = false;
       },
       paused(){
-        this.media.pause();
+        this.$refs.media.pause();
         this.playStatus = true;
       }
     },
-    mounted(){
-       this.media = this.$refs.media;
-      console.log(this.media.buffered);
+    mounted() {
+      let video = document.getElementsByTagName('video')[0];
+      video.oncanplay = () => {
+        let videoTotalTime = video.duration;
+        this.maxTime = videoTotalTime.toFixed(2);
+        console.log(this.maxTime);
+        this.videoData.duration = `0${parseInt(video.duration/60)}:0${parseInt(video.duration%60)}`;
+        video.addEventListener('timeupdate', () => {
+          this.currentTime = video.currentTime.toFixed(2);
+          if(video.currentTime > videoTotalTime/3) {
+            video.currentTime = 0;
+            video.pause();
+            this.isTryOver = true;
+            this.playStatus = true;
+          }
+        })
+      }
     }
   }
 </script>
@@ -94,24 +121,25 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  background-color: rgba(0,0,0,.7);
+  background-color: rgba(0,0,0,.5);
   width: 100%;
   height: 14px;
   padding: 0 15px 14px 15px;
   line-height: 14px;
 }
 .start{
-  width: 12px;
-  height: 13px;
+  width: 22px;
+  height: 23px;
   position: absolute;
-  top: 50%;
+  top: 30%;
   margin-top: -6px;
+  z-index: 9;
 }
 .stop{
-  width: 12px;
-  height: 13px;
+  width: 22px;
+  height: 23px;
   position: absolute;
-  top: 50%;
+  top: 30%;
   margin-top: -6px;
 }
 .v-main .outer{
@@ -190,18 +218,41 @@
   width: 100%;
   height: 194px;
 }
-.v-main .v-comment{
-  height: 34px;
+.v-progresss{
+  padding-left: 7%;
   width: 100%;
-  padding-left: 15px;
-  font-family: PingFangSC-Light;
-  font-size: 14px;
-  color: #AAAAAA;
-  line-height: 14px;
-  background-color: #EDEDED;
-  line-height: 34px;
+  /*position: absolute;*/
+  /*height: 14px;*/
+  /*margin-top: -14px;*/
+  /*top: 50%;*/
 }
-.v-main .comment-main{
+.processbar{
+  height: 2px;
+  width: 70%;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,.3);
+  color: #fff;
+}
+.v-word{
+  /*padding-top: 2px;*/
+  display: inline-block;
+  vertical-align: center;
+  font-family: PingFangSC-Light;
+  font-size: 10px;
+  color: #FFFFFF;
+  letter-spacing: -0.24px;
+  line-height: 14px;
+  padding-top: 10px;
+}
+progress::-webkit-progress-bar {
+  background-color: rgba(255,255,255,.3);
+}
 
+progress::-webkit-progress-value {
+  background-color: #fff;
+}
+
+progress::-moz-progress-bar {
+  background-color: rgba(255,255,255,.3);
 }
 </style>
