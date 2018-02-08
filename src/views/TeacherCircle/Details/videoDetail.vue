@@ -11,9 +11,19 @@
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
           <div><img src="../../../assets/img/stop.svg" @click="paused" class="stop" v-if="!playStatus"></div>
           <div class="v-progresss">
-            <span class="v-word">{{currentTime}}</span>
-            <progress :max="maxTime" :value="currentTime" class="processbar"></progress>
-            <span class="v-word">{{maxTime}}</span>
+            <mt-range
+              v-model="currentTime"
+              :max="maxTime"
+              :step="0.01"
+              :bar-height="2"
+            >
+              <div slot="start" class="v-word">{{currentTime}}</div>&nbsp;
+              <div slot="end" class="v-word">{{maxTime}}</div>
+            </mt-range>
+            <span class="hide-line"></span>
+            <!--<span class="v-word">{{currentTime}}</span>-->
+            <!--<progress :max="maxTime" :value="currentTime" class="processbar"></progress>-->
+            <!--<span class="v-word">{{maxTime}}</span>-->
           </div>
         </div>
       </div>
@@ -89,24 +99,26 @@
       let video = document.getElementsByTagName('video')[0];
       video.oncanplay = () => {
         let videoTotalTime = video.duration;
-        this.maxTime = videoTotalTime.toFixed(2);
-        console.log(this.maxTime);
+        this.maxTime = Number(videoTotalTime.toFixed(2));
         this.videoData.duration = `0${parseInt(video.duration/60)}:0${parseInt(video.duration%60)}`;
         video.addEventListener('timeupdate', () => {
-          this.currentTime = video.currentTime.toFixed(2);
-          if(video.currentTime > videoTotalTime/3) {
-            video.currentTime = 0;
-            video.pause();
-            this.isTryOver = true;
-            this.playStatus = true;
-          }
+          this.currentTime = Number(video.currentTime.toFixed(2));
+          console.log( this.currentTime);
+          // if(video.currentTime > videoTotalTime/3) {
+          //   video.pause();
+          //   this.isTryOver = true;
+          //   this.playStatus = true;
+          // }
+        });
+        video.addEventListener('ended',()=>{
+          this.playStatus = true;
         })
       }
     }
   }
 </script>
 
-<style scoped>
+<style>
 .v-main{
   width: 100%;
   height: 100%;
@@ -220,7 +232,7 @@
 }
 .v-progresss{
   padding-left: 7%;
-  width: 100%;
+  width: 83%;
   /*position: absolute;*/
   /*height: 14px;*/
   /*margin-top: -14px;*/
@@ -242,8 +254,9 @@
   color: #FFFFFF;
   letter-spacing: -0.24px;
   line-height: 14px;
-  padding-top: 10px;
+  padding-top: 8px;
 }
+
 progress::-webkit-progress-bar {
   background-color: rgba(255,255,255,.3);
 }
@@ -254,5 +267,28 @@ progress::-webkit-progress-value {
 
 progress::-moz-progress-bar {
   background-color: rgba(255,255,255,.3);
+}
+.mt-range .mt-range-content .mt-range-runway{
+  margin: 0 20px;
+  /*border-top-width: 0 !important;*/
+}
+.mt-range .mt-range-content .mt-range-thumb{
+  width: 10px !important;
+  height: 10px !important;
+  top: 50%;
+  margin-top: -5px;
+}
+.mt-range-content{
+  margin-left: 4px;
+  margin-right:  16px !important;
+}
+.hide-line{
+  width: 12px;
+  height: 8px;
+  background-color: rgba(200,0,0,.5);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10000;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <section class="b-main">
     <div class="blank">
       <img src="../assets/img/ic_blank_message@2x.png" class="blank-img">
-      <p>与全国名师一起学习，成就您的名师之路</p>
+      <p>与全国名师一起学习，成就您的名师之路！</p>
       <p>COMING SOON</p>
     </div>
   </section>
@@ -15,8 +15,12 @@
 </script>
 
 <style scoped>
+.b-main{
+  width: 100%;
+  height: 100%;
+}
 .blank{
-  margin-top: 94px;
+  padding-top: 94px;
   text-align: center;
   font-family: PingFangSC-Light;
   font-size: 17px;
