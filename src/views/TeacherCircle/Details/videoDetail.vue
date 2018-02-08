@@ -4,7 +4,7 @@
       <!--视频-->
       <div class="v-video">
         <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg" ></video>
-        <experienceOver :tips="timeOver"></experienceOver>
+        <experienceOver :tips="timeOver" v-show="isTryOver"></experienceOver>
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
@@ -12,6 +12,7 @@
           <div><img src="../../../assets/img/stop.svg" @click="paused" class="stop" v-if="!playStatus"></div>
         </div>
       </div>
+      <charge></charge>
       <!--标题-->
       <div class="v-title">
         <p>免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！</p>
@@ -41,49 +42,55 @@
 <script>
   import Comment from '../../../components/detailComponent/comment'
   import experienceOver from '../../../components/detailComponent/experienceTimeOver.vue'
+  import charge from '../../../components/detailComponent/charge.vue'
   export default {
     name: "video-detail",
     components:{
       comment: Comment,
-      experienceOver
+      experienceOver,
+      charge,
     },
     data(){
       return{
         videoData:{
           duration:30.50,
+          currentTime: '',
         },
         originStatus: true,
         playStatus:true,
-        media:{}
+        media:{},
+        timeOver: '试看时间结束',
+        isTryOver: false,
       }
     },
-    watch:{
-      playStatus:function () {
+    watch: {
 
-      }
     },
     methods:{
       play(){
         console.log(this.media);
-        this.media.play();
+        this.$refs.media.play();
         this.$refs.out.style = 'display:none;';
         this.originStatus = false;
         this.playStatus = false;
         // console.log(this.media.loadedmetadata);
       },
       paused(){
-        this.media.pause();
+        this.$refs.media.pause();
         this.playStatus = true;
       }
     },
+
       mounted() {
         let video = document.getElementsByTagName('video')[0]
         video.oncanplay = () => {
           let videoTotalTime = video.duration
+          this.videoData.duration = `0${parseInt(video.duration/60)}:0${parseInt(video.duration%60)}`
           video.addEventListener('timeupdate', () => {
             if(video.currentTime > videoTotalTime/3) {
               video.currentTime = 0
               video.pause()
+              this.isTryOver = true
             }
           })
         }
@@ -114,17 +121,18 @@
   line-height: 14px;
 }
 .start{
-  width: 12px;
-  height: 13px;
+  width: 22px;
+  height: 23px;
   position: absolute;
-  top: 50%;
+  top: 30%;
   margin-top: -6px;
+  z-index: 9;
 }
 .stop{
-  width: 12px;
-  height: 13px;
+  width: 22px;
+  height: 23px;
   position: absolute;
-  top: 50%;
+  top: 30%;
   margin-top: -6px;
 }
 .v-main .outer{

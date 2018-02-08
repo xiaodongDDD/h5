@@ -26,9 +26,10 @@
     width: 100%;
     text-align: center;
     background: rgba(0,0,0,0.70);
-    height: 190px;
+    height: 210px;
     color: #fff;
     box-sizing: border-box;
+    z-index: 999;
   }
   div p {
     margin-top: 20%;

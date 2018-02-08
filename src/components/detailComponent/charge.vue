@@ -8,7 +8,7 @@
         haveScore: 5,
       },
     }),
-    props: { isShow: false },
+//    props: { isShow: false },
     methods: {
       getShow() {
          bus.$emit('showPrompt', true)
@@ -18,8 +18,9 @@
 </script>
 
 <template>
-  <div class="charge" v-show="!isShow">
-    <img src="../../assets/img/mask@2x.png" class="charge-hide">
+  <!--<div class="charge" v-show="!isShow">-->
+  <div>
+    <!--<img src="../../assets/img/mask@2x.png" class="charge-hide">-->
     <div class="charge-message">
       <p class="need-score">阅读完整文章需要{{ score.needSore }}积分</p>
       <div class="score-enough" v-show="score.haveScore-score.needSore >= 0">
@@ -36,14 +37,14 @@
 </template>
 
 <style>
-  .charge {
-    position: absolute;
-    bottom: 0;
-  }
-  .charge-hide {
-    width: 100%;
-    background-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #FFFFFF 100%);
-  }
+  /*.charge {*/
+    /*position: absolute;*/
+    /*bottom: 0;*/
+  /*}*/
+  /*.charge-hide {*/
+    /*width: 100%;*/
+    /*background-image: linear-gradient(-180deg, rgba(255,255,255,0.00) 0%, #FFFFFF 100%);*/
+  /*}*/
   .charge-message {
     text-align: center;
     background: #fff;
