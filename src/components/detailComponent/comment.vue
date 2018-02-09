@@ -35,12 +35,15 @@
       replyMe: {
         answer: false,
         author: '',
-      }
+      },
+      originLength:0,//控制长度
     }),
     watch:{
       commentText: function (commentText) {
-        if(commentText){
-          this.$refs.publish.style = 'background: #F8E71C; !important'
+        if(commentText.length>this.originLength){
+          this.$refs.publish.style = 'background: #F8E71C;color:#000;'
+        }else{
+          this.$refs.publish.style = 'background: #DDDDDD;color:#aaa;'
         }
       }
     },
@@ -48,13 +51,14 @@
       openCommentBox(name) {
         this.showCommentBox = true;
         if(name) {
-          this.commentText = `回复${name}:   `;
+          this.commentText = `回复${name}:  `;
           this.replyMe.answer = true;
-          this.replyMe.author = name
+          this.replyMe.author = name;
+          this.originLength = this.commentText.length;
         } else if(name === '') {
           this.commentText = '';
           this.replyMe.answer = false;
-          this.replyMe.author = name
+          this.replyMe.author = name;
         }
       },
       publishComment() {
@@ -73,7 +77,6 @@
         this.comments.push(myReply);
         this.showCommentBox = false
       }
-
     },
   }
 </script>
