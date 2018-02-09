@@ -4,7 +4,7 @@
       <!--视频-->
       <div class="v-video">
         <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg"></video>
-        <experienceOver :tips="timeOver" v-show="isTryOver"></experienceOver>
+        <experienceOver :tips="timeOver" v-show="isTryOver" ></experienceOver>
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
@@ -27,7 +27,8 @@
           </div>
         </div>
       </div>
-      <charge></charge>
+      <div class="is-buy" style="left: 11px;" v-show="isBuy"></div>
+      <charge category="视频" action="观看"></charge>
       <!--标题-->
       <div class="v-title">
         <p>免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！</p>
@@ -78,6 +79,7 @@
         isTryOver: false,
         maxTime:0,//总时间
         currentTime: 0,//当前时间
+        isBuy: true,
       }
     },
     watch: {
