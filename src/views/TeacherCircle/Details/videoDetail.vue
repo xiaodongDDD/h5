@@ -59,9 +59,12 @@
   import Comment from '../../../components/detailComponent/comment'
   import experienceOver from '../../../components/detailComponent/experienceTimeOver.vue'
   import charge from '../../../components/detailComponent/charge.vue'
+  import { range } from 'mint-ui'
+  import MtRange from '../../../../node_modules/mint-ui/packages/range/src/index'
   export default {
     name: "video-detail",
     components:{
+      MtRange,
       comment: Comment,
       experienceOver,
       charge,

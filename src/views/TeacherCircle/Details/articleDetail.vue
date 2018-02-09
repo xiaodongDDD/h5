@@ -50,6 +50,10 @@
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
+      <div class="have-message" v-show="isBuy">
+        <span>2018/12/22</span>
+        <span>已购</span>
+      </div>
       <div class="charge-content" v-show = "!(isFree || isBuy)">
         <img src="../../../assets/img/mask@2x.png" class="charge-hide">
         <charge category="文章" action="阅读"></charge>
@@ -62,6 +66,13 @@
 </template>
 
 <style lang="scss" scoped="">
+  .have-message {
+    font-family: PingFangSC-Light;
+    font-size: 14px;
+    color: #AAA;
+    text-align: right;
+    margin: 1.5vh 0;
+  }
   .charge-content {
     position: absolute;
     bottom: 0;
