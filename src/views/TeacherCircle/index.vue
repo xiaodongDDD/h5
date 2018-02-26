@@ -78,7 +78,7 @@
 
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded">
         <ul class="index-list">
-          <li @click="getDetails()" v-for="item in bottomList">
+          <li @click="getDetails(item.type)" v-for="item in bottomList">
             <div class="list-head">
               <img :src="item.headImage" class="head-image">
               <span class="head-name">{{item.name}}</span>
@@ -133,12 +133,12 @@
               {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:-1,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'}
             ],
             bottomList:[
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.2,buyState:30,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'},
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:0,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'},
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:-1,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'},
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.2,buyState:30,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'},
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:0,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'},
-              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:-1,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升'}
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.2,buyState:30,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:"audio"},
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:0,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:'video'},
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:-1,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:'article'},
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.2,buyState:30,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:'video'},
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:0,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:'article'},
+              {headImage:headImage,name:'李白',time:'11：00',commentPepole:1.3,buyState:-1,mainContent:mainContent,title:'高中化学教育教学过程的优化策略及提升',type:'audio'}
             ],
             bottomStatus: 'loading',
             allLoaded: false
@@ -146,9 +146,9 @@
     },
     methods:{
       //列表内容点击的详情
-      getDetails(){
-//        console.log('点我了点我了')
-  //      this.$router.push('/articles');
+      getDetails(path){
+       console.log('点我了点我了');
+       this.$router.push('/'+path);
 
          // let url = `http://quan-test.xiaoheiban.cn/#/articles`;
         // const shareFlag = '';
@@ -182,7 +182,6 @@
       },
     },
     mounted() {
-
       let method = 'quan.index';
       const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}`
       API.get(url)

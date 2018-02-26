@@ -5,10 +5,11 @@ import TeacherCircle from '../views/TeacherCircle/index';
 import Favorite from '../views/TeacherCircle/favorite';
 import Follow from '../views/TeacherCircle/follow';
 import Search from '../views/TeacherCircle/search';
-import Article from '../views/TeacherCircle/Details/articleDetail.vue'
-import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue'
-import Blank from '../views/blank'
-import VDetail from '../views/TeacherCircle/Details/videoDetail'
+import Article from '../views/TeacherCircle/Details/articleDetail.vue';
+import TDetail from '../views/TeacherCircle/Details/teacherDetail.vue';
+import Blank from '../views/blank';
+import VDetail from '../views/TeacherCircle/Details/videoDetail';
+import Audio from '../views/TeacherCircle/Details/audioDetail';
 
 Vue.use(Router)
 
@@ -54,7 +55,7 @@ export default new Router({
       }
     },
     {
-      path: '/articles',
+      path: '/article',
       name: 'Article',
       component: Article,
       meta: {
@@ -62,11 +63,19 @@ export default new Router({
       }
     },
     {
-      path: '/videos',
+      path: '/video',
       name: 'VDetail',
       component: VDetail,
       meta: {
         title: "视频详情"
+      }
+    },
+    {
+      path: '/audio',
+      name: 'Audio',
+      component: Audio,
+      meta: {
+        title: "音频详情"
       }
     },
     {

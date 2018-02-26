@@ -56,7 +56,7 @@
       </div>
       <div class="charge-content" v-show = "!(isFree || isBuy)">
         <img src="../../../assets/img/mask@2x.png" class="charge-hide">
-        <charge></charge>
+        <charge category="文章" action="阅读"></charge>
       </div>
     </div>
   </div>

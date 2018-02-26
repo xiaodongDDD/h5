@@ -33,8 +33,18 @@
       replyMe: {
         answer: false,
         author: '',
-      }
+      },
+      originLength:0,//控制长度
     }),
+    watch:{
+      commentText: function (commentText) {
+        if(commentText.length>this.originLength){
+          this.$refs.publish.style = 'background: #F8E71C;color:#000;'
+        }else{
+          this.$refs.publish.style = 'background: #DDDDDD;color:#aaa;'
+        }
+      }
+    },
     methods: {
       openCommentBox(name = '') {
         this.showCommentBox = true
@@ -43,9 +53,9 @@
         this.commentText = name ? `回复${name}:   ` : ''
       },
       publishComment() {
-        if (this.replyMe.answer) {
-          const spliceNum = 3 + this.replyMe.author.length
-          this.commentText = this.commentText.substring(spliceNum)
+        if(this.replyMe.answer) {
+          let spliceNum = 3 + this.replyMe.author.length;
+          this.commentText = this.commentText.substring(spliceNum);
         }
         const myReply = {
           isReply: this.replyMe.answer,
@@ -54,7 +64,7 @@
           cContent: this.commentText,
           cTime: '07/18',
         }
-        this.comments.push(myReply)
+        this.comments.push(myReply);
         this.showCommentBox = false
       }
     },
@@ -85,7 +95,7 @@
       <div class="comment-box">
         <h2>发表评论</h2>
         <textarea placeholder="请输入评论内容（6-300字）" v-model="commentText"></textarea>
-        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment">发表</button></div>
+        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()" ref="publish">发表</button></div>
       </div>
     </div>
   </div>
