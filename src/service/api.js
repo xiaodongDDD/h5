@@ -1,7 +1,5 @@
 // const basic = 'http://quan-dev.xiaoheiban.cn'
 
-
-
 export const API = {
   get: (url) => {
     return window.fetch(`${url}`, {
@@ -11,6 +9,7 @@ export const API = {
       credentials: 'include',
       headers: {
         "Content-Type": 'application/json',
+        //"Set-Cookie": 'token=NTlhNGU0M2QwMTc5YjA0YjUwNTYxNzhi'
         //authorization: store.get("user") && store.get("user").clientToken,
       },  //从store中获取用户的token
     })

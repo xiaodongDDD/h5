@@ -183,17 +183,13 @@
     },
     mounted() {
       let method = 'quan.index';
-      const url = `/api/?method=${method}`;
-      API.get('?token=59a4e43d0179b04b5056178b').then(res=>{
-        console.log(res);
-        API.get(url)
-          .then(res => {
-            console.log(res)
-          },err => {
-            console.log('err',err)
-          })
-      },err=>{});
-
+      const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}`;
+      API.get(url)
+        .then(res => {
+          console.log(res)
+        },err => {
+          console.log('err',err)
+        })
     },
   }
 </script>

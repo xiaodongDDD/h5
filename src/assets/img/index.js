@@ -1,0 +1,1 @@
+export logo from './ic_app_more_nor@2x.png'
