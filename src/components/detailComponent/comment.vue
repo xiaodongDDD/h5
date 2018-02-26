@@ -2,7 +2,6 @@
   import favorite from '../../assets/img/comment_ic_favorite@2x.png'
   import favoriteOK from '../../assets/img/comment_ic_favorite_ok@2x.png'
   export default {
-    components: {},
     data: () => ({
       isFavorite: true,
       favoriteImage: favoriteOK,
@@ -15,22 +14,21 @@
         cTime: '18:30',
         cGrounding: '已上架'
       },
-        {
-          isReply: true,
-          rName: '薛白',
-          cName: '白鹏飞',
-          cContent: '最让人眼前一亮的就是突破',
-          cTime: '18:30',
-          cGrounding: '已下架'
-        },
-        {
-          isReply: false,
-          cName: '薛白',
-          cContent: '第一次宣传出了后你们真把这鞋的调性发掘出来了 超nice的~',
-          cTime: '07/18',
-          cGrounding: '未上架'
-        },
-      ],
+      {
+        isReply: true,
+        rName: '薛白',
+        cName: '白鹏飞',
+        cContent: '最让人眼前一亮的就是突破',
+        cTime: '18:30',
+        cGrounding: '已下架'
+      },
+      {
+        isReply: false,
+        cName: '薛白',
+        cContent: '第一次宣传出了后你们真把这鞋的调性发掘出来了 超nice的~',
+        cTime: '07/18',
+        cGrounding: '未上架'
+      }],
       commentText: '',
       replyMe: {
         answer: false,
@@ -38,25 +36,18 @@
       }
     }),
     methods: {
-      openCommentBox(name) {
+      openCommentBox(name = '') {
         this.showCommentBox = true
-        if(name) {
-          this.commentText = `回复${name}:   `
-          this.replyMe.answer = true
-          this.replyMe.author = name
-        } else if(name === '') {
-          this.commentText = ''
-          this.replyMe.answer = false
-          this.replyMe.author = name
-        }
+        this.replyMe.author = name
+        this.replyMe.answer = !!name
+        this.commentText = name ? `回复${name}:   ` : ''
       },
       publishComment() {
-        if(this.replyMe.answer) {
-          let spliceNum = 3 + this.replyMe.author.length
+        if (this.replyMe.answer) {
+          const spliceNum = 3 + this.replyMe.author.length
           this.commentText = this.commentText.substring(spliceNum)
-          console.log(this.commentText)
         }
-        let myReply = {
+        const myReply = {
           isReply: this.replyMe.answer,
           cName: '吴克',
           rName: this.replyMe.author,
@@ -66,7 +57,6 @@
         this.comments.push(myReply)
         this.showCommentBox = false
       }
-
     },
   }
 </script>
@@ -78,7 +68,11 @@
       <li v-for="item in comments" class="comment">
         <label>{{item.cName}}<span v-show="item.isReply"><a style="color: #3A3A3A">回复</a><a>{{item.rName}}</a></span>:</label>
         <span>{{item.cContent}}</span>
-        <div class="comment-bar"><span class="bar-0">{{item.cTime}}</span><span class="bar-1">{{item.cGrounding}}</span><span class="bar-2" @click="openCommentBox(item.cName)">回复</span></div>
+        <div class="comment-bar">
+          <span class="bar-0">{{item.cTime}}</span>
+          <span class="bar-1">{{item.cGrounding}}</span>
+          <span class="bar-2" @click="openCommentBox(item.cName)">回复</span>
+        </div>
       </li>
     </ul>
     <div class="comment-bottom">————到底啦————</div>
@@ -91,27 +85,30 @@
       <div class="comment-box">
         <h2>发表评论</h2>
         <textarea placeholder="请输入评论内容（6-300字）" v-model="commentText"></textarea>
-        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()">发表</button></div>
+        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment">发表</button></div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped="">
+<style scoped>
   .comment-content {
     background-color: #fff;
   }
-   h3 {
-     font-family: PingFangSC-Light;
-     font-size: 14px;
-     color: #AAAAAA;
-     padding: 2vh 4vw;
-     background-color: #EDEDED;
-   }
+
+  h3 {
+    font-family: PingFangSC-Light;
+    font-size: 14px;
+    color: #AAA;
+    padding: 2vh 4vw;
+    background-color: #EDEDED;
+  }
+
   .comment {
     color: #3A3A3A;
     padding: 1vh 4vw;
   }
+
   .comment label, .comment span {
     vertical-align: bottom;
   }
@@ -166,7 +163,7 @@
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.70);
+    background: rgba(0, 0, 0, .7);
   }
   .comment-box {
     position: inherit;
@@ -200,7 +197,7 @@
     align-items: center;
   }
   .publish button {
-    background: #DDDDDD;
+    background: #DDD;
     border-radius: 2px;
     font-size: 14px;
     width: 60px;

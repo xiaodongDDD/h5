@@ -184,7 +184,7 @@
     mounted() {
 
       let method = 'quan.index';
-      const url = `/api/?method=${method}`
+      const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}`
       API.get(url)
         .then(res => {
           console.log(res)

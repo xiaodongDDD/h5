@@ -41,7 +41,7 @@
 <script>
   import header from '../../assets/logo.png'
   import Prompt from '../../components/prompt.vue'
-
+  import { API } from '../../service/api'
   export default {
     name: "favorite",
     components:{
@@ -81,6 +81,9 @@
       }
     },
     mounted() {
+      API.get('/collectClick').then(res => {
+        console.log(res)
+      })
     },
     metaInfo: {
       title: "我的收藏",
