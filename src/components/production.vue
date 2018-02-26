@@ -102,7 +102,7 @@
             <div class="product-bar">
               <span>{{item.comment}}评论</span>
               <span v-if="item.integration != 'ok'">{{item.integration}}积分</span>
-              <span class="isHave" v-if="item.integration === 'ok'"><img src="../assets/img/ic_buy@2x.png"><a>已购</a></span>
+              <span class="isHave" v-if="item.integration === 'ok'"><img src="../assets/img/ic_buy.png"><a>已购</a></span>
               <span>{{item.time}}</span>
             </div>
           </div>

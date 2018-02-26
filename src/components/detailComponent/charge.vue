@@ -23,7 +23,7 @@
 <template>
   <!--<div class="charge" v-show="!isShow">-->
   <div>
-    <!--<img src="../../assets/img/mask@2x.png" class="charge-hide">-->
+    <!--<img src="../../assets/img/mask.png" class="charge-hide">-->
     <div class="charge-message">
       <p class="need-score">{{action}}完整{{category}}需要{{ score.needSore }}积分</p>
       <div class="score-enough" v-show="score.haveScore-score.needSore >= 0">

@@ -12,19 +12,19 @@
         <ul>
           <li>
             <div @click="goNext('search')"  style="display: inline-block;">
-              <img src="../../assets/img/ic_search@2x.png" alt="">
+              <img src="../../assets/img/ic_search.png" alt="">
               <span>搜索</span>
             </div>
           </li>
           <li>
             <div @click="goNext('follow')" style="display: inline-block;">
-              <img src="../../assets/img/ic_follow@2x.png" alt="">
+              <img src="../../assets/img/ic_follow.png" alt="">
               <span>关注</span>
             </div>
           </li>
           <li>
             <div @click="goNext('favorite')" style="display: inline-block;">
-              <img src="../../assets/img/ic_favorite@2x.png" alt="">
+              <img src="../../assets/img/ic_favorite.png" alt="">
               <span>收藏</span>
             </div>
           </li>
@@ -173,23 +173,27 @@
         });
       },
       loadBottom(id) {
-        alert('11111111')
+        alert('11111111');
         // this.allLoaded = true;// 若数据已全部获取完毕
         this.$broadcast('onBottomLoaded', id);
         setTimeout(()=>{
-          this.bottomStatus = 'load'
+          this.bottomStatus = 'load';
         },2000)
       },
     },
     mounted() {
       let method = 'quan.index';
-      const url = `/api/?method=${method}`
-      API.get(url)
-        .then(res => {
-          console.log(res)
-        },err => {
-          console.log('err',err)
-        })
+      const url = `/api/?method=${method}`;
+      API.get('?token=59a4e43d0179b04b5056178b').then(res=>{
+        console.log(res);
+        API.get(url)
+          .then(res => {
+            console.log(res)
+          },err => {
+            console.log('err',err)
+          })
+      },err=>{});
+
     },
   }
 </script>
@@ -264,7 +268,7 @@
   background-color: #fff;
   margin-top: 5px;
   color: #aaa;
-  /*overflow-y: hidden;*/
+  overflow-y: hidden;
 }
 .recommend-list .recommend-title{
   padding: 15px 0 0 15px;
@@ -273,8 +277,7 @@
 .recommend-list .recommend-all{
   box-sizing: border-box;
   height: 200px;
-  overflow-y: hidden;
-  /*border-bottom: 4px #fff solid;*/
+  /*overflow-y: hidden;*/
 }
 .recommend-list .recommend-content{
   width: 100%;

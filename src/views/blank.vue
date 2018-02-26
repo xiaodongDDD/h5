@@ -1,16 +1,18 @@
 <template>
   <section class="b-main">
     <div class="blank">
-      <img src="../assets/img/ic_blank_message@2x.png" class="blank-img">
-      <p>与全国名师一起学习，成就您的名师之路！</p>
-      <p>COMING SOON</p>
+      <img src="../assets/img/comingsoon.png" class="blank-img">
     </div>
   </section>
 </template>
 
 <script>
   export default {
-    name: "white"
+    name: "white",
+    mounted(){
+      // window.addEventListener('touchstart',function(e){e.preventDefault();});
+      // window.addEventListener('touchmove',function(e){e.preventDefault();});
+    },
   }
 </script>
 
@@ -18,9 +20,10 @@
 .b-main{
   width: 100%;
   height: 100%;
+  background-color: #fff;
 }
 .blank{
-  padding-top: 94px;
+  padding-top: 50px;
   text-align: center;
   font-family: PingFangSC-Light;
   font-size: 17px;
@@ -28,8 +31,7 @@
   line-height: 21px;
 }
 .blank-img{
-  width: 166px;
-  height: 123px;
-  margin-bottom: 25px;
+  width: 90%;
+  height: 100%;
 }
 </style>

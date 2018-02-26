@@ -26,7 +26,7 @@
   display: inline-block;
   width: 12px;
   height: 12px;
-  background: url("../img/follow_list_ic@2x.png") no-repeat center center;
+  background: url("../img/follow_list_ic.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }
@@ -34,7 +34,7 @@
   display: inline-block;
   width: 12px;
   height: 12px;
-  background: url("../img/list_follow@2x.png") no-repeat center center;
+  background: url("../img/list_follow.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }
@@ -42,7 +42,7 @@
   display: inline-block;
   width: 16px;
   height: 12px;
-  background: url("../img/follow_list_ic_ok@2x.png") no-repeat center center;
+  background: url("../img/follow_list_ic_ok.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }
@@ -50,7 +50,7 @@
   display: inline-block;
   width: 9px;
   height: 12px;
-  background: url("../img/ic_buy@2x.png") no-repeat center center;
+  background: url("../img/ic_buy.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }
@@ -58,7 +58,7 @@
   display: inline-block;
   width: 10px;
   height: 11px;
-  background: url("../img/list_txt@2x.png") no-repeat center center;
+  background: url("../img/list_txt.png") no-repeat center center;
   background-size: cover;
   position: absolute;
 }

@@ -94,7 +94,7 @@ body {
 }
 .teacherCircle-container .recommend-container .recommend-slide .follow-btn span {
   display: inline-block;
-  background: url('../img/follow_list_ic@2x.png') left center no-repeat;
+  background: url('../img/follow_list_ic.png') left center no-repeat;
   background-size: 12px;
   padding-left: 16px;
 }
@@ -102,7 +102,7 @@ body {
   width: 63px;
   height: 26px;
   background: #FFF;
-  background: url('../img/follow_list_ic_ok@2x.png') center center no-repeat;
+  background: url('../img/follow_list_ic_ok.png') center center no-repeat;
   background-size: 16px;
 }
 .article-list {
@@ -144,7 +144,7 @@ body {
   margin-right: 15px;
 }
 .article-list .center-info .btns .purchased {
-  background: url('../img/ic_buy@2x.png') left center no-repeat;
+  background: url('../img/ic_buy.png') left center no-repeat;
   background-size: 8px;
   padding-left: 12px;
 }
@@ -217,11 +217,11 @@ body {
   padding: 0 20px;
 }
 .follow-container .follow-list .follow-bottom .follow-status .follow-num {
-  background: url('../img/list_follow@2x.png') 5px center no-repeat;
+  background: url('../img/list_follow.png') 5px center no-repeat;
   background-size: 12px;
 }
 .follow-container .follow-list .follow-bottom .follow-status .article-num {
-  background: url('../img/list_txt@2x.png') 5px center no-repeat;
+  background: url('../img/list_txt.png') 5px center no-repeat;
   background-size: 12px;
 }
 .follow-container .follow-list .follow-bottom .update-time {
@@ -345,17 +345,17 @@ body {
   font-size: 14px;
 }
 .tinfo-container .teacher-info .article-instru .anum {
-  background: url('../img/list_txt@2x.png') left center no-repeat;
+  background: url('../img/list_txt.png') left center no-repeat;
   background-size: 14px;
   padding-left: 18px;
 }
 .tinfo-container .teacher-info .article-instru .fnum {
   padding-right: 18px;
-  background: url('../img/list_follow@2x.png') right center no-repeat;
+  background: url('../img/list_follow.png') right center no-repeat;
   background-size: 14px;
 }
 .tinfo-container .teacher-info .article-instru .fnum.active {
-  background: url('../img/list_follow_ok@2x.png') right center no-repeat;
+  background: url('../img/list_follow_ok.png') right center no-repeat;
   background-size: 14px;
 }
 .follow-left {
@@ -409,11 +409,11 @@ body {
   padding: 0 20px;
 }
 .follow-bottom .follow-status .follow-num {
-  background: url('../img/list_follow@2x.png') 5px center no-repeat;
+  background: url('../img/list_follow.png') 5px center no-repeat;
   background-size: 12px;
 }
 .follow-bottom .follow-status .article-num {
-  background: url('../img/list_txt@2x.png') 5px center no-repeat;
+  background: url('../img/list_txt.png') 5px center no-repeat;
   background-size: 12px;
 }
 .follow-bottom .update-time {

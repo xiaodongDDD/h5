@@ -11,7 +11,7 @@
 
         <!--没有内容-->
         <!--<div class="search-null">-->
-          <!--<img src="../../assets/img/ic_blank_search@2x.png" style="width:168px;height:123px;">-->
+          <!--<img src="../../assets/img/ic_blank_search.png" style="width:168px;height:123px;">-->
           <!--<div>-->
             <!--<p>没有符合关键字的搜索结果</p>-->
             <!--<p>请更换输入其他关键字后重试</p>-->
