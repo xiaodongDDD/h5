@@ -37,7 +37,7 @@
 
 <template>
   <div style="position: relative">
-    <img src="../../../assets/img/ic_buy@2x.png" class="buy-tab" v-show="isBuy">
+    <img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy">
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
@@ -55,7 +55,7 @@
         <span>已购</span>
       </div>
       <div class="charge-content" v-show = "!(isFree || isBuy)">
-        <img src="../../../assets/img/mask@2x.png" class="charge-hide">
+        <img src="../../../assets/img/mask.png" class="charge-hide">
         <charge category="文章" action="阅读"></charge>
       </div>
     </div>

@@ -12,19 +12,19 @@
         <ul>
           <li>
             <div @click="goNext('search')"  style="display: inline-block;">
-              <img src="../../assets/img/ic_search@2x.png" alt="">
+              <img src="../../assets/img/ic_search.png" alt="">
               <span>搜索</span>
             </div>
           </li>
           <li>
             <div @click="goNext('follow')" style="display: inline-block;">
-              <img src="../../assets/img/ic_follow@2x.png" alt="">
+              <img src="../../assets/img/ic_follow.png" alt="">
               <span>关注</span>
             </div>
           </li>
           <li>
             <div @click="goNext('favorite')" style="display: inline-block;">
-              <img src="../../assets/img/ic_favorite@2x.png" alt="">
+              <img src="../../assets/img/ic_favorite.png" alt="">
               <span>收藏</span>
             </div>
           </li>
@@ -188,11 +188,11 @@
         });
       },
       loadBottom(id) {
-        alert('11111111')
+        alert('11111111');
         // this.allLoaded = true;// 若数据已全部获取完毕
         this.$broadcast('onBottomLoaded', id);
         setTimeout(()=>{
-          this.bottomStatus = 'load'
+          this.bottomStatus = 'load';
         },2000)
       },
       timestampToTime(timestamp) {
@@ -286,6 +286,7 @@
     left: 15px;
     top: 53px;
   }
+<<<<<<< HEAD
 
   .index-list .list-content .content-bottom {
     color: #aaa;
@@ -346,6 +347,58 @@
   }
 
   .recommend-list .recommend-content .recommend-detail::after {
+=======
+.index-list .list-content .content-bottom{
+  color: #aaa;
+  font-size: 14px;
+  position: absolute;
+  left: 15px;
+  bottom: 16px;
+}
+.index-list .list-content .content-bottom .content-comment{
+  margin-right: 20px;
+}
+.index-list .list-content .content-image{
+  width: 86px;
+  height: 86px;
+  position: absolute;
+  right: 15px;
+  top: 53px;
+}
+.recommend-list{
+  width: 100%;
+  height: 249px;
+  background-color: #fff;
+  margin-top: 5px;
+  color: #aaa;
+  overflow-y: hidden;
+}
+.recommend-list .recommend-title{
+  padding: 15px 0 0 15px;
+  font-size: 14px;
+}
+.recommend-list .recommend-all{
+  box-sizing: border-box;
+  height: 200px;
+  /*overflow-y: hidden;*/
+}
+.recommend-list .recommend-content{
+  width: 100%;
+  /*height: 185px;*/
+  display: -webkit-box;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.recommend-list .recommend-content .recommend-detail{
+  width: 138px;
+  height: 185px;
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 2px;
+}
+  .recommend-list .recommend-content .recommend-detail::after{
+>>>>>>> 1caf4ecbb18bdedd47a8c548c3c422848fb3a025
     content: "";
     width: 3px;
     height: 149px;

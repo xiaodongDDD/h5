@@ -1,8 +1,8 @@
 <script>
   import headers from '../../../assets/logo.png'
   import Production from '../../../components/production.vue'
-  import heartOK from '../../../assets/img/list_follow_ok@2x.png'
-  import heartNO from '../../../assets/img/list_follow@2x.png'
+  import heartOK from '../../../assets/img/list_follow_ok.png'
+  import heartNO from '../../../assets/img/list_follow.png'
   import { Toast } from 'mint-ui';
   export default {
     components: { Production },
@@ -70,7 +70,7 @@
         <span class="showAll" @click="showAll" v-show="isAll">显示全部</span>
       </div>
       <div class="detail-bottom">
-        <span><img src="../../../assets/img/list_txt@2x.png">
+        <span><img src="../../../assets/img/list_txt.png">
         <span>已发表文章{{ teacher.articleNum }}篇</span></span>
         <span><span>已有{{ teacher.followNum }}人关注</span>  <img :src="followImage" @click="cancelFollow"></span>
       </div>

@@ -1,5 +1,5 @@
 <script>
-  
+
   export default {
     components: {},
     data: () => ({
@@ -13,7 +13,7 @@
 
 <template>
   <div>
-    <p><img src="../../assets/img/ic_regret@2x.png">{{tips}}</p>
+    <p><img src="../../assets/img/ic_regret.png">{{tips}}</p>
     <button>请积分购买后收听完整音频</button>
 
   </div>

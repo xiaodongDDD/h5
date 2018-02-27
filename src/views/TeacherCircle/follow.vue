@@ -23,12 +23,14 @@
               </div>
             </div>
             <div class="txt-content" v-show="tm.brief">
-              <img src="../../assets/img/ic_txt@2x.png"/>
+              <img src="../../assets/img/ic_txt.png"/>
               <span>{{tm.brief}}</span>
             </div>
             <div class="bottom-bar">
+
               <label><img src="../../assets/img/list_follow@2x.png" class="favorite"/><span>{{tm.followeds}}</span></label>
               <label class="txt"><img src="../../assets/img/list_txt@2x.png"/><span>{{tm.articles}}</span></label>
+
               <span class="last-update">最近更新: {{tm.article_last_time}}</span>
             </div>
           </div>

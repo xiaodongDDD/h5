@@ -5,7 +5,7 @@
       <div class="v-video">
         <video width="100%" height="210" src="../../../assets/img/test.mp4" ref="media" poster="../../../assets/img/64451924_p3.jpg"></video>
         <experienceOver :tips="timeOver" v-show="isTryOver" ></experienceOver>
-        <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video@2x.png" class="palyload" @click="play"></div>
+        <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>

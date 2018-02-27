@@ -1,6 +1,6 @@
 <script>
-  import favorite from '../../assets/img/comment_ic_favorite@2x.png'
-  import favoriteOK from '../../assets/img/comment_ic_favorite_ok@2x.png'
+  import favorite from '../../assets/img/comment_ic_favorite.png'
+  import favoriteOK from '../../assets/img/comment_ic_favorite_ok.png'
   export default {
     data: () => ({
       isFavorite: true,
@@ -86,7 +86,7 @@
       </li>
     </ul>
     <div class="comment-bottom">————到底啦————</div>
-    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic@2x.png"><a style="vertical-align: top">{{comments.length}}</a></span><img
+    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{comments.length}}</a></span><img
             :src="isFavorite?favoriteImage:favoriteImageNo"
             class="comment-favorite"
             @click="isFavorite = !isFavorite"></div>

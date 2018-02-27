@@ -22,7 +22,7 @@
               <div>
                 <span>{{fm.comments}}评论</span>
                 <span v-show="fm.integration!='ok'">{{fm.integration}}积分</span>
-                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy@2x.png">  已购</span>
+                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>
               </div>
             </div>
             <div class="favorite-image" >
