@@ -28,8 +28,8 @@
             </div>
             <div class="bottom-bar">
 
-              <label><img src="../../assets/img/list_follow@2x.png" class="favorite"/><span>{{tm.followeds}}</span></label>
-              <label class="txt"><img src="../../assets/img/list_txt@2x.png"/><span>{{tm.articles}}</span></label>
+              <label><img src="../../assets/img/list_follow.png" class="favorite"/><span>{{tm.followeds}}</span></label>
+              <label class="txt"><img src="../../assets/img/list_txt.png"/><span>{{tm.articles}}</span></label>
 
               <span class="last-update">最近更新: {{tm.article_last_time}}</span>
             </div>

@@ -50,7 +50,7 @@
                 <span class="content-integral" v-else-if="item.points==0">免费</span>
               </div>
               <img :src="item.cover" class="content-image">
-              <img src="../../assets/img/ic_video_play_video@2x.png" class="video-button" v-show="item.type == 3">
+              <img src="../../assets/img/ic_video_play_video.png" class="video-button" v-show="item.type == 3">
             </div>
           </li>
         </ul>
@@ -286,8 +286,6 @@
     left: 15px;
     top: 53px;
   }
-<<<<<<< HEAD
-
   .index-list .list-content .content-bottom {
     color: #aaa;
     font-size: 14px;
@@ -337,17 +335,6 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .recommend-list .recommend-content .recommend-detail {
-    width: 138px;
-    height: 185px;
-    margin-top: 20px;
-    text-align: center;
-    position: relative;
-    margin-bottom: 2px;
-  }
-
-  .recommend-list .recommend-content .recommend-detail::after {
-=======
 .index-list .list-content .content-bottom{
   color: #aaa;
   font-size: 14px;
@@ -398,7 +385,6 @@
   margin-bottom: 2px;
 }
   .recommend-list .recommend-content .recommend-detail::after{
->>>>>>> 1caf4ecbb18bdedd47a8c548c3c422848fb3a025
     content: "";
     width: 3px;
     height: 149px;
