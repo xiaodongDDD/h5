@@ -1,5 +1,6 @@
 // const basic = 'http://quan-dev.xiaoheiban.cn'
 
+
 export const API = {
   get: (url) => {
     return window.fetch(`${url}`, {

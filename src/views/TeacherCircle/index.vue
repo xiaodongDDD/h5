@@ -114,7 +114,8 @@
   import headImage from '../../assets/img/64451924_p3.jpg'
   import mainContent from '../../assets/img/62682166_p0.png'
   import { API } from '../../service/api'
-  import { Toast } from 'mint-ui';
+  import { Toast } from 'mint-ui'
+  // import axios from 'axios'
   export default {
     name: "index",
     data(){
