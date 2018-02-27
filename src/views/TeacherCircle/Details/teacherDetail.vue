@@ -4,12 +4,12 @@
   import heartOK from '../../../assets/img/list_follow_ok.png'
   import heartNO from '../../../assets/img/list_follow.png'
   import { Toast } from 'mint-ui';
+  import { API } from '../../../service/api'
   export default {
     components: { Production },
-
     data: () => ({
       teacher: {
-        teacherHeader: headers,
+        teacher_img: headers,
         teacherName: '王春梅',
         teacherMessage: '市重点中学初中数学教研组长市重点多年初三把关老师新课标教育中心资深教师',
         teacherSay: '',
@@ -21,26 +21,51 @@
       '境里长出来也许我们能遇到很多突然从时光鞋子里杀出来的很特别的人，但是很少。文化是结果，是一个与智慧互相' +
       '凝结的东西，它生长在人和物互相作用中，而不存在于设计的标榜。',
       isFollow: true,
-      isAll: true,
+      isAll: false,
       followImage: heartNO,
+      article:false
     }),
-
     methods: {
       showAll() {
-        this.teacher.teacherSay = this.noBB
+        this.teacher.teacherSay = this.noBB;
         this.isAll = false
       },
-      cancelFollow() {
+      //关注or取消关注
+      cancelFollow(uid) {
+        const follow = 'quan.follow';
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${follow}&uid=${uid}&token=59a4e43d0179b04b5056178b`;
         if(this.followImage === heartNO) {
-          this.followImage = heartOK
-          return Toast('关注成功,教师圈将会优先推荐他的文章');
+          API.get(url).then((res)=>{
+            this.followImage = heartOK;
+            Toast('关注成功,教师圈将会优先推荐他的文章');
+          },(err)=>{
+            console.log(err);
+          });
         }
-        this.followImage = heartNO
-        Toast('取消关注成功');
+        // this.followImage = heartNO;
+        // Toast('取消关注成功');
+      },
+      //获取教师详情
+      getData(){
+        const teacherDetail = 'quan.teacherDetail';
+        const uid = 2;
+        const page = 1;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
+        API.get(url).then((res)=>{
+          console.log(res);
+          if(res.response.article_list.length>0){
+            this.article = true
+          }
+          this.teacher = Object.assign(res.response.teacher_detail);
+          if(this.teacher.description.length >= 67){
+            this.isAll = true
+          }
+        },(err)=>{})
       }
     },
     mounted() {
-      this.teacher.teacherSay = this.noBB.substring(0, 67) + '...'
+      this.teacher.teacherSay = this.noBB.substring(0, 67) + '...';
+      this.getData()
     },
     metaInfo: {
       meta: [{
@@ -55,27 +80,27 @@
   <div>
     <div class="teacher-detail">
       <div class="teacher-detail-header">
-        <img :src="teacher.teacherHeader">
+        <img :src="teacher.teacher_img">
         <div class="teacher-message">
-          <p class="teacher-name">{{teacher.teacherName}}</p>
+          <p class="teacher-name">{{teacher.teacher_name}}</p>
           <ul>
-            <li>市重点中学初中数学教研组长</li>
-            <li>市重点多年初三把关老师</li>
-            <li>新课标教育中心资深教师</li>
+            <li>{{teacher.brief}}</li>
+            <!--<li>市重点多年初三把关老师</li>-->
+            <!--<li>新课标教育中心资深教师</li>-->
           </ul>
         </div>
       </div>
       <div class="teacher-say">
-        {{ teacher.teacherSay }}
+        {{ teacher.description }}
         <span class="showAll" @click="showAll" v-show="isAll">显示全部</span>
       </div>
       <div class="detail-bottom">
         <span><img src="../../../assets/img/list_txt.png">
-        <span>已发表文章{{ teacher.articleNum }}篇</span></span>
-        <span><span>已有{{ teacher.followNum }}人关注</span>  <img :src="followImage" @click="cancelFollow"></span>
+        <span>已发表文章{{ teacher.articles }}篇</span></span>
+        <span><span>已有{{ teacher.followeds }}人关注</span>  <img :src="followImage" @click="cancelFollow(teacher.uid)"></span>
       </div>
     </div>
-    <Production/>
+    <Production v-show="article"/>
   </div>
 </template>
 

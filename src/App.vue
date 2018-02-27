@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { API } from './service/api'
+  import axios from 'axios'
 export default {
   name: 'App',
   components:{
@@ -20,7 +20,8 @@ export default {
 //    },err=>{})
 //  },
   beforeCreate(){
-    API.get('?token=59a4e43d0179b04b5056178b').then(res=>{
+    axios.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
+      console.log('111',res);
     },err=>{})
   }
 }

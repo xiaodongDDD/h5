@@ -111,7 +111,8 @@
   import headImage from '../../assets/img/64451924_p3.jpg'
   import mainContent from '../../assets/img/62682166_p0.png'
   import { API } from '../../service/api'
-  import { Toast } from 'mint-ui';
+  import { Toast } from 'mint-ui'
+  // import axios from 'axios'
   export default {
     name: "index",
     data(){
@@ -182,8 +183,9 @@
       },
     },
     mounted() {
-      let method = 'quan.index';
-      const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}`;
+      const index = 'quan.index';
+      const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
+      const url = `${baseUrl}${index}&token=59a4e43d0179b04b5056178b`;
       API.get(url)
         .then(res => {
           console.log(res)

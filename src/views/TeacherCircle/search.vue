@@ -7,19 +7,19 @@
       </div>
       <div class="search-body">
         <!--默认页面-->
-        <!--<p class="search-first">您可以搜索文章标题、内容、作者的关键字</p>-->
+        <p class="search-first" v-show="origin">您可以搜索文章标题、内容、作者的关键字</p>
 
         <!--没有内容-->
-        <!--<div class="search-null">-->
-          <!--<img src="../../assets/img/ic_blank_search.png" style="width:168px;height:123px;">-->
-          <!--<div>-->
-            <!--<p>没有符合关键字的搜索结果</p>-->
-            <!--<p>请更换输入其他关键字后重试</p>-->
-          <!--</div>-->
-        <!--</div>-->
+        <div class="search-null" v-show="!origin&!results">
+          <img src="../../assets/img/ic_blank_search.png" style="width:168px;height:123px;">
+          <div>
+            <p>没有符合关键字的搜索结果</p>
+            <p>请更换输入其他关键字后重试</p>
+          </div>
+        </div>
 
         <!--有内容-->
-        <div class="search-some">
+        <div class="search-some" v-show="!origin&results">
           <h5 class="some-title">搜索结果</h5>
           <TeacherList></TeacherList>
           <TeacherDetail></TeacherDetail>
@@ -32,6 +32,7 @@
 <script>
   import TeacherList from '../../components/TeacherList'
   import TeacherDetail from '../../components/TeacherDetail'
+  import { API } from '../../service/api';
   export default {
     name: "search",
     components:{
@@ -41,7 +42,9 @@
     data(){
       return{
         searchContent:'',
-        searchList:[]
+        searchList:[],
+        origin: true,
+        results: false
       }
     },
     watch:{
@@ -57,6 +60,22 @@
     methods:{
       search(){
         console.log('2333');
+        const search = 'quan.searchClick';
+        const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
+        const keyword = this.searchContent;
+        console.log(keyword);
+        API.get(`${baseUrl}${search}&keyword=${keyword}&page=1&token=59a4e43d0179b04b5056178b`).then((res)=>{
+          console.log(res);
+          console.log(res.response.article_list.length);
+          this.origin = false;
+          if(res.response.article_list.length<=0){
+            this.results = false;
+          }else{
+            this.results = true;
+          }
+        },(err)=>{
+          console.log(err);
+        })
       }
     },
     created() {
@@ -133,6 +152,7 @@ input::placeholder{
   color: #aaa;
   font-size: 14px;
   padding-top: 30px;
+  text-align: center;
 }
 .search-null{
   margin-top: 50px;
