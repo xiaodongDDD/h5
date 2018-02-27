@@ -1,6 +1,10 @@
 <template>
   <section>
-    <ul class="follow-list">
+    <ul class="follow-list"
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled = "false"
+        infinite-scroll-distance="10"
+        infinite-scroll-immediate-check = true>
       <li v-for="(tm, index) in teacherMessages" class="follow" @touchmove="getIndex(index)">
         <mt-cell-swipe
                 :right="[{
@@ -12,9 +16,9 @@
             <div class="basic-message">
               <img :src="tm.teacher_img"  class="follow-teacher"/>
               <div class="teacher-message">
-                <h2>{{tm.name}}</h2>
+                <h2>{{tm.teacher_name}}</h2>
                 <ul>
-                  <li v-for="d in tm.description">{{d}}</li>
+                  <li>{{tm.description}}</li>
                 </ul>
               </div>
             </div>
@@ -23,7 +27,7 @@
               <span>{{tm.brief}}</span>
             </div>
             <div class="bottom-bar">
-              <label><img src="../../assets/img/list_follow@2x.png" class="favorite"/><span>{{tm.follows}}</span></label>
+              <label><img src="../../assets/img/list_follow@2x.png" class="favorite"/><span>{{tm.followeds}}</span></label>
               <label class="txt"><img src="../../assets/img/list_txt@2x.png"/><span>{{tm.articles}}</span></label>
               <span class="last-update">最近更新: {{tm.article_last_time}}</span>
             </div>
@@ -40,6 +44,7 @@
   import header from '../../assets/logo.png'
   import Prompt from '../../components/prompt.vue'
   import { API } from '../../service/api'
+  import { InfiniteScroll } from 'mint-ui';
   import MtSwipeItem from '../../../node_modules/mint-ui/packages/swipe/src/swipe-item'
   import MtCellSwipe from '../../../node_modules/mint-ui/packages/cell-swipe/src/cell-swipe'
   export default {
@@ -47,25 +52,63 @@
     data() {
       return {
         teacherMessages :[
-          { teacher_img: header, name: '王好美',
-            description: ['市重点中学初中数学教研组长',
-              '市重点多年初三把关老师',
-              '新课标教育中心资深教师'],
-            brief: '开掀起开年音乐大秀',
-            follows: '10',
-            articles: '123',
-            article_last_time: '0822'
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
           },
-          { teacher_img: header, name: '王好美1',
-            description: ['市重点中学初中数学教研组长',
-              '市重点多年初三把关老师',
-              '新课标教育中心资深教师'],
-            brief: '开掀起开年音乐大秀',
-            follows: '10',
-            articles: '123',
-            article_last_time: '0822'
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
           },
-        ],
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
+          },
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
+          },
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
+          },
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
+          },
+          { teacher_img: '',
+            teacher_name: '',
+            description: '',
+            brief: '',
+            followeds: '',
+            articles: '',
+            article_last_time: ''
+          }],
+        loading_number: 1,
         deleteIndex : 0,
         myMessage: {
           isShow: false,
@@ -96,13 +139,28 @@
           this.teacherMessages.splice(this.deleteIndex, 1)
           //console.log(this.teacherMessages)
         }
-      }
+      },
+      loadMore() {
+        this.loading = true;
+        let token = '59a4e43d0179b04b5056178b'
+        this.loading_number++
+        console.log(this.loading_number)
+        API.get(`/api/?method=quan.followClick&page=${this.loading_number}&token=${token}`).then(res => {
+          console.log(res)
+          setTimeout(() => {
+            let last = res.response.teacher_list;
+            this.teacherMessages.concat(last)
+            this.loading = false;
+          }, 2000);
+        })
+      },
     },
     mounted() {
-      let token =  '59a4e43d0179b04b5056178b'
-      API.get(`/followClick?token=${token}`).then(res => {
-//        this.teacherMessages = res.response.teacher_list
-//        console.log(this.teacherMessages[0])
+      let token = '59a4e43d0179b04b5056178b'
+      API.get(`/api/?method=quan.followClick&page=${this.loading_number}&token=${token}`).then(res => {
+        res = res.response
+        console.log(res)
+        this.teacherMessages = res.teacher_list
       })
 
     },

@@ -4,11 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import MintUI from 'mint-ui'
-
-
 import { Navbar, TabItem } from 'mint-ui';
 // import Vue from 'vue'
 import MetaInfo from 'vue-meta-info'
+import axios from 'axios'
 
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
@@ -17,6 +16,7 @@ Vue.use(MetaInfo);
 
 
 Vue.config.productionTip = false;
+Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
 

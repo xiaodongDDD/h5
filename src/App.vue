@@ -16,11 +16,12 @@ export default {
     }
   },
 //  mounted () {
-//    API.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
-//    },err=>{})
+//    this.$http.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res => {
+//      console.log(document.cookie)
+//    })
 //  },
   beforeCreate(){
-    API.get('?token=59a4e43d0179b04b5056178b').then(res=>{
+    API.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
     },err=>{})
   }
 }

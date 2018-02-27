@@ -1,1 +1,1 @@
-export logo from './ic_app_more_nor@2x.png'
+export VideoPlay from './ic_video_play_video@2x.png'

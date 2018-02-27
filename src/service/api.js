@@ -6,7 +6,6 @@ export const API = {
       method: "GET",
       mode: "cors",
       redirect: "follow",
-      credentials: 'include',
       headers: {
         "Content-Type": 'application/json',
         //"Set-Cookie": 'token=NTlhNGU0M2QwMTc5YjA0YjUwNTYxNzhi'
