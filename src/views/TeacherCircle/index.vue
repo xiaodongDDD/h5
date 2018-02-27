@@ -50,7 +50,7 @@
                 <span class="content-integral" v-else-if="item.points==0">免费</span>
               </div>
               <img :src="item.cover" class="content-image">
-              <img src="../../assets/img/ic_video_play_video@2x.png" class="video-button" v-show="item.type == 3">
+              <img src="../../assets/img/ic_video_play_video.png" class="video-button" v-show="item.type == 3">
             </div>
           </li>
         </ul>
@@ -287,7 +287,10 @@
     left: 15px;
     top: 53px;
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 733640faca95859f4f9153329055bc97a04c1675
   .index-list .list-content .content-bottom {
     color: #aaa;
     font-size: 14px;
