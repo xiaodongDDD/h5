@@ -25,7 +25,6 @@ export const API = {
       method: "POST",
       mode: "cors",
       redirect: "follow",
-      credentials: 'include',
       headers: {
         "Content-Type": 'application/json',
       },
