@@ -1,6 +1,7 @@
 <script>
   import { InfiniteScroll } from 'mint-ui';
-  import articleImage from '../assets/img/all.png'
+  import articleImage from '../assets/img/all.png';
+  import { API } from '../service/api'
   export default {
     components: {},
     data: () => ({
@@ -67,27 +68,38 @@
           integration: 30,
           time: '9:40'
         },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        }],
+        ],
       loading: false,
     }),
+    props:[ 'teacherId' ],
     methods: {
       loadMore() {
         this.loading = true;
-        setTimeout(() => {
-          let last = this.articleList[this.articleList.length - 1];
-          for (let i = 1; i <= 5; i++) {
-            this.articleList.push(last + i);
-          }
-          this.loading = false;
-        }, 2000);
+        // setTimeout(() => {
+        //   let last = this.articleList[this.articleList.length - 1];
+        //   for (let i = 1; i <= 5; i++) {
+        //     this.articleList.push(last + i);
+        //   }
+        //   this.loading = false;
+        // }, 2000);
       },
+      getArticlesData(){
+        const teacherDetail = 'quan.teacherDetail';
+        const uid = this.teacherId;
+        const page = 1;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
+        API.get(url).then((res)=>{
+          console.log(res);
+          this.articleList = res.response.article_list
+        },(err)=>{})
+      },
+      goArticleDetail(){
+        this.$router.push('/article')
+      }
     },
+    mounted(){
+      this.getArticlesData();
+    }
   }
 </script>
 
@@ -96,20 +108,20 @@
     <ul v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
         infinite-scroll-distance="10">
-      <li v-for="item in articleList" class="product">
+      <li v-for="item in articleList" class="product" @click="goArticleDetail(item.id)">
           <div class="product-content">
             <p>{{item.title}}</p>
             <div class="product-bar">
-              <span>{{item.comment}}评论</span>
-              <span v-if="item.integration != 'ok'">{{item.integration}}积分</span>
+              <span>{{item.comments}}评论</span>
+              <span v-if="item.integration != 'ok'">{{item.points}}积分</span>
               <span class="isHave" v-if="item.integration === 'ok'"><img src="../assets/img/ic_buy.png"><a>已购</a></span>
               <span>{{item.time}}</span>
             </div>
           </div>
-          <img :src="item.headers">
+          <img :src="item.cover">
       </li>
     </ul>
-    <div style="text-align: center" class="loadings"><img src="">    加载中....</div>
+    <div style="text-align: center" class="loadings">加载中....</div>
   </div>
 </template>
 

@@ -3,6 +3,7 @@
   import comment from '../../../components/detailComponent/comment.vue'
   import charge from  '../../../components/detailComponent/charge.vue'
   import freePrompt from '../../../components/detailComponent/freeIntegrate.vue'
+  import { API } from '../../../service/api'
   export default {
     components: { comment, charge, freePrompt },
     data: () => ({
@@ -24,13 +25,24 @@
       showContent: '',
       isBuy: false,
     }),
-    methods: {},
+    methods: {
+      getArticles(){
+        const detail = 'quan.articleDetail';
+        const articleId = 4;
+        const page = 1;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${articleId}&page=${page}&token=59a4e43d0179b04b5056178b`;
+        API.get(url).then(res=>{
+          console.log(res);
+        },err=>{})
+      }
+    },
     mounted() {
       if(this.isFree || this.isBuy) {
         this.showContent = this.article.content
       } else {
         this.showContent = this.article.content.substring(0, 900)
       }
+      this.getArticles()
     },
   }
 </script>
