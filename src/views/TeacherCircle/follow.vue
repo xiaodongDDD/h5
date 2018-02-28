@@ -5,7 +5,7 @@
         infinite-scroll-disabled = "false"
         infinite-scroll-distance="10"
         infinite-scroll-immediate-check = true>
-      <li v-for="(tm, index) in teacherMessages" class="follow" @touchmove="getIndex(index)">
+      <li v-for="(tm, index) in teacherMessages" class="follow" @touchstart="getIndex(tm.uid, index)">
         <mt-cell-swipe
                 :right="[{
          content: '取消关注',
@@ -37,6 +37,7 @@
         </mt-cell-swipe>
       </li>
     </ul>
+    <div style="text-align: center" class="loadings">{{isAll}}</div>
     <Prompt :messages="myMessage" v-on:ensure="isDel"></Prompt>
   </section>
 </template>
@@ -46,7 +47,7 @@
   import header from '../../assets/logo.png'
   import Prompt from '../../components/prompt.vue'
   import { API } from '../../service/api'
-  import { InfiniteScroll } from 'mint-ui';
+  import { InfiniteScroll } from 'mint-ui'
   import MtSwipeItem from '../../../node_modules/mint-ui/packages/swipe/src/swipe-item'
   import MtCellSwipe from '../../../node_modules/mint-ui/packages/cell-swipe/src/cell-swipe'
   export default {
@@ -60,58 +61,14 @@
             brief: '',
             followeds: '',
             articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
-          },
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: ''
+            article_last_time: '',
+            uid: ''
           }],
         loading_number: 1,
-        deleteIndex : 0,
+        total_page: 0,
+        realDeleteIndex : 0,
+        fakeDeleteIndex: 0,
+        isAll: '加载中...',
         myMessage: {
           isShow: false,
           tips: '不再关注这位了吗?',
@@ -133,36 +90,49 @@
       cancel() {
          this.myMessage.isShow = true
       },
-      getIndex(index) {
-        this.deleteIndex = index
+      getIndex(uid, index) {
+        this.realDeleteIndex = uid
+        this.fakeDeleteIndex = index
+
+       // console.log(this.realDeleteIndex)
       },
       isDel(data) {
         if(data) {
-          this.teacherMessages.splice(this.deleteIndex, 1)
+          API.get(`api/?method=quan.unfollow&uid=${this.realDeleteIndex}`).then(res => {
+            console.log(res)
+            this.teacherMessages.splice(this.fakeDeleteIndex, 1)
+          })
           //console.log(this.teacherMessages)
         }
       },
       loadMore() {
-        this.loading = true;
-        let token = '59a4e43d0179b04b5056178b'
+        this.loading = true
         this.loading_number++
-        console.log(this.loading_number)
-        API.get(`/api/?method=quan.followClick&page=${this.loading_number}&token=${token}`).then(res => {
-          console.log(res)
-          setTimeout(() => {
-            let last = res.response.teacher_list;
-            this.teacherMessages.concat(last)
-            this.loading = false;
-          }, 2000);
-        })
+
+        if(this.loading_number > this.total_page) {
+          this.isAll = '到底啦!'
+        }
+
+        if(this.total_page > 1 && this.loading_number <= this.total_page) {
+          API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
+            .then(res => {
+              setTimeout(() => {
+                let last = res.response.teacher_list;
+                for(let i = 0; i < last.length; i ++) {
+                  this.teacherMessages.push(last[i])
+                }
+                this.loading = false;
+              }, 2000)
+            })
+        }
       },
     },
     mounted() {
-      let token = '59a4e43d0179b04b5056178b'
-      API.get(`/api/?method=quan.followClick&page=${this.loading_number}&token=${token}`).then(res => {
+      API.get(`api/?method=quan.followClick&page=${this.loading_number}`).then(res => {
         res = res.response
         console.log(res)
         this.teacherMessages = res.teacher_list
+        this.total_page = parseInt(res.follow_sum / 10) + 1
       })
 
     },

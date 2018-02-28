@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import {API} from './service/api'
+  import { API } from './service/api'
 export default {
   name: 'App',
   components:{
