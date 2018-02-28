@@ -5,7 +5,7 @@
           infinite-scroll-disabled = "false"
           infinite-scroll-distance="10"
           infinite-scroll-immediate-check = true>
-        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.uid, index)">
+        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)">
           <mt-cell-swipe
               :right="[{
          content: '删除收藏',
@@ -24,7 +24,7 @@
               <p>{{fm.title}}</p>
               <div>
                 <span>{{fm.comments}}评论</span>
-                <span v-show="fm.integration!='ok'">{{fm.points}}积分</span>
+                <span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
                 <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>
               </div>
             </div>
@@ -37,7 +37,7 @@
         </li>
       </ul>
       <div style="text-align: center" class="loadings">{{isAll}}</div>
-      <Prompt :messages="myMessage"></Prompt>
+      <Prompt :messages="myMessage" v-on:ensure="isDel"></Prompt>
     </div>
   </section>
 </template>
@@ -71,13 +71,16 @@
           "type": 1,                     // 文章类型， 1是图文， 2是语音  3是视屏
           "comments": 2390              // 文章的评论数
         }],
-        isAll: '加载中...',
+        isAll: '',
         myMessage: {
           isShow: false,
           tips: '要从收藏中删除这篇文章吗?',
           title: '删除收藏',
         },
         loading_number: 1,
+        total_page: '',
+        realDeleteId: '',
+        fakeDeleteId: ''
       }
     },
     methods: {
@@ -86,6 +89,19 @@
       },
       getTimestamp(timestamp) {
         return timestampToTime(timestamp)
+      },
+      getIndex(article_id, index) {
+         this.realDeleteId = article_id
+        this.fakeDeleteId = index
+      },
+      isDel(data) {
+        if(data) {
+          API.get(`api/?method=quan.uncollect&article_id=${this.realDeleteId}`).then(res => {
+            console.log(res)
+            this.collect_list.splice(this.fakeDeleteId, 1)
+          })
+          //console.log(this.teacherMessages)
+        }
       },
       loadMore() {
         this.loading = true
@@ -96,12 +112,12 @@
         }
 
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
-          API.get(`api/?method=quan.collctClick&page=${this.loading_number}`)
+          API.get(`api/?method=quan.collectClick&page=${this.loading_number}`)
             .then(res => {
               setTimeout(() => {
-                let last = res.response.article_list;
+                let last = res.response.collect_list;
                 for(let i = 0; i < last.length; i ++) {
-                  this.teacherMessages.push(last[i])
+                  this.collect_list.push(last[i])
                 }
                 this.loading = false;
               }, 2000)
@@ -115,6 +131,8 @@
         res = res.response
         console.log(res)
         this.collect_list = res.collect_list
+        this.total_page = parseInt(res.collect_sum / 10) + 1
+        this.total_page <= 1 ? this.isAll = '':this.isAll = '加载中...'
       })
     },
     metaInfo: {
@@ -184,7 +202,7 @@
       p {
           font-size: 17px;
            color: #000;
-           width: 50%;
+           width: 90%;
       }
       div {
         color: #aaa;

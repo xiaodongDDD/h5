@@ -18,20 +18,20 @@
               <div class="teacher-message">
                 <h2>{{tm.teacher_name}}</h2>
                 <ul>
-                  <li>{{tm.description}}</li>
+                  <li>{{tm.description?`${tm.description.substring(0, 60)}...`:''}}</li>
                 </ul>
               </div>
             </div>
             <div class="txt-content" v-show="tm.brief">
               <img src="../../assets/img/ic_txt.png"/>
-              <span>{{tm.brief}}</span>
+              <span>{{tm.brief?`${tm.brief.substring(0, 15)}...`:' '}}</span>
             </div>
             <div class="bottom-bar">
 
               <label><img src="../../assets/img/list_follow.png" class="favorite"/><span>{{tm.followeds}}</span></label>
               <label class="txt"><img src="../../assets/img/list_txt.png"/><span>{{tm.articles}}</span></label>
 
-              <span class="last-update">最近更新: {{tm.article_last_time}}</span>
+              <span class="last-update">最近更新: {{getTimestamp(tm.article_last_time)}}</span>
             </div>
           </div>
         </mt-cell-swipe>
@@ -48,6 +48,7 @@
   import Prompt from '../../components/prompt.vue'
   import { API } from '../../service/api'
   import { InfiniteScroll } from 'mint-ui'
+  import { timestampToTime } from '../../service/timestamp'
   import MtSwipeItem from '../../../node_modules/mint-ui/packages/swipe/src/swipe-item'
   import MtCellSwipe from '../../../node_modules/mint-ui/packages/cell-swipe/src/cell-swipe'
   export default {
@@ -96,6 +97,10 @@
 
        // console.log(this.realDeleteIndex)
       },
+      getTimestamp(timestamp) {
+        return timestampToTime(timestamp)
+      },
+
       isDel(data) {
         if(data) {
           API.get(`api/?method=quan.unfollow&uid=${this.realDeleteIndex}`).then(res => {
