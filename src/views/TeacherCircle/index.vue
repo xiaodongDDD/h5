@@ -165,17 +165,17 @@
       //列表内容点击的详情
       getDetails(path){
        console.log('点我了点我了');
-       this.$router.push('/'+path);
-         // let url = `http://quan-test.xiaoheiban.cn/#/articles`;
-        // const shareFlag = '';
-        //  JSAction.openUrl(url);
-        // JSAction.getWebShareElement(shareFlag)
+       // this.$router.push('/'+path);
+         let url = `http://quan-test.xiaoheiban.cn/#/articles`;
+        const shareFlag = '';
+         JSAction.openUrl(url);
+        JSAction.getWebShareElement(shareFlag)
 
       },
       goNext(path) {
-         this.$router.push({path: path})
-         // let url = `http://quan-test.xiaoheiban.cn/#/${path}`
-         // JSAction.openUrl(url)
+         // this.$router.push({path: path})
+         let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+         JSAction.openUrl(url)
       },
       toTeacherDetails(){
        // console.log('教师详情');
@@ -287,6 +287,10 @@
     left: 15px;
     top: 53px;
   }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 733640faca95859f4f9153329055bc97a04c1675
   .index-list .list-content .content-bottom {
     color: #aaa;
     font-size: 14px;
@@ -336,6 +340,16 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .recommend-list .recommend-content .recommend-detail {
+    width: 138px;
+    height: 185px;
+    margin-top: 20px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 2px;
+  }
+
+  /*.recommend-list .recommend-content .recommend-detail::after {}*/
 .index-list .list-content .content-bottom{
   color: #aaa;
   font-size: 14px;
