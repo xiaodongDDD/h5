@@ -11,7 +11,7 @@
         haveScore: 5,
       },
     }),
-   props: ['category','action'],
+   props: ['category','action','points'],
     methods: {
       getShow() {
          bus.$emit('showPrompt', true)
@@ -31,12 +31,11 @@
         <button style=" width: 45%;">消耗积分阅读</button>
       </div>
       <div class="score-less" v-show="score.haveScore-score.needSore < 0">
-        <p class="have-score">{{`您的积分不足为${score.haveScore}`}}</p>
+        <p class="have-score">{{`您的积分不足为${points}`}}</p>
         <div>
         <button @click="getShow">直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
       </div>
     </div>
-    <FreeIntegrate></FreeIntegrate>
   </div>
 </template>
 

@@ -6,6 +6,14 @@
   import { API } from '../../../service/api'
   export default {
     components: { comment, charge, freePrompt },
+    filters:{
+      timestampToTime:function (timestamp) {
+        const date = new Date(timestamp * 1000);
+        const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+        const D = date.getDate() + ' ';
+        return M+'/'+D;
+      }
+    },
     data: () => ({
       article: {
         title: '免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！',
@@ -33,6 +41,7 @@
         const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${articleId}&page=${page}&token=59a4e43d0179b04b5056178b`;
         API.get(url).then(res=>{
           console.log(res);
+          this.article = Object.assign(res.response.article_detail)
         },err=>{})
       }
     },
@@ -53,12 +62,12 @@
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
-      <img :src="article.header" alt="头像">
-      <span>{{article.name}}</span>
-      <span>{{article.time}}</span>
+      <img :src="article.teacher_img" alt="头像">
+      <span>{{article.teacher_name}}</span>
+      <span>{{article.create_time | timestampToTime(article.create_time)}}</span>
     </div>
     <div style="position: relative">
-      <div v-html="showContent"></div>
+      <div v-html="article.show_content?article.show_content:article.content"></div>
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
@@ -68,7 +77,7 @@
       </div>
       <div class="charge-content" v-show = "!(isFree || isBuy)">
         <img src="../../../assets/img/mask.png" class="charge-hide">
-        <charge category="文章" action="阅读"></charge>
+        <charge category="文章" action="阅读" :points="article.user_points"></charge>
       </div>
     </div>
   </div>
