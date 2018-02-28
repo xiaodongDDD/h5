@@ -39,7 +39,7 @@
     z-index: 100;
   }
   .integrate-dialog {
-    position: absolute;
+    position: fixed;
     top: 20%;
     left: 5%;
     width: 90%;

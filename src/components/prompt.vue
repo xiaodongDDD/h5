@@ -39,7 +39,7 @@
     .prompt-dialog {
      @include area(100%, 100%);
       background-color: rgba(0,0,0,0.7);
-      position: absolute;
+      position: fixed;
       display: flex;
       justify-content: center;
       color: #fff;

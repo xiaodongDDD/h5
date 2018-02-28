@@ -36,7 +36,7 @@
         <button @click="getShow">直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
       </div>
     </div>
-    <FreeIntegrate></FreeIntegrate>
+    <!--<FreeIntegrate></FreeIntegrate>-->
   </div>
 </template>
 
