@@ -71,7 +71,7 @@
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
-      <div class="have-message" v-show="isBuy">
+      <div class="have-message" v-show="article.show_content?isBuy:!isFree">
         <span>2018/12/22</span>
         <span>已购</span>
       </div>
