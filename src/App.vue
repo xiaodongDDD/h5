@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import { API } from './service/api'
 export default {
   name: 'App',
   components:{

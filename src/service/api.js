@@ -1,9 +1,9 @@
 // const basic = 'http://quan-dev.xiaoheiban.cn'
 
-
+const token = '59a4e43d0179b04b5056178b'
 export const API = {
   get: (url) => {
-    return window.fetch(`${url}`, {
+    return window.fetch(`${url}&token=${token}`, {
       method: "GET",
       mode: "cors",
       redirect: "follow",

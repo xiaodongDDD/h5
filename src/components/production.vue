@@ -109,7 +109,7 @@
           <img :src="item.headers">
       </li>
     </ul>
-    <div style="text-align: center" class="loadings"><img src="">    加载中....</div>
+    <div style="text-align: center" class="loadings">加载中....</div>
   </div>
 </template>
 

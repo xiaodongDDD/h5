@@ -1,38 +1,42 @@
 <template>
   <section>
     <div class="favorite">
-      <ul>
-        <li v-for="(fm, index) in favoriteMessage">
+      <ul v-infinite-scroll="loadMore"
+          infinite-scroll-disabled = "false"
+          infinite-scroll-distance="10"
+          infinite-scroll-immediate-check = true>
+        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.uid, index)">
           <mt-cell-swipe
               :right="[{
          content: '删除收藏',
          style: { background: 'red',
          color: '#fff' },
-         handler: cancel
+         handler: cancel,
        }]">
         <div class="favorite">
           <div class="favorite-header">
-            <img :src="fm.header">
-            <span>{{fm.name}}</span>
-            <span>{{fm.time}}</span>
+            <img :src="fm.img">
+            <span>{{fm.user_name}}</span>
+            <span>{{getTimestamp(fm.create_time)}}</span>
           </div>
           <div class="favorite-content">
             <div class="favorite-title">
               <p>{{fm.title}}</p>
               <div>
                 <span>{{fm.comments}}评论</span>
-                <span v-show="fm.integration!='ok'">{{fm.integration}}积分</span>
+                <span v-show="fm.integration!='ok'">{{fm.points}}积分</span>
                 <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>
               </div>
             </div>
             <div class="favorite-image" >
-              <img :src="fm.descriptionImage"/>
+              <img :src="fm.cover"/>
             </div>
           </div>
         </div>
       </mt-cell-swipe>
         </li>
       </ul>
+      <div style="text-align: center" class="loadings">{{isAll}}</div>
       <Prompt :messages="myMessage"></Prompt>
     </div>
   </section>
@@ -42,6 +46,8 @@
   import header from '../../assets/logo.png'
   import Prompt from '../../components/prompt.vue'
   import { API } from '../../service/api'
+  import { InfiniteScroll } from 'mint-ui'
+  import { timestampToTime } from '../../service/timestamp'
   export default {
     name: "favorite",
     components:{
@@ -50,39 +56,65 @@
     data() {
       return{
         title: '收藏',
-        favoriteMessage: [{
-          header: header,
-          title: 'good哈哈哈哈哈哈哈哈你没啊憋BB了赶紧来啊 老妹儿',
-          descriptionImage: header,
-          name: '李太白',
-          time: '09:11',
-          comments: 1233,
-          integration: 20,
-        },
-          {
-            header: header,
-            title: 'good哈哈哈哈哈哈哈哈你没啊憋BB了赶紧来啊 老妹儿',
-            descriptionImage: header,
-            name: '李太白',
-            time: '09:11',
-            comments: 1233,
-            integration: 'ok',
-          }],
+        collect_list: [{
+          "uid": 3,
+          "user_name": '李白',
+          "img": 'http://img.jj59.com/upload/userup/109827/1510Z3641-c47.jpg',
+          "article_id": 12,
+          "title": "文章标题",
+          "cover": "http://img.jj59.com/upload/userup/109827/1510Z3641-c47.jpg",  // 文章封面图
+          "media": "http://video.jj59.com/upload/media/109827/12412-ct7.mp4",     // 媒体文件地址
+          "is_charge": 0,               // 文章 是否收费(0免费  1收费)
+          "points": 12,                 // 文章 所需积分(免费的文章 所需积分为0)
+          "create_time": "1517332304",  // 文章创建时间
+          "update_time": "1517332917",  // 文章修改时间
+          "type": 1,                     // 文章类型， 1是图文， 2是语音  3是视屏
+          "comments": 2390              // 文章的评论数
+        }],
+        isAll: '加载中...',
         myMessage: {
           isShow: false,
           tips: '要从收藏中删除这篇文章吗?',
           title: '删除收藏',
-        }
+        },
+        loading_number: 1,
       }
     },
     methods: {
       cancel() {
          this.myMessage.isShow = true
-      }
+      },
+      getTimestamp(timestamp) {
+        return timestampToTime(timestamp)
+      },
+      loadMore() {
+        this.loading = true
+        this.loading_number++
+
+        if(this.loading_number > this.total_page) {
+          this.isAll = '到底啦!'
+        }
+
+        if(this.total_page > 1 && this.loading_number <= this.total_page) {
+          API.get(`api/?method=quan.collctClick&page=${this.loading_number}`)
+            .then(res => {
+              setTimeout(() => {
+                let last = res.response.article_list;
+                for(let i = 0; i < last.length; i ++) {
+                  this.teacherMessages.push(last[i])
+                }
+                this.loading = false;
+              }, 2000)
+            })
+        }
+      },
     },
+
     mounted() {
-      API.get('/collectClick').then(res => {
+      API.get(`/api/?method=quan.collectClick&page=${this.loading_number}`).then(res => {
+        res = res.response
         console.log(res)
+        this.collect_list = res.collect_list
       })
     },
     metaInfo: {
@@ -152,6 +184,7 @@
       p {
           font-size: 17px;
            color: #000;
+           width: 50%;
       }
       div {
         color: #aaa;
