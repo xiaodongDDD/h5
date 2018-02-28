@@ -11,9 +11,10 @@ import Blank from '../views/blank';
 import VDetail from '../views/TeacherCircle/Details/videoDetail';
 import Audio from '../views/TeacherCircle/Details/audioDetail';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/',
