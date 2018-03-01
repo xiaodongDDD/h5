@@ -33,7 +33,7 @@
       <!--列表-->
       <div>
         <ul class="index-list">
-          <li @click="getDetails()" v-for="item in indexList">
+          <li @click="getDetails(item.type,item.article_id)" v-for="item in indexList">
             <div class="list-head">
               <img :src="item.img" class="head-image">
               <span class="head-name">{{item.user_name}}</span>
@@ -178,14 +178,20 @@
         }
       },
 
-      getDetails(path){
-       //console.log('点我了点我了');
-       // this.$router.push('/'+path);
-         let url = `http://quan-test.xiaoheiban.cn/#/articles`;
-        const shareFlag = '';
-         JSAction.openUrl(url);
-        JSAction.getWebShareElement(shareFlag)
-
+      getDetails(type,id){
+          switch (type) {
+            case 1:
+              const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+              JSAction.openUrl(arurl);
+              break;
+            case 2:
+              const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+              JSAction.openUrl(auurl);
+              break;
+            default:
+              const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+              JSAction.openUrl(viurl);
+          }
       },
       goNext(path) {
          // this.$router.push({path: path})

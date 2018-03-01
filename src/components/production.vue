@@ -47,15 +47,17 @@
       goArticleDetail(type,id){
         switch (type){
           case 1:
-            this.$router.push(`/article?${id}`);
+            const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+            JSAction.openUrl(arurl);
             break;
           case 2:
-            this.$router.push(`/audio?${id}`);
+            const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+            JSAction.openUrl(auurl);
             break;
           default:
-            this.$router.push(`/video?${id}`);
+            const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+            JSAction.openUrl(viurl);
         }
-        // this.$router.push(`/article?${id}`)
       }
     },
     mounted(){
