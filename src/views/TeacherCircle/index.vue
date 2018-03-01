@@ -3,9 +3,7 @@
     <div class="teacherCircle-container">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
-        <mt-swipe-item> <img :src="swipeImage.image1" alt=""></mt-swipe-item>
-        <mt-swipe-item> <img :src="swipeImage.image2" alt=""></mt-swipe-item>
-        <mt-swipe-item> <img :src="swipeImage.image3" alt=""></mt-swipe-item>
+        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"> <img :src="item.ad_img" alt=""></mt-swipe-item>
       </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
@@ -60,13 +58,17 @@
       <div class="recommend-list">
         <h5 class="recommend-title">不可错过的名师推荐</h5>
         <div class="recommend-all">
-          <ul class="recommend-content">
+          <ul class="recommend-content"
+              id="teacher-list"
+              @touchstart="getScroll"
+              @touchmove="loadTeacher"
+              ref="teacher_list">
             <li class="recommend-detail" v-for="item in followList" :key="item.id">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
                 <img :src="item.teacher_img" class="recommend-headImage">
                 <h5>{{item.teacher_name}}</h5>
               </div>
-              <p>{{item.brief}}</p>
+              <p>{{item.brief?item.brief.substring(0, 10):''}}</p>
               <div class="recommend-follow" >
                 <p>{{item.followeds}}万人关注</p>
                 <button @click="follow(item)" class="follow-btn" v-if="item.followStatus"><i class="follow-heart"></i><span>关注</span></button>
@@ -79,23 +81,25 @@
 
       <mt-loadmore
               :bottom-method="loadBottom"
-              :bottom-all-loaded="allLoaded">
+              :bottom-all-loaded="allLoaded"
+               ref="loadmore"
+      >
         <ul class="index-list">
           <li @click="getDetails(item.type)" v-for="item in bottomList">
             <div class="list-head">
-              <img :src="item.headImage" class="head-image">
+              <img :src="item.img" class="head-image">
               <span class="head-name">{{item.user_name}}</span>
               <span class="head-time">{{timestampToTime(item.create_time)}}</span>
             </div>
             <div class="list-content">
               <span class="content-word">{{item.title}}</span>
               <div class="content-bottom">
-                <span class="content-comment">{{item.comment}}万评论</span>
-                <span class="content-integral" v-if="item.points>0">{{item.buyState}}积分</span>
+                <span class="content-comment">{{item.comments}}万评论</span>
+                <span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
                 <span class="content-integral" v-else-if="item.points<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>
                 <span class="content-integral" v-else-if="item.points==0">免费</span>
               </div>
-              <img src="../../assets/img/62682166_p0.png" class="content-image">
+              <img :src="item.cover" class="content-image">
             </div>
           </li>
         </ul>
@@ -117,11 +121,7 @@
     name: "index",
     data(){
           return {
-            swipeImage: {
-              image1: swipeImage,
-              image2: swipeImage,
-              image3: swipeImage
-            },
+            swipeImage: [],
             followList:[
               { uid:1,
                 followeds:'',
@@ -154,14 +154,33 @@
                 type: "",
                 media: ''},
              ],
+            current_page: 1,
             bottomStatus: 'loading',
-            allLoaded: false
+            allLoaded: true,
+            current_teacher_page: 1
       }
     },
     methods:{
       //列表内容点击的详情
+      getScroll() {
+        console.log(333)
+      },
+
+      loadTeacher() {
+        this.$refs.teacher_list.onscroll = () => {
+//          if(this.$refs.teacher_list.scrollLeft == 1005) {
+//            API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
+//              console.log(res)
+//              this.followList = this.followList.concat(res.response.teacher_list)
+//
+//            })
+//          }
+         // console.log(this.$refs.teacher_list.scrollLeft)
+        }
+      },
+
       getDetails(path){
-       console.log('点我了点我了');
+       //console.log('点我了点我了');
        // this.$router.push('/'+path);
          let url = `http://quan-test.xiaoheiban.cn/#/articles`;
         const shareFlag = '';
@@ -185,13 +204,23 @@
           duration: 2000
         });
       },
-      loadBottom(id) {
-        alert('11111111');
+      loadBottom() {
+        this.more()
         // this.allLoaded = true;// 若数据已全部获取完毕
-        this.$broadcast('onBottomLoaded', id);
-        setTimeout(()=>{
-          this.bottomStatus = 'load';
-        },2000)
+        this.$refs.loadmore.onTopLoaded()
+      },
+
+      more() {
+        this.current_page++
+        API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
+          .then(res => {
+            if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
+              this.allLoaded = false
+              }
+            for(let i = 0; i<res.response.article_list.length; i++) {
+              this.bottomList.push( res.response.article_list[i] )
+            }
+          })
       },
       timestampToTime(timestamp) {
         let date = new Date(timestamp * 1000)
@@ -218,7 +247,7 @@
         this.swipeImage = res.ad_list
         this.indexList = res.article_list.slice(0, 2)
         this.followList = res.teacher_list
-        this.bottomList = res.article_list.splice(1, 1)
+        this.bottomList = res.article_list.slice(2,res.article_list.length-2)
       })
     },
   }
@@ -284,10 +313,6 @@
     left: 15px;
     top: 53px;
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 733640faca95859f4f9153329055bc97a04c1675
   .index-list .list-content .content-bottom {
     color: #aaa;
     font-size: 14px;
@@ -333,7 +358,7 @@
     width: 100%;
     /*height: 185px;*/
     display: -webkit-box;
-    overflow-x: auto;
+    /*overflow-x: auto;*/
     -webkit-overflow-scrolling: touch;
   }
 

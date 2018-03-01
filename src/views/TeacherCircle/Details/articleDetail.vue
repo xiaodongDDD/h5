@@ -53,11 +53,13 @@
       }
       this.getArticles()
     },
+
+
   }
 </script>
 
 <template>
-  <div style="position: relative">
+  <div style="position: relative;" id="article">
     <img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy">
   <div class="article-detail">
     <h2>{{article.title}}</h2>

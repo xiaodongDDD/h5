@@ -1,40 +1,42 @@
 <script>
   import favorite from '../../assets/img/comment_ic_favorite.png'
   import favoriteOK from '../../assets/img/comment_ic_favorite_ok.png'
+  import { API } from '../../service/api'
+  import { timestampToTime } from '../../service/timestamp'
+  import { InfiniteScroll } from 'mint-ui'
   export default {
     data: () => ({
       isFavorite: true,
       favoriteImage: favoriteOK,
       favoriteImageNo: favorite,
       showCommentBox: false,
-      comments: [{
-        isReply: false,
-        cName: '薛白',
-        cContent: '对妈妈们很有帮助！孩子健康的成长，是一生中骄傲与幸福的事情',
-        cTime: '18:30',
-        cGrounding: '已上架'
-      },
-      {
-        isReply: true,
-        rName: '薛白',
-        cName: '白鹏飞',
-        cContent: '最让人眼前一亮的就是突破',
-        cTime: '18:30',
-        cGrounding: '已下架'
-      },
-      {
-        isReply: false,
-        cName: '薛白',
-        cContent: '第一次宣传出了后你们真把这鞋的调性发掘出来了 超nice的~',
-        cTime: '07/18',
-        cGrounding: '未上架'
-      }],
+      article_comment_list: [{
+          "comment_id": 2,                    // 评论id
+          "article_id": 1,                    // 文章id
+          "type": 2,                          // 评论类型（1是评论，2是回复）
+          "reply_id": 1,                      // 回复某条评论的评论id
+          "content": "没错，哈哈",             // 回复/评论内容
+          "from_uid": 2,                      // 发表该条评论的用户id
+          "from_username": "曹操",            // 发表该条评论的用户名
+          "from_heading": "",                 // 发表该条评论的用户头像
+          "to_uid": 8,                        // 该条评论所回复的用户id
+          "to_username": "孙策",               // 该条评论所回复的用户名
+          "to_heading": "6,cf963a43e891",     // 该条评论所回复的用户头像
+          "create_time": 1517334171,          // 评论 发表时间
+          "status": 2                         // 评论状态（0删除，1未上架，2已上架，3已下架，4审核不通过）
+        }
+      ],
       commentText: '',
       replyMe: {
         answer: false,
         author: '',
+        comment_id: '',
+        article_id: '',
       },
+      total_page: '',
+      current_page: 1,
       originLength:0,//控制长度
+      is_show: false,
     }),
     watch:{
       commentText: function (commentText) {
@@ -46,47 +48,129 @@
       }
     },
     methods: {
-      openCommentBox(name = '') {
+      openCommentBox(name = '', comment_id = '') {
         this.showCommentBox = true
         this.replyMe.author = name
         this.replyMe.answer = !!name
+     //   console.log(this.replyMe.answer)
+        this.replyMe.comment_id = comment_id
         this.commentText = name ? `回复${name}:   ` : ''
       },
-      publishComment() {
-        if(this.replyMe.answer) {
+      publishComment(article_id = '') {
+        if (this.replyMe.answer) {
           let spliceNum = 3 + this.replyMe.author.length;
           this.commentText = this.commentText.substring(spliceNum);
         }
         const myReply = {
           isReply: this.replyMe.answer,
-          cName: '吴克',
           rName: this.replyMe.author,
-          cContent: this.commentText,
-          cTime: '07/18',
+          content: this.commentText,
+          from_uid: 2,                      // 发表该条评论的用户id
+          from_username: "aa",            // 发表该条评论的用户名
+          from_heading: "",                 // 发表该条评论的用户头像
+          to_uid: 8, // 该条评论所回复的用户id
+          type: 1,
+          to_username: "孙策",               // 该条评论所回复的用户名
+          to_heading: "6,cf963a43e891",     // 该条评论所回复的用户头像
+          create_time: 1517334171,          // 评论 发表时间
+          status: 2
         }
-        this.comments.push(myReply);
+        if (!myReply.isReply) {
+        API.post('api/?method=quan.comment', {
+          article_id: article_id,
+          content: myReply.content,
+        })
+          .then(res => {
+            myReply.type = 2
+          })
+      } else {
+         API.post(`api/?method=quan.commentReply`, {
+           comment_id: this.replyMe.comment_id,
+           content: myReply.content
+         }).then(res => {
+           myReply.type = 1
+         })
+        }
+        this.article_comment_list.push(myReply);
         this.showCommentBox = false
+      },
+      commentStatus(statusId) {
+        switch (statusId) {
+          case '0':
+            return '删除';
+          case '1':
+            return '未上架';
+          case '2':
+            return '已上架';
+          case '3':
+            return '已下架';
+          case '4':
+            return '审核不通过';
+        }
+      },
+      getTime(timestamp) {
+        return timestampToTime(timestamp)
+      },
+      loadMore() {
+        this.loading = true
+        this.current_page++
+        console.log(this.total_page)
+        console.log('nihao'+this.current_page)
+        if(this.total_page > 1 && this.current_page <= this.total_page) {
+          console.log(111)
+          API.get(`api/?method=quan.commentList&article_id=4&page=${this.current_page}&type=2`)
+            .then(res => {
+              setTimeout(() => {
+                let last = res.response.comment_list;
+                for(let i = 0; i < last.length; i ++) {
+                  this.article_comment_list.push(last[i])
+                }
+                this.loading = false;
+              }, 2000)
+            })
+        }
+      },
+      isUp(comment_id, status) {
+        API.get(`api/?method=quan.commentManage&comment_id=${comment_id}&status=${status}`).then( res => {
+          console.log(res)
+        } )
       }
     },
+    mounted () {
+      let article_id = 4
+      API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
+        .then(res => {
+          this.article_comment_list = res.response.comment_list
+          this.is_show = res.response.is_show
+          this.total_page = parseInt(res.response.comment_sum / 10) + 1
+        }
+      )
+    }
   }
 </script>
 
 <template>
   <div class="comment-content">
     <h3>评论区</h3>
-    <ul class="comment-list">
-      <li v-for="item in comments" class="comment">
-        <label>{{item.cName}}<span v-show="item.isReply"><a style="color: #3A3A3A">回复</a><a>{{item.rName}}</a></span>:</label>
-        <span>{{item.cContent}}</span>
+    <div class="comment-list-container">
+      <ul class="comment-list"
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled = "false"
+        infinite-scroll-distance="10"
+        infinite-scroll-immediate-check = true>
+      <li v-for="item in article_comment_list" class="comment">
+        <label>{{item.from_username}}<span v-show="item.type == 1"><a style="color: #3A3A3A">回复</a><a>{{item.to_username}}</a></span>:</label>
+        <span>{{item.content}}</span>
         <div class="comment-bar">
-          <span class="bar-0">{{item.cTime}}</span>
-          <span class="bar-1">{{item.cGrounding}}</span>
-          <span class="bar-2" @click="openCommentBox(item.cName)">回复</span>
+          <span class="bar-0">{{getTime(item.create_time)}}</span>
+          <span class="bar-1" v-show="is_show === 2" @click="isUp(item.comment_id, item.status)">{{commentStatus(item.status)}}</span>
+          <span class="bar-2" @click="openCommentBox(item.from_username, item.comment_id)">回复</span>
         </div>
       </li>
     </ul>
+    </div>
     <div class="comment-bottom">————到底啦————</div>
-    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{comments.length}}</a></span><img
+    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{article_comment_list.length}}</a></span><img
             :src="isFavorite?favoriteImage:favoriteImageNo"
             class="comment-favorite"
             @click="isFavorite = !isFavorite"></div>
@@ -95,7 +179,7 @@
       <div class="comment-box">
         <h2>发表评论</h2>
         <textarea placeholder="请输入评论内容（6-300字）" v-model="commentText"></textarea>
-        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()" ref="publish">发表</button></div>
+        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment(4)" ref="publish">发表</button></div>
       </div>
     </div>
   </div>
@@ -105,7 +189,6 @@
   .comment-content {
     background-color: #fff;
   }
-
   h3 {
     font-family: PingFangSC-Light;
     font-size: 14px;
@@ -113,7 +196,10 @@
     padding: 2vh 4vw;
     background-color: #EDEDED;
   }
-
+  .comment-list-container {
+    height: 530px;
+    overflow: scroll;
+  }
   .comment {
     color: #3A3A3A;
     padding: 1vh 4vw;
@@ -131,9 +217,11 @@
   }
    .comment-bar .bar-0 {
      color: #AAA;
+     display: inline-block;
+     width: 20%;
    }
    .comment-bar .bar-1 {
-     margin-left: 60%;
+     margin-left: 50%;
    }
    .comment-bar .bar-2 {
      float: right;
@@ -145,9 +233,16 @@
     color: #AAA;
     text-align: center;
     margin: 4vh 0;
+    padding-bottom: 4vh;
+    box-sizing: border-box;
   }
   .reply-bar {
-    padding: 0 4vw 2vh 4vw;
+    padding: 2vh 4vw;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
   }
   .reply-bar input {
     background: #F7F7F7;
