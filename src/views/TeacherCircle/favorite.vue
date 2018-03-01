@@ -104,6 +104,7 @@
         }
       },
       loadMore() {
+        console.log(1111)
         this.loading = true
         this.loading_number++
 

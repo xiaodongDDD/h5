@@ -61,7 +61,7 @@
           <ul class="recommend-content"
               id="teacher-list"
               @touchstart="getScroll"
-              @touchmove="loadTeacher"
+              @scroll="loadTeacher"
               ref="teacher_list">
             <li class="recommend-detail" v-for="item in followList" :key="item.id">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
@@ -163,11 +163,14 @@
     methods:{
       //列表内容点击的详情
       getScroll() {
-        console.log(333)
+        console.log(document.body.offsetLeft)
       },
 
       loadTeacher() {
         this.$refs.teacher_list.onscroll = () => {
+          console.log(this.$refs.teacher_list.offsetLeft)
+
+
 //          if(this.$refs.teacher_list.scrollLeft == 1005) {
 //            API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
 //              console.log(res)

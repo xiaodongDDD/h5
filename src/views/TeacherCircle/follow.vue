@@ -113,23 +113,23 @@
       loadMore() {
         this.loading = true
         this.loading_number++
-
+        console.log(111)
         if(this.loading_number > this.total_page) {
           this.isAll = '到底啦!'
         }
-
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
           API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
             .then(res => {
               setTimeout(() => {
-                let last = res.response.teacher_list;
+                let last = res.response.teacher_list
                 for(let i = 0; i < last.length; i ++) {
                   this.teacherMessages.push(last[i])
                 }
-                this.loading = false;
+                this.loading = false
               }, 2000)
             })
         }
+
       },
     },
     mounted() {

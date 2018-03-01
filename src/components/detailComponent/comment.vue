@@ -114,10 +114,8 @@
       loadMore() {
         this.loading = true
         this.current_page++
-        console.log(this.total_page)
-        console.log('nihao'+this.current_page)
+        console.log(111)
         if(this.total_page > 1 && this.current_page <= this.total_page) {
-          console.log(111)
           API.get(`api/?method=quan.commentList&article_id=4&page=${this.current_page}&type=2`)
             .then(res => {
               setTimeout(() => {
