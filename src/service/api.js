@@ -22,7 +22,7 @@ export const API = {
       );
   },
   post: (url, body) => {
-    return window.fetch(`${url}`, {
+    return window.fetch(`${url}&token=${token}`, {
       method: "POST",
       mode: "cors",
       redirect: "follow",
