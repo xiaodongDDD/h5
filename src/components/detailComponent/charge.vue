@@ -11,7 +11,7 @@
         haveScore: 5,
       },
     }),
-   props: ['category','action','points'],
+   props: ['category','action','points','articlePoint'],
     methods: {
       getShow() {
          bus.$emit('showPrompt', true)
@@ -19,13 +19,12 @@
     },
   }
 </script>
-
 <template>
   <!--<div class="charge" v-show="!isShow">-->
   <div>
     <!--<img src="../../assets/img/mask.png" class="charge-hide">-->
     <div class="charge-message">
-      <p class="need-score">{{action}}完整{{category}}需要{{ score.needSore }}积分</p>
+      <p class="need-score">{{action}}完整{{category}}需要{{ articlePoint }}积分</p>
       <div class="score-enough" v-show="score.haveScore-score.needSore >= 0">
         <p class="have-score">{{`您共有${score.haveScore}积分`}}</p>
         <button style=" width: 45%;">消耗积分阅读</button>

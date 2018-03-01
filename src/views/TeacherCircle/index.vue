@@ -33,7 +33,7 @@
       <!--列表-->
       <div>
         <ul class="index-list">
-          <li @click="getDetails()" v-for="item in indexList">
+          <li @click="getDetails(item.type,item.article_id)" v-for="item in indexList">
             <div class="list-head">
               <img :src="item.img" class="head-image">
               <span class="head-name">{{item.user_name}}</span>
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-  import swipeImage from '../../assets/img/65000275_p0.jpg'
   import { API } from '../../service/api'
   import { Toast } from 'mint-ui'
   export default {
@@ -182,18 +181,24 @@
         }
       },
 
-      getDetails(path){
-       //console.log('点我了点我了');
-       // this.$router.push('/'+path);
-         let url = `http://quan-test.xiaoheiban.cn/#/articles`;
-        const shareFlag = '';
-         JSAction.openUrl(url);
-        JSAction.getWebShareElement(shareFlag)
-
+      getDetails(type,id){
+          switch (type) {
+            case 1:
+              const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+              JSAction.openUrl(arurl);
+              break;
+            case 2:
+              const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+              JSAction.openUrl(auurl);
+              break;
+            default:
+              const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+              JSAction.openUrl(viurl);
+          }
       },
       goNext(path) {
          // this.$router.push({path: path})
-         let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+         let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
          JSAction.openUrl(url)
       },
       toTeacherDetails(){
@@ -208,13 +213,13 @@
         });
       },
       loadBottom() {
-        this.more()
+        this.more();
         // this.allLoaded = true;// 若数据已全部获取完毕
         this.$refs.loadmore.onTopLoaded()
       },
 
       more() {
-        this.current_page++
+        this.current_page++;
         API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
           .then(res => {
             if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
@@ -226,15 +231,17 @@
           })
       },
       timestampToTime(timestamp) {
-        let date = new Date(timestamp * 1000)
-        let sysDate = new Date()
-        let Y = date.getFullYear
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
-        let D = date.getDate()
-        let h = date.getHours()
-        let m = date.getMinutes()
-        if(Y == sysDate.getFullYear() && M == sysDate.getMonth() && D == sysDate.getDay())
-        { return h +':'+ m } else if(Y == sysDate.getFullYear){
+        let date = new Date(timestamp * 1000);
+        let sysDate = new Date();
+        let Y = date.getFullYear;
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        let D = date.getDate();
+        let h = date.getHours();
+        let m = date.getMinutes();
+        if(Y == sysDate.getFullYear() && M == sysDate.getMonth() && D == sysDate.getDay()) {
+          return h +':'+ m
+        } else if(
+          Y == sysDate.getFullYear){
           return `${M}/${D}`
         } else {
           return `${Y}/${M}/${D}`
@@ -245,8 +252,8 @@
       let method = 'quan.index';
       const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}&token=59a4e43d0179b04b5056178b`
       API.get(url).then(res => {
-        res = res.response
-        console.log(res)
+        res = res.response;
+        console.log(res);
         this.swipeImage = res.ad_list
         this.indexList = res.article_list.slice(0, 2)
         this.followList = res.teacher_list

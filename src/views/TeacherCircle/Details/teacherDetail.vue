@@ -20,7 +20,7 @@
         this.teacherSay = this.teacher.description;
         this.isAll = false
       },
-      //关注or取消关注
+      //关注or取消
       cancelFollow(uid) {
         const follow = 'quan.follow';
         const unfollow = 'quan.unfollow';
@@ -65,7 +65,6 @@
       }
     },
     mounted() {
-      // this.teacher.teacherSay = this.noBB.substring(0, 67) + '...';
       this.getData()
     },
     metaInfo: {

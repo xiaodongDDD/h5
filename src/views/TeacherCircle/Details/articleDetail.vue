@@ -1,5 +1,4 @@
 <script>
-  import header from '../../../assets/img/all.png'
   import comment from '../../../components/detailComponent/comment.vue'
   import charge from  '../../../components/detailComponent/charge.vue'
   import freePrompt from '../../../components/detailComponent/freeIntegrate.vue'
@@ -7,50 +6,57 @@
   export default {
     components: { comment, charge, freePrompt },
     filters:{
-      timestampToTime:function (timestamp) {
+      timestampToMD:function (timestamp) {
         const date = new Date(timestamp * 1000);
         const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
         const D = date.getDate() + ' ';
         return M+'/'+D;
+      },
+      timestampToYMD:function (timestamp) {
+        if(!timestamp){
+          timestamp = +new Date()/1000;
+        }
+        const date = new Date(timestamp * 1000);
+        const Y = date.getFullYear();
+        const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+        const D = date.getDate() + ' ';
+        return Y+'/'+M+'/'+D;
       }
     },
     data: () => ({
-      article: {
-        title: '免费免费人教版三年级数学期末复习试卷，都是精装考点一张顶十张！',
-        header: header,
-        name: '李太白',
-        content: '<p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;margin-bottom: 2vh">'
-        +'有人说，Kim Laughton或许是过去十年间，对国内电子音乐界影响最大的视觉艺术家之一。Kim是英国伦敦人，毕业于伦敦布鲁内尔大学多媒体专业，2010'
-        + '年因为一项和上海世博会有关的工作任务来到上海，没到就此定居至今。</p> <p>' +
-        '</p><p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;margin-bottom: 2vh">'
-        +'他制作3D 虚拟影像，创作线下装置作品，为电子音乐活动设计海报，他通过自己“超·现实”的数码美学，为许多音乐人的作品提供视觉上的诠释和启发。同时，他还拥有一个名为Timefly的服装品牌。</p>'
-        +'<img style="width: 100%;" src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=2072fbcd5b6034a83defb0d3aa7a2231/4b90f603738da9778045f4e7b751f8198718e390.jpg">'
-        +'<p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;">你可能不知道Kim Laughton，但你有很大的可能见过他的艺术项目“淘宝媒体”。如果你还不知道“淘宝媒体”，不要错过这个一定会让你笑到不能自已的图片集，而这又与他的“超·现实”的艺术表现相得益彰。</p>'
-      +'<p style="font-family: PingFangSC-Light;font-size: 17px;letter-spacing: 0;line-height: 25px;">你可能不知道Kim Laughton，但你有很大的可能见过他的艺术项目“淘宝媒体”。如果你还不知道“淘宝媒体”，不要错过这个一定会让你笑到不能自已的图片集，而这又与他的“超·现实”的艺术表现相得益彰。</p>',
-      time: '11/25'
-      },
+      article: {},
       isFree: false,
       showContent: '',
-      isBuy: false,
+      isBuy: 0,
+      articleId:0,
+      buyTime:''
     }),
+    beforeMount(){
+      this.getArticleId();
+    },
     methods: {
       getArticles(){
         const detail = 'quan.articleDetail';
-        const articleId = 4;
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${articleId}&page=${page}&token=59a4e43d0179b04b5056178b`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=59a4e43d0179b04b5056178b`;
         API.get(url).then(res=>{
           console.log(res);
-          this.article = Object.assign(res.response.article_detail)
+          if(res.response){
+            this.isBuy = res.response.is_buy;
+            this.buyTime = res,response.buy_time;
+            this.article = Object.assign(res.response.article_detail);
+            this.isFree = res.response.article_detail.is_charge===0?true:false
+          }else{
+            alert('未找到文章信息')
+          }
         },err=>{})
+      },
+      getArticleId(){
+        this.articleId = window.location.href.split('?')[1]
       }
+
     },
     mounted() {
-      if(this.isFree || this.isBuy) {
-        this.showContent = this.article.content
-      } else {
-        this.showContent = this.article.content.substring(0, 900)
-      }
       this.getArticles()
     },
 
@@ -59,27 +65,27 @@
 </script>
 
 <template>
-  <div style="position: relative;" id="article">
-    <img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy">
+  <div style="position: relative">
+    <img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy>=1">
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
       <img :src="article.teacher_img" alt="头像">
       <span>{{article.teacher_name}}</span>
-      <span>{{article.create_time | timestampToTime(article.create_time)}}</span>
+      <span>{{article.create_time | timestampToMD(article.create_time)}}</span>
     </div>
     <div style="position: relative">
       <div v-html="article.show_content?article.show_content:article.content"></div>
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
-      <div class="have-message" v-show="isBuy">
-        <span>2018/12/22</span>
+      <div class="have-message" v-show="isBuy===1">
+        <span>{{ buyTime | timestampToYMD(buyTime)}}</span>
         <span>已购</span>
       </div>
-      <div class="charge-content" v-show = "!(isFree || isBuy)">
+      <div class="charge-content" v-show = "isBuy<1">
         <img src="../../../assets/img/mask.png" class="charge-hide">
-        <charge category="文章" action="阅读" :points="article.user_points"></charge>
+        <charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>
       </div>
     </div>
   </div>
