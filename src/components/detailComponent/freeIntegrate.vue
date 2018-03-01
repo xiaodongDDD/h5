@@ -36,7 +36,7 @@
     height: 100%;
     top: 0;
     background: rgba(0,0,0,0.70);
-    z-index: 100;
+    z-index: 10000;
   }
   .integrate-dialog {
     position: fixed;
@@ -50,6 +50,7 @@
     color: #fff;
     text-align: center;
     padding: 2vh 0;
+    z-index: 100000;
     h2 {
       font-family: PingFangSC-Light;
       font-size: 20px;

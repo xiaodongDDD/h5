@@ -3,9 +3,9 @@
     <div class="teacherCircle-container">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
-        <mt-swipe-item> <img :src="swipeImage.image1" alt=""></mt-swipe-item>
-        <mt-swipe-item> <img :src="swipeImage.image2" alt=""></mt-swipe-item>
-        <mt-swipe-item> <img :src="swipeImage.image3" alt=""></mt-swipe-item>
+        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id"><img :src="item.ad_img" alt=""></mt-swipe-item>
+        <!--<mt-swipe-item> <img :src="swipeImage.image2" alt=""></mt-swipe-item>-->
+        <!--<mt-swipe-item> <img :src="swipeImage.image3" alt=""></mt-swipe-item>-->
       </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
@@ -171,7 +171,7 @@
       },
       goNext(path) {
          // this.$router.push({path: path})
-         let url = `http://quan-test.xiaoheiban.cn/#/${path}`
+         let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
          JSAction.openUrl(url)
       },
       toTeacherDetails(){
@@ -194,15 +194,17 @@
         },2000)
       },
       timestampToTime(timestamp) {
-        let date = new Date(timestamp * 1000)
-        let sysDate = new Date()
-        let Y = date.getFullYear
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
-        let D = date.getDate()
-        let h = date.getHours()
-        let m = date.getMinutes()
-        if(Y == sysDate.getFullYear() && M == sysDate.getMonth() && D == sysDate.getDay())
-        { return h +':'+ m } else if(Y == sysDate.getFullYear){
+        let date = new Date(timestamp * 1000);
+        let sysDate = new Date();
+        let Y = date.getFullYear;
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        let D = date.getDate();
+        let h = date.getHours();
+        let m = date.getMinutes();
+        if(Y == sysDate.getFullYear() && M == sysDate.getMonth() && D == sysDate.getDay()) {
+          return h +':'+ m
+        } else if(
+          Y == sysDate.getFullYear){
           return `${M}/${D}`
         } else {
           return `${Y}/${M}/${D}`
@@ -213,11 +215,11 @@
       let method = 'quan.index';
       const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}&token=59a4e43d0179b04b5056178b`
       API.get(url).then(res => {
-        res = res.response
-        console.log(res)
-        this.swipeImage = res.ad_list
-        this.indexList = res.article_list.slice(0, 2)
-        this.followList = res.teacher_list
+        res = res.response;
+        console.log(res);
+        this.swipeImage = res.ad_list;
+        this.indexList = res.article_list.slice(0, 2);
+        this.followList = res.teacher_list;
         this.bottomList = res.article_list.splice(1, 1)
       })
     },

@@ -5,83 +5,34 @@
   export default {
     components: {},
     data: () => ({
-      articleList:[{
-        headers: articleImage,
-        title: '高中化学教育教学过程的优化策略太实用了',
-        comment: 1234,
-        integration: 30,
-        time: '9:40'
-      },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 'ok',
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        {
-          headers: articleImage,
-          title: '高中化学教育教学过程的优化策略太实用了',
-          comment: 1234,
-          integration: 30,
-          time: '9:40'
-        },
-        ],
+      articleList:[],
       loading: false,
+      loadingNumber:0,
+      totalPage:1,
+      isAll:'加载中...'
     }),
     props:[ 'teacherId' ],
     methods: {
       loadMore() {
         this.loading = true;
-        // setTimeout(() => {
-        //   let last = this.articleList[this.articleList.length - 1];
-        //   for (let i = 1; i <= 5; i++) {
-        //     this.articleList.push(last + i);
-        //   }
-        //   this.loading = false;
-        // }, 2000);
+        this.loadingNumber++;
+        if(this.loadingNumber > this.totalPage) {
+          this.isAll = '到底啦!'
+        }
+        if(this.totalPage >1 && this.loadingNumber <= this.totalPage) {
+          const teacherDetail = 'quan.teacherDetail';
+          const uid = this.teacherId;
+          const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${this.loadingNumber}&token=59a4e43d0179b04b5056178b`;
+          API.get(url).then((res)=>{
+            setTimeout(() => {
+              let last = res.response.article_list;
+              for(let i = 0; i < last.length; i ++) {
+                this.teacherMessages.push(last[i])
+              }
+              this.loading = false;
+            }, 2000)
+          },(err)=>{});
+        }
       },
       getArticlesData(){
         const teacherDetail = 'quan.teacherDetail';
@@ -89,12 +40,22 @@
         const page = 1;
         const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
         API.get(url).then((res)=>{
-          console.log(res);
+          this.totalPage = Math.ceil(res.response.article_sum/10);
           this.articleList = res.response.article_list
         },(err)=>{})
       },
-      goArticleDetail(){
-        this.$router.push('/article')
+      goArticleDetail(type,id){
+        switch (type){
+          case 1:
+            this.$router.push(`/article?${id}`);
+            break;
+          case 2:
+            this.$router.push(`/audio?${id}`);
+            break;
+          default:
+            this.$router.push(`/video?${id}`);
+        }
+        // this.$router.push(`/article?${id}`)
       }
     },
     mounted(){
@@ -108,7 +69,7 @@
     <ul v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
         infinite-scroll-distance="10">
-      <li v-for="item in articleList" class="product" @click="goArticleDetail(item.id)">
+      <li v-for="item in articleList" class="product" @click="goArticleDetail(item.type,item.article_id)">
           <div class="product-content">
             <p>{{item.title}}</p>
             <div class="product-bar">
@@ -121,7 +82,7 @@
           <img :src="item.cover">
       </li>
     </ul>
-    <div style="text-align: center" class="loadings">加载中....</div>
+    <div style="text-align: center" class="loadings">{{isAll}}</div>
   </div>
 </template>
 
