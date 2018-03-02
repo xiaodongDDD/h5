@@ -8,6 +8,9 @@ import { Navbar, TabItem } from 'mint-ui';
 // import Vue from 'vue'
 import MetaInfo from 'vue-meta-info'
 import axios from 'axios'
+import { Loadmore } from 'mint-ui';
+
+Vue.component(Loadmore.name, Loadmore);
 
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
