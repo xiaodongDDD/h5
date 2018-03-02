@@ -108,7 +108,6 @@
           <span v-show="bottomStatus === 'loading'">Loading...</span>
         </div>
       </mt-loadmore>
-
     </div>
   </section>
 </template>

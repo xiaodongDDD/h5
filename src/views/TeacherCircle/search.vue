@@ -17,12 +17,35 @@
             <p>请更换输入其他关键字后重试</p>
           </div>
         </div>
-
         <!--有内容-->
-        <div class="search-some" v-show="!origin&results">
+        <div class="search-some" v-show="!origin&results" :style="{'-webkit-overflow-scrolling': scrollMode}">
           <h5 class="some-title">搜索结果</h5>
-          <TeacherList></TeacherList>
-          <TeacherDetail></TeacherDetail>
+          <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <!--文章列表-->
+            <div>
+            <ul class="index-list">
+              <li  v-for="item in articleList" @click="goTODetails(item.type,item.article_id)">
+                <div class="list-head">
+                  <img :src="item.img" class="head-image">
+                  <span class="head-name">{{item.user_name}}</span>
+                  <span class="head-time">{{item.update_time| timestampToMD(item.update_time)}}</span>
+                </div>
+                <div class="list-content">
+                  <span class="content-word">{{item.title}}</span>
+                  <div class="content-bottom">
+                    <span class="content-comment">{{item.comments | comments(item.comments)}}评论</span>
+                    <span class="content-integral" v-if="item.is_charge>0">{{item.points}}积分</span>
+                    <!--<span class="content-integral" v-else-if="item.buyState<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>-->
+                    <span class="content-integral" v-else-if="item.is_charge==0">免费</span>
+                  </div>
+                  <img :src="item.cover" class="content-image">
+
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!--教师列表-->
+          </v-loadmore>
         </div>
       </div>
     </div>
@@ -30,22 +53,45 @@
 </template>
 
 <script>
-  import TeacherList from '../../components/TeacherList'
-  import TeacherDetail from '../../components/TeacherDetail'
   import { API } from '../../service/api';
+  import { Loadmore } from 'mint-ui';
+  import { goTODetails } from '../../service/jsAction';
   export default {
     name: "search",
-    components:{
-      TeacherList,
-      TeacherDetail
+    components:{'v-loadmore':Loadmore},
+    filters:{
+      timestampToMD:function (timestamp) {
+        if(!timestamp){
+          timestamp = +new Date()/1000;
+        }
+        const date = new Date(timestamp * 1000);
+        const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+        const D = date.getDate() + ' ';
+        return M+'/'+D;
+      },
+      comments:function (num) {
+        if(num>=1000){
+          return (num/10000).toFixed(1) + '万'
+        }else{
+          return num
+        }
+      }
     },
     data(){
       return{
         searchContent:'',
-        searchList:[],
+        articleList:[],
+        teacherList:[],
         origin: true,
-        results: false
-      }
+        results: false,searchCondition:{  //分页属性
+          pageNo:"1",
+          pageSize:"10"
+        },
+        pageList:[],
+        allLoaded: false, //false可以上拉，true为禁止上拉
+        scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+        totalPage:0,
+    }
     },
     watch:{
       searchContent:function (searchContent) {
@@ -59,15 +105,13 @@
     },
     methods:{
       search(){
-        console.log('2333');
         const search = 'quan.searchClick';
         const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
         const keyword = this.searchContent;
-        console.log(keyword);
         API.get(`${baseUrl}${search}&keyword=${keyword}&page=1&token=59a4e43d0179b04b5056178b`).then((res)=>{
-          console.log(res);
-          console.log(res.response.article_list.length);
           this.origin = false;
+          this.totalPage = Math.ceil(res.response.total_num/10);
+          this.articleList = res.response.article_list;
           if(res.response.article_list.length<=0){
             this.results = false;
           }else{
@@ -76,6 +120,47 @@
         },(err)=>{
           console.log(err);
         })
+      },
+      loadBottom:function() {
+        // 上拉加载
+        this.more();// 上拉触发的分页查询
+        this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
+      },
+      loadPageList:function (){
+          // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
+          this.isHaveMore(data.result.haveMore);
+          this.pageList = data.result.pageList;
+          this.$nextTick(function () {
+            this.scrollMode = "touch";
+          });
+
+      },
+      more:function (){
+        // 分页查询
+        if(this.totalPage>=this.searchCondition.pageNo){
+          this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
+        }
+        const search = 'quan.searchClick';
+        const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
+        const keyword = this.searchContent;
+        API.get(`${baseUrl}${search}&keyword=${keyword}&page=${this.searchCondition.pageNo}&token=59a4e43d0179b04b5056178b`).then((res)=>{
+          this.origin = false;
+          this.articleList = this.articleList.concat(res.response.article_list);
+          this.isHaveMore();
+          if(res.response.article_list.length<=0){
+            this.results = false;
+          }else{
+            this.results = true;
+          }
+        },(err)=>{
+          console.log(err);
+        })
+      },
+      isHaveMore:function(isHaveMore){
+        this.allLoaded = true; //true是禁止上拉加载
+        if(isHaveMore){
+          this.allLoaded = false;
+        }
       }
     },
     created() {
@@ -89,7 +174,6 @@
         content: 'true'
       }]
     }
-
 
   }
 </script>
@@ -178,7 +262,120 @@ input::placeholder{
   background-color: #f8f8f8;
 
 }
+.index-list li{
+  width: 100%;
+  height: 154px;
+  background-color: #fff;
+  margin-top: 6px;
+  position: relative;
+}
+.index-list .list-head{
+  position: relative;
+  top: 14px;
+  color: #aaa;
+  font-size: 14px;
+  padding-left: 15px;
+  height: 28px;
+  line-height: 28px;
+  width: 100%;
+}
+.index-list .list-head .head-image{
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.index-list .list-head .head-name{
+  margin-left: 5px;
+}
+.index-list .list-head .head-time{
+  position: absolute;
+  right: 30px;
+  top: 2px;
+}
+.index-list .list-content .content-word{
+  width: 244px;
+  height: 42px;
+  font-size: 17px;
+  position: absolute;
+  left: 15px;
+  top: 53px;
+}
+.index-list .list-content .content-bottom{
+  color: #aaa;
+  font-size: 14px;
+  position: absolute;
+  left: 15px;
+  bottom: 16px;
+}
+.index-list .list-content .content-bottom .content-comment{
+  margin-right: 20px;
+}
+.index-list .list-content .content-image{
+  width: 86px;
+  height: 86px;
+  position: absolute;
+  right: 15px;
+  top: 53px;
+}
+.detail-main{
+  margin-top: 5px;
+  width: 100%;
+  height: 159px;
+  background-color: #fff;
+  border-radius: 2px;
+}
+.detail-main .detail-top{
+  padding: 15px;
+  height: 100px;
+}
+.detail-main .detail-top .head-image{
+  width: 100px;
+  height: 100px;
+  margin-right: 15px;
+}
+.detail-main .detail-top .detail-word{
+  display: inline-block;
 
+}
+.detail-word .name{
+  font-size: 17px;
+  font-family: PingFangSC-Regular;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.detail-word .word{
+  font-family: PingFangSC-Light;
+  font-size: 14px;
+  color: #000000;
+  line-height: 22px;
+}
+.detail-main .detail-bottom{
+  font-family: PingFangSC-Light;
+  color: #aaa;
+  font-size: 14px;
+  padding-left: 23px;
+  padding-right: 15px;
+  position: relative;
+}
+.detail-bottom .left{
+  top: 50%;
+  margin-top: -6px;
+}
+.detail-bottom .follow-number{
+  margin-left: 18px;
+}
+.detail-bottom .center{
+  top: 50%;
+  margin-top: -6px;
+  left: 80px;
+}
+.detail-bottom .article-number{
+  margin-left: 35px;
+}
+.right{
+  float: right;
+}
 
 
 </style>
