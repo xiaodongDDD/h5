@@ -20,7 +20,7 @@
         <!--有内容-->
         <div class="search-some" v-show="!origin&results" :style="{'-webkit-overflow-scrolling': scrollMode}">
           <h5 class="some-title">搜索结果</h5>
-          <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore" bottomDropText="加载中...">
+          <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore" :bottomDropText="'加载中...'">
           <!--文章列表-->
             <div>
             <ul class="index-list">
@@ -39,7 +39,7 @@
                     <span class="content-integral" v-else-if="item.is_charge==0">免费</span>
                   </div>
                   <img :src="item.cover" class="content-image">
-
+                  <img src="../../assets/img/ic_video_play_video.png" class="video-button" v-show="item.type == 3">
                 </div>
               </li>
             </ul>
@@ -183,6 +183,13 @@
 </script>
 
 <style scoped>
+  .video-button {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 43px;
+    top: 85px;
+  }
 .main{
   width: 100%;
   height: 100%;

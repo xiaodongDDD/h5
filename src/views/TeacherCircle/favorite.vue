@@ -5,7 +5,7 @@
           infinite-scroll-disabled = "false"
           infinite-scroll-distance="10"
           infinite-scroll-immediate-check = true>
-        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)">
+        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)" @click="goTODetails(fm.type,fm.article_id)">
           <mt-cell-swipe
               :right="[{
          content: '删除收藏',
@@ -43,11 +43,11 @@
 </template>
 
 <script>
-  import header from '../../assets/logo.png'
   import Prompt from '../../components/prompt.vue'
   import { API } from '../../service/api'
   import { InfiniteScroll } from 'mint-ui'
   import { timestampToTime } from '../../service/timestamp'
+  import { goTODetails } from '../../service/jsAction'
   export default {
     name: "favorite",
     components:{
