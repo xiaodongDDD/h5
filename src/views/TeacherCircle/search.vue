@@ -20,7 +20,7 @@
         <!--有内容-->
         <div class="search-some" v-show="!origin&results" :style="{'-webkit-overflow-scrolling': scrollMode}">
           <h5 class="some-title">搜索结果</h5>
-          <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore" bottomDropText="加载中...">
           <!--文章列表-->
             <div>
             <ul class="index-list">
@@ -83,14 +83,11 @@
         articleList:[],
         teacherList:[],
         origin: true,
-        results: false,searchCondition:{  //分页属性
-          pageNo:"1",
-          pageSize:"10"
-        },
-        pageList:[],
+        results: false,
         allLoaded: false, //false可以上拉，true为禁止上拉
         scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
         totalPage:0,
+        page: 1
     }
     },
     watch:{
@@ -109,6 +106,7 @@
         const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
         const keyword = this.searchContent;
         API.get(`${baseUrl}${search}&keyword=${keyword}&page=1&token=59a4e43d0179b04b5056178b`).then((res)=>{
+          console.log(res);
           this.origin = false;
           this.totalPage = Math.ceil(res.response.total_num/10);
           this.articleList = res.response.article_list;
@@ -128,8 +126,8 @@
       },
       loadPageList:function (){
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
-          this.isHaveMore(data.result.haveMore);
-          this.pageList = data.result.pageList;
+          // this.isHaveMore(data.result.haveMore);
+          // this.pageList = data.result.pageList;
           this.$nextTick(function () {
             this.scrollMode = "touch";
           });
@@ -137,16 +135,22 @@
       },
       more:function (){
         // 分页查询
-        if(this.totalPage>=this.searchCondition.pageNo){
-          this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
+        var haveMore = true;
+        if(this.totalPage>this.page){
+          this.page++
+        }else {
+          haveMore = false;
         }
         const search = 'quan.searchClick';
         const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
         const keyword = this.searchContent;
-        API.get(`${baseUrl}${search}&keyword=${keyword}&page=${this.searchCondition.pageNo}&token=59a4e43d0179b04b5056178b`).then((res)=>{
+        API.get(`${baseUrl}${search}&keyword=${keyword}&page=${this.page}&token=59a4e43d0179b04b5056178b`).then((res)=>{
+          console.log('11111');
           this.origin = false;
-          this.articleList = this.articleList.concat(res.response.article_list);
-          this.isHaveMore();
+          if(haveMore){
+            this.articleList = this.articleList.concat(res.response.article_list);
+          }
+          this.isHaveMore(haveMore);
           if(res.response.article_list.length<=0){
             this.results = false;
           }else{
