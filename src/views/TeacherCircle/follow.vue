@@ -5,7 +5,10 @@
         infinite-scroll-disabled = "false"
         infinite-scroll-distance="10"
         infinite-scroll-immediate-check = true>
-      <li v-for="(tm, index) in teacherMessages" class="follow" @touchstart="getIndex(tm.uid, index)">
+      <li v-for="(tm, index) in teacherMessages"
+          class="follow"
+          @touchstart="getIndex(tm.uid, index)"
+           @click="goDetail(tm.uid)">
         <mt-cell-swipe
                 :right="[{
          content: '取消关注',
@@ -99,6 +102,11 @@
       },
       getTimestamp(timestamp) {
         return timestampToTime(timestamp)
+      },
+
+      goDetail(id) {
+        const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?${id}`;
+        JSAction.openUrl(teacherUrl);
       },
 
       isDel(data) {
@@ -224,7 +232,10 @@
     margin-left: 3vw;
   }
   .last-update {
-    margin-left: 30%;
+    display: inline-block;
+    margin-left: 20%;
+    width: 50%;
+    text-align: right;
   }
   .mint-cell-swipe-button {
     line-height: 22px;

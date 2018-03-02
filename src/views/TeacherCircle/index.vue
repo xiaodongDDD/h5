@@ -60,21 +60,21 @@
         <div class="recommend-all">
           <ul class="recommend-content"
               id="teacher-list"
-              @touchstart="getScroll"
               @scroll="loadTeacher"
               ref="teacher_list">
-            <li class="recommend-detail" v-for="item in followList" :key="item.id">
+            <li class="recommend-detail" v-for="item in followList" :key="item.id" @click="goTeacherDetail(item.uid)">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
                 <img :src="item.teacher_img" class="recommend-headImage">
                 <h5>{{item.teacher_name}}</h5>
               </div>
-              <p>{{item.brief?item.brief.substring(0, 10):''}}</p>
+              <p>{{item.brief?item.brief.substring(0, 17):''}}</p>
               <div class="recommend-follow" >
                 <p>{{item.followeds}}万人关注</p>
                 <button @click="follow(item)" class="follow-btn" v-if="item.followStatus"><i class="follow-heart"></i><span>关注</span></button>
                 <button @click="follow(item)" class="btn-ok" v-else="item.followStatus"><i class="follow-ok"></i></button>
               </div>
             </li>
+            <li class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
           </ul>
         </div>
       </div>
@@ -156,29 +156,33 @@
             current_page: 1,
             bottomStatus: 'loading',
             allLoaded: true,
-            current_teacher_page: 1
+            current_teacher_page: 1,
+            total_teacher_page: 1,
+            teacher_loading: '加载中'
       }
     },
     methods:{
       //列表内容点击的详情
-      getScroll() {
-        console.log(document.body.offsetLeft)
-      },
-
       loadTeacher() {
-        this.$refs.teacher_list.onscroll = () => {
-          console.log(this.$refs.teacher_list.offsetLeft)
-
-
-//          if(this.$refs.teacher_list.scrollLeft == 1005) {
-//            API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
-//              console.log(res)
-//              this.followList = this.followList.concat(res.response.teacher_list)
-//
-//            })
-//          }
-         // console.log(this.$refs.teacher_list.scrollLeft)
+        let scroll_distance = document.documentElement.clientWidth
+        let document_distance = this.$refs.loading.getBoundingClientRect().left
+        if(this.current_teacher_page > this.total_teacher_page) {
+          this.teacher_loading = '没有啦!'
         }
+        if(scroll_distance - document_distance === 60 && this.current_teacher_page <= this.total_teacher_page) {
+          setTimeout(() => {
+            this.current_teacher_page++
+            API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
+              this.followList = this.followList.concat(res.response.teacher_list)
+              this.total_teacher_page = parseInt(res.response.teacher_sum/10)
+            })
+          }, 1500)
+        }
+
+      },
+      goTeacherDetail(id) {
+        const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
+        JSAction.openUrl(teacherUrl)
       },
 
       getDetails(type,id){
@@ -461,8 +465,8 @@
   }
 
   .recommend-content .recommend-follow {
-    margin-top: 30px;
     position: relative;
+    margin-top: 10px;
   }
 
   .recommend-content .recommend-follow p {
@@ -508,5 +512,11 @@
     margin-left: -8px;
     top: 50%;
     margin-top: -6px;
+  }
+
+  .teacher_loading {
+    width: 60px;
+    padding-top: 20%;
+    text-align: center;
   }
 </style>
