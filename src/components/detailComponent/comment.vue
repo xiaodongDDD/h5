@@ -135,7 +135,7 @@
       }
     },
     mounted () {
-      let article_id = 4
+      let article_id = location.href.split('article_id=')||4
       API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
         .then(res => {
           this.article_comment_list = res.response.comment_list
