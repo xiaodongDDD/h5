@@ -16,7 +16,7 @@
       loadMore() {
         this.loading = true;
         this.loadingNumber++;
-        if(this.loadingNumber > this.totalPage) {
+        if(this.loadingNumber >= this.totalPage) {
           this.isAll = '到底啦!'
         }
         if(this.totalPage >1 && this.loadingNumber <= this.totalPage) {
@@ -37,6 +37,7 @@
       getArticlesData(){
         const teacherDetail = 'quan.teacherDetail';
         const uid = this.teacherId;
+        console.log(uid)
         const page = 1;
         const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
         API.get(url).then((res)=>{
@@ -61,7 +62,7 @@
       }
     },
     mounted(){
-      this.getArticlesData();
+        this.getArticlesData()
     }
   }
 </script>

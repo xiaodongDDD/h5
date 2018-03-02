@@ -5,7 +5,10 @@
         infinite-scroll-disabled = "false"
         infinite-scroll-distance="10"
         infinite-scroll-immediate-check = true>
-      <li v-for="(tm, index) in teacherMessages" class="follow" @touchstart="getIndex(tm.uid, index)">
+      <li v-for="(tm, index) in teacherMessages"
+          class="follow"
+          @touchstart="getIndex(tm.uid, index)"
+           @click="goDetail(tm.uid)">
         <mt-cell-swipe
                 :right="[{
          content: '取消关注',
@@ -101,6 +104,11 @@
         return timestampToTime(timestamp)
       },
 
+      goDetail(id) {
+        const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?${id}`;
+        JSAction.openUrl(teacherUrl);
+      },
+
       isDel(data) {
         if(data) {
           API.get(`api/?method=quan.unfollow&uid=${this.realDeleteIndex}`).then(res => {
@@ -113,23 +121,23 @@
       loadMore() {
         this.loading = true
         this.loading_number++
-
+        console.log(111)
         if(this.loading_number > this.total_page) {
           this.isAll = '到底啦!'
         }
-
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
           API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
             .then(res => {
               setTimeout(() => {
-                let last = res.response.teacher_list;
+                let last = res.response.teacher_list
                 for(let i = 0; i < last.length; i ++) {
                   this.teacherMessages.push(last[i])
                 }
-                this.loading = false;
+                this.loading = false
               }, 2000)
             })
         }
+
       },
     },
     mounted() {
@@ -224,7 +232,10 @@
     margin-left: 3vw;
   }
   .last-update {
-    margin-left: 30%;
+    display: inline-block;
+    margin-left: 20%;
+    width: 50%;
+    text-align: right;
   }
   .mint-cell-swipe-button {
     line-height: 22px;

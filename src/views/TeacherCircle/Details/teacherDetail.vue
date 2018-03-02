@@ -64,8 +64,8 @@
         },(err)=>{})
       }
     },
-    mounted() {
-      this.getData()
+    created() {
+       this.getData()
     },
     metaInfo: {
       meta: [{
@@ -84,7 +84,7 @@
         <div class="teacher-message">
           <p class="teacher-name">{{teacher.teacher_name}}</p>
           <ul>
-            <li>{{teacher.brief}}</li>
+            <li>{{teacher.brief? `${teacher.brief.substring(0, 50)}...`:teacher.brief}}</li>
             <!--<li>市重点多年初三把关老师</li>-->
             <!--<li>新课标教育中心资深教师</li>-->
           </ul>
@@ -104,7 +104,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped="">
+<style lang="scss" scoped>
    .teacher-detail {
       padding: 4vw;
      background-color: #fff;
@@ -122,7 +122,6 @@
     .teacher-name {
       font-family: PingFangSC-Regular;
       font-size: 17px;
-      margin-top: 2vh;
       height: 3vh;
     }
     ul {
