@@ -135,7 +135,9 @@
       }
     },
     mounted () {
-      let article_id = location.href.split('article_id=')||4
+    	let article_id = window.location.href.split('?')[1] || 4;
+    	console.log(article_id);
+//    let article_id = location.href.split('article_id=')||4
       API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
         .then(res => {
           this.article_comment_list = res.response.comment_list
@@ -157,7 +159,7 @@
         infinite-scroll-distance="10"
         infinite-scroll-immediate-check = true>
       <li v-for="item in article_comment_list" class="comment">
-        <label>{{item.from_username}}<span v-show="item.type == 1"><a style="color: #3A3A3A">回复</a><a>{{item.to_username}}</a></span>:</label>
+        <label>{{item.from_username}}<span v-show="item.type == 1"><a style="color: #AAAAAA">回复</a><a>{{item.to_username}}</a></span>:</label>
         <span>{{item.content}}</span>
         <div class="comment-bar">
           <span class="bar-0">{{getTime(item.create_time)}}</span>
@@ -195,22 +197,25 @@
     background-color: #EDEDED;
   }
   .comment-list-container {
-    height: 530px;
+    /*height: 530px;*/
     overflow: scroll;
   }
   .comment {
     color: #3A3A3A;
-    padding: 1vh 4vw;
+    padding: 1.5vh 4vw;
+    font-size: 17px;
   }
 
   .comment label, .comment span {
     vertical-align: bottom;
+    word-break: break-all;
+    line-height: 20px;
   }
    .comment a {
      color: #000;
    }
   .comment-bar {
-    margin-top: 1vh;
+    margin-top: 1.5vh;
     font-size: 14px;
   }
    .comment-bar .bar-0 {
@@ -220,6 +225,7 @@
    }
    .comment-bar .bar-1 {
      margin-left: 50%;
+     color: #AAAAAA;
    }
    .comment-bar .bar-2 {
      float: right;

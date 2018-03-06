@@ -5,7 +5,7 @@
           infinite-scroll-disabled = "false"
           infinite-scroll-distance="10"
           infinite-scroll-immediate-check = true>
-        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)" @click="goTODetails(fm.type,fm.article_id)">
+        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)" @click="getDetails(fm.type,fm.article_id)">
           <mt-cell-swipe
               :right="[{
          content: '删除收藏',
@@ -47,7 +47,7 @@
   import { API } from '../../service/api'
   import { InfiniteScroll } from 'mint-ui'
   import { timestampToTime } from '../../service/timestamp'
-  import { goTODetails } from '../../service/jsAction'
+//import { goTODetails } from '../../service/jsAction'
   export default {
     name: "favorite",
     components:{
@@ -80,7 +80,8 @@
         loading_number: 1,
         total_page: '',
         realDeleteId: '',
-        fakeDeleteId: ''
+        fakeDeleteId: '',
+        useragent: 0
       }
     },
     methods: {
@@ -104,10 +105,8 @@
         }
       },
       loadMore() {
-        console.log(1111)
-        this.loading = true
-        this.loading_number++
-
+        this.loading = true;
+        this.loading_number++;
         if(this.loading_number > this.total_page) {
           this.isAll = '到底啦!'
         }
@@ -125,8 +124,42 @@
             })
         }
       },
+      getDetails(type,id){
+//    	console.log(id); return false;
+				if(this.useragent == 0){
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          var path = '/article?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          var path = '/audio?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          var path = '/video?' + id;
+		          this.$router.push({path: path});
+		     	}
+				}else{
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          JSAction.openUrl(arurl);
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          JSAction.openUrl(auurl);
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          JSAction.openUrl(viurl);
+		     	}
+				}
+	  	},
     },
-
     mounted() {
       API.get(`/api/?method=quan.collectClick&page=${this.loading_number}`).then(res => {
         res = res.response

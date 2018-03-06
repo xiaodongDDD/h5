@@ -121,33 +121,33 @@
     height: 1.6vh;
     left: 4vw;
   }
-    .article-detail {
-      padding: 2vh 4vw;
-      background-color: #fff;
-      h2 {
-        font-family: PingFangSC-Medium;
-        font-size: 20px;
-        margin-bottom: 2vh;
-      }
-      .author-bar {
-        padding-right: 3vw;
-        color: #222;
-        margin-bottom: 3vh;
-        img {
-          width: 8vw;
-          height: 4.5vh;
-          border-radius: 50%;
-        }
-        span {
-            font-size: 14px;
-          &:last-of-type {
-            float: right;
-          }
-        }
-
-      }
-
-    }
+	.article-detail {
+	  padding: 2vh 4vw;
+	  background-color: #fff;
+	  h2 {
+	    font-family: PingFangSC-Medium;
+	    font-size: 20px;
+	    margin-bottom: 2vh;
+	  }
+	  .author-bar {
+	    padding-right: 3vw;
+	    color: #222;
+	    margin-bottom: 3vh;
+	    img {
+	      width: 8vw;
+	      height: 4.5vh;
+	      border-radius: 50%;
+	    }
+	    span {
+	        font-size: 14px;
+	      &:last-of-type {
+	        float: right;
+	      }
+	    }
+	
+	  }
+	
+	}
 
 
 

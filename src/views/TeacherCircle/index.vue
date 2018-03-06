@@ -85,7 +85,7 @@
                ref="loadmore"
       >
         <ul class="index-list">
-          <li @click="getDetails(item.type)" v-for="item in bottomList">
+          <li @click="getDetails(item.type,item.article_id)" v-for="item in bottomList">
             <div class="list-head">
               <img :src="item.img" class="head-image">
               <span class="head-name">{{item.user_name}}</span>
@@ -180,11 +180,15 @@
             })
           }, 1500)
         }
-
       },
       goTeacherDetail(id) {
-        const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
-        JSAction.openUrl(teacherUrl)
+      	if(this.useragent == 0){
+      		var path = '/teachers?uid' + id;
+		      this.$router.push({path: path});
+      	}else{
+      		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
+        	JSAction.openUrl(teacherUrl)
+      	}
       },
 			userAgent() {
 				var sUserAgent=navigator.userAgent;
@@ -195,7 +199,7 @@
 		            break;
 		        }
 		    }
-		    console.log(this.useragent);
+//		    console.log(this.useragent);
 			},
       getDetails(type,id){
 //    	console.log(id); return false;
@@ -241,12 +245,9 @@
        // console.log('教师详情');
       },
       follow(item){
-//      console.log(item);
-//				this.followList[item].followStatus = '1';
 				let method = 'quan.follow';
 				let str = '&uid=' + item.uid;
 				const fUri = this.basePath + method + str;
-				console.log(fUri);
 				API.get(fUri).then(result => {
 					console.log(JSON.stringify(result));
 					let data = result.response;
@@ -274,7 +275,6 @@
         // this.allLoaded = true;// 若数据已全部获取完毕
         this.$refs.loadmore.onTopLoaded()
       },
-
       more() {
         this.current_page++;
         API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
