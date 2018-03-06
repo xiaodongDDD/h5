@@ -43,9 +43,9 @@
               <span class="content-word">{{item.title}}</span>
               <div class="content-bottom">
                 <span class="content-comment">{{item.comments}}万评论</span>
-                <span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
+                <!--<span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
                 <span class="content-integral" v-else-if="item.points<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>
-                <span class="content-integral" v-else-if="item.points==0">免费</span>
+                <span class="content-integral" v-else-if="item.points==0">免费</span>-->
               </div>
               <img :src="item.cover" class="content-image">
               <img src="../../assets/img/ic_video_play_video.png" class="video-button" v-show="item.type == 3">
@@ -62,7 +62,7 @@
               id="teacher-list"
               @scroll="loadTeacher"
               ref="teacher_list">
-            <li class="recommend-detail" v-for="item in followList" :key="item.id" @click="goTeacherDetail(item.uid)">
+            <li class="recommend-detail" v-for="(item,index) in followList" :key="item.id" @click="goTeacherDetail(item.uid)">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
                 <img :src="item.teacher_img" class="recommend-headImage">
                 <h5>{{item.teacher_name}}</h5>
@@ -70,8 +70,8 @@
               <p>{{item.brief?item.brief.substring(0, 17):''}}</p>
               <div class="recommend-follow" >
                 <p>{{item.followeds}}万人关注</p>
-                <button @click="follow(item)" class="follow-btn" v-if="item.followStatus"><i class="follow-heart"></i><span>关注</span></button>
-                <button @click="follow(item)" class="btn-ok" v-else="item.followStatus"><i class="follow-ok"></i></button>
+                <button @click="follow(item)" class="follow-btn" :class="{'hidden': isFollow}"><i class="follow-heart"></i><span>关注</span></button>
+                <button @click="unFollow(item)" class="btn-ok" :class="{'hidden': !isFollow}"><i class="follow-ok"></i></button>
               </div>
             </li>
             <li class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
@@ -95,9 +95,9 @@
               <span class="content-word">{{item.title}}</span>
               <div class="content-bottom">
                 <span class="content-comment">{{item.comments}}万评论</span>
-                <span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
+                <!--<span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
                 <span class="content-integral" v-else-if="item.points<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>
-                <span class="content-integral" v-else-if="item.points==0">免费</span>
+                <span class="content-integral" v-else-if="item.points==0">免费</span>-->
               </div>
               <img :src="item.cover" class="content-image">
             </div>
@@ -115,6 +115,7 @@
 <script>
   import { API } from '../../service/api'
   import { Toast } from 'mint-ui'
+  import { MessageBox } from 'mint-ui'
   export default {
     name: "index",
     data(){
@@ -157,7 +158,9 @@
             allLoaded: true,
             current_teacher_page: 1,
             total_teacher_page: 1,
-            teacher_loading: '加载中'
+            teacher_loading: '加载中',
+            isFollow: false,
+            useragent: 0
       }
     },
     methods:{
@@ -183,24 +186,54 @@
         const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
         JSAction.openUrl(teacherUrl)
       },
-
+			userAgent() {
+				var sUserAgent=navigator.userAgent;
+		    var mobileAgents=['Android','iPhone','Symbian','WindowsPhone','iPod','BlackBerry','Windows CE'];
+		    for( var i=0;i<mobileAgents.length;i++){
+		        if(sUserAgent.indexOf(mobileAgents[i]) > -1){
+		            this.useragent = 1;
+		            break;
+		        }
+		    }
+		    console.log(this.useragent);
+			},
       getDetails(type,id){
-          switch (type) {
-            case 1:
-              const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
-              JSAction.openUrl(arurl);
-              break;
-            case 2:
-              const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
-              JSAction.openUrl(auurl);
-              break;
-            default:
-              const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-              JSAction.openUrl(viurl);
-          }
+//    	console.log(id); return false;
+				if(this.useragent == 0){
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          var path = '/article?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          var path = '/audio?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          var path = '/video?' + id;
+		          this.$router.push({path: path});
+		     	}
+				}else{
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          JSAction.openUrl(arurl);
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          JSAction.openUrl(auurl);
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          JSAction.openUrl(viurl);
+		     	}
+				}
       },
       goNext(path) {
-         // this.$router.push({path: path})
+         this.$router.push({path: path}); return false;
          let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
          JSAction.openUrl(url)
       },
@@ -208,12 +241,33 @@
        // console.log('教师详情');
       },
       follow(item){
-        // console.log(item)
-        Toast({
-          message: '关注成功',
-          position: 'middle',
-          duration: 2000
-        });
+//      console.log(item);
+//				this.followList[item].followStatus = '1';
+				let method = 'quan.follow';
+				let str = '&uid=' + item.uid;
+				const fUri = this.basePath + method + str;
+				console.log(fUri);
+				API.get(fUri).then(result => {
+					console.log(JSON.stringify(result));
+					let data = result.response;
+					if(data.status == 200){
+						this.isFollow = true;
+						Toast({
+		          message: '关注成功',
+		          position: 'middle',
+		          duration: 2000
+		        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
+				});
+      },
+      unFollow(item) {
+      	console.log(item);
       },
       loadBottom() {
         this.more();
@@ -251,16 +305,25 @@
         }
       },
     },
-    mounted() {
+    mounted() {    	
+//  	this.userAgent();
+    	
       let method = 'quan.index';
-      const url = `http://quan-dev.xiaoheiban.cn/api/?method=${method}&token=59a4e43d0179b04b5056178b`
+			const url = this.basePath + method;
+//    const url =  this.basePath + `method=${method}` + this.token;
       API.get(url).then(res => {
         res = res.response;
-        console.log(res);
-        this.swipeImage = res.ad_list
-        this.indexList = res.article_list.slice(0, 2)
-        this.followList = res.teacher_list
-        this.bottomList = res.article_list.slice(2,res.article_list.length-2)
+//      console.log(JSON.stringify(res));
+        this.swipeImage = res.ad_list;
+        this.indexList = res.article_list.slice(0, 2);
+        
+        this.followList = res.teacher_list;
+        let len = this.followList.length;
+        for(let i=0; i<len; i++){
+        	this.followList[i].followStatus = '0';
+        }
+        
+        this.bottomList = res.article_list.slice(2,res.article_list.length-2);
       })
     },
   }
@@ -325,6 +388,7 @@
     position: absolute;
     left: 15px;
     top: 53px;
+    line-height: 22px;
   }
   .index-list .list-content .content-bottom {
     color: #aaa;
@@ -460,18 +524,25 @@
   .recommend-content .recommend-detail p {
     font-size: 12px;
     color: #888;
-    padding-top: 6px;
+    height: 26px;
+    padding: 6px 6px 0;
+    line-height: 16px;
   }
 
   .recommend-content .recommend-follow {
     position: relative;
-    margin-top: 10px;
+    margin-top: 7px;
   }
 
   .recommend-content .recommend-follow p {
     font-size: 14px;
     color: #aaa;
     padding: 0;
+  }
+  .recommend-content .recommend-detail .recommend-follow p{
+  	height: 20px;
+  	line-height: 20px;
+  	margin-top: 13px;
   }
 
   .recommend-content .recommend-follow .follow-btn {
@@ -480,6 +551,7 @@
     border-radius: 30px;
     width: 65px;
     height: 28px;
+    line-height: 28px;
     font-size: 14px;
     color: #000;
     position: relative;
@@ -489,7 +561,7 @@
   .recommend-content .recommend-follow .follow-btn i {
     left: 10px;
     top: 50%;
-    margin-top: -6px;
+    margin-top: -5px;
   }
 
   .recommend-content .recommend-follow .follow-btn span {
@@ -517,5 +589,14 @@
     width: 60px;
     padding-top: 20%;
     text-align: center;
+  }
+  .mint-swipe-indicator{
+  	opacity: 0.7;
+  }
+  .mint-swipe-indicator.is-active{
+  	/*width: 10px;*/
+  }
+  .hidden{
+  	display: none!important;
   }
 </style>

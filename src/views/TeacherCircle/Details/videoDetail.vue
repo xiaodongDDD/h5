@@ -128,7 +128,7 @@
       getAudios(){
         const detail = 'quan.articleDetail';
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=59a4e43d0179b04b5056178b`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=593d1f70af36444423ebc533`;
         API.get(url).then(res=>{
           this.buyTime = res.response.buy_time;
           this.isBuy = res.response.is_buy;
@@ -136,7 +136,9 @@
         },err=>{})
       },
       getArticleId(){
-        this.articleId = window.location.href.split('?')[1]
+//    	let uhref = window.location.href
+        this.articleId = window.location.href.split('?')[1];
+//    	console.log(this.articleId);
       },
     },
     beforeMount(){
@@ -144,6 +146,7 @@
       this.getAudios()//获取数据
     },
     mounted() {
+    	this.getArticleId();
       let video = document.getElementsByTagName('video')[0];
       video.oncanplay = () => {
         let videoTotalTime = video.duration;

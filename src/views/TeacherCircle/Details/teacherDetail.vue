@@ -26,13 +26,13 @@
         const unfollow = 'quan.unfollow';
         if(this.followImage === heartNO){
           this.followImage = heartOK;
-          const url = `http://quan-dev.xiaoheiban.cn/api/?method=${follow}&uid=${uid}&token=59a4e43d0179b04b5056178b`;
+          const url = `http://quan-dev.xiaoheiban.cn/api/?method=${follow}&uid=${uid}&token=593d1f70af36444423ebc533`;
           API.get(url).then(res=>{
             Toast('关注成功,教师圈将会优先推荐他的文章');
             ++this.teacher.followeds;
           },err=>{})
         }else{
-          const unurl =`http://quan-dev.xiaoheiban.cn/api/?method=${unfollow}&uid=${uid}&token=59a4e43d0179b04b5056178b`;
+          const unurl =`http://quan-dev.xiaoheiban.cn/api/?method=${unfollow}&uid=${uid}&token=593d1f70af36444423ebc533`;
           API.get(unurl).then(res=>{
             this.followImage = heartNO;
             if(this.teacher.followeds>0){
@@ -47,7 +47,7 @@
         const teacherDetail = 'quan.teacherDetail';
         const uid = 2;
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=593d1f70af36444423ebc533`;
         API.get(url).then((res)=>{
           console.log(res);
           if(res.response.is_follow===1){

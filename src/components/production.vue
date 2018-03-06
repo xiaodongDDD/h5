@@ -37,7 +37,6 @@
       getArticlesData(){
         const teacherDetail = 'quan.teacherDetail';
         const uid = this.teacherId;
-        console.log(uid)
         const page = 1;
         const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=59a4e43d0179b04b5056178b`;
         API.get(url).then((res)=>{

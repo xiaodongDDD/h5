@@ -17,6 +17,7 @@ export const API = {
         return res.json();
       },
         err => {
+        	console.log(err);
         return err.json()
         }
       );

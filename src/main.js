@@ -20,6 +20,8 @@ Vue.use(MetaInfo);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
+Vue.prototype.basePath = 'http://quan-dev.xiaoheiban.cn/api/?method=';
+Vue.prototype.token = '&token=593d1f70af36444423ebc533';
 
 /* eslint-disable no-new */
 

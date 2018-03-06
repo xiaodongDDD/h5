@@ -198,6 +198,9 @@
   .basic-message ul li {
     margin-bottom: 1vh;
     font-family: PingFangSC-Light;
+    line-height: 19px;
+    height: 56px;
+    overflow: hidden;
   }
   .teacher-message {
     padding-top: 2vh;
@@ -206,7 +209,10 @@
   .txt-content {
     margin-top: 1vh;
     background-color: #f7f7f7;
-    padding: 0.5vh 3vw;
+    /*padding: 0.5vh 3vw;*/
+   height: 28px;
+   line-height: 28px;
+   padding-left: 10px;
   }
   .txt-content img {
       width: 2.7vw;
@@ -233,9 +239,10 @@
   }
   .last-update {
     display: inline-block;
-    margin-left: 20%;
-    width: 50%;
+    /*margin-left: 20%;*/
+    /*width: 50%;*/
     text-align: right;
+    float: right;
   }
   .mint-cell-swipe-button {
     line-height: 22px;
@@ -244,6 +251,11 @@
     padding: 0 3vw;
     box-sizing: border-box;
     text-align: center;
-    margin-top: 50%;
+    /*margin-top: 50%;*/
+   margin-top: 59px;
+  }
+  .bottom-bar{
+  	color: #aaa;
+  	padding-right: 0;
   }
 </style>

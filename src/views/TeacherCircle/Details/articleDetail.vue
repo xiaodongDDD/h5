@@ -3,6 +3,7 @@
   import charge from  '../../../components/detailComponent/charge.vue'
   import freePrompt from '../../../components/detailComponent/freeIntegrate.vue'
   import { API } from '../../../service/api'
+  import { MessageBox } from 'mint-ui'
   export default {
     components: { comment, charge, freePrompt },
     filters:{
@@ -38,7 +39,7 @@
       getArticles(){
         const detail = 'quan.articleDetail';
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=59a4e43d0179b04b5056178b`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=593d1f70af36444423ebc533`;
         API.get(url).then(res=>{
           console.log(res);
           if(res.response){
@@ -47,7 +48,11 @@
             this.article = Object.assign(res.response.article_detail);
             this.isFree = res.response.article_detail.is_charge===0?true:false
           }else{
-            alert('未找到文章信息')
+            MessageBox({
+						  title: '提示',
+						  message: '未找到文章信息',
+						  showCancelButton: false
+						});
           }
         },err=>{})
       },

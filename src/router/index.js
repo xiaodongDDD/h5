@@ -20,7 +20,7 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/blank',
+      redirect: '/teacherCircle',
       children: [
         {
           path: '/teacherCircle',

@@ -105,7 +105,7 @@
         const search = 'quan.searchClick';
         const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
         const keyword = this.searchContent;
-        API.get(`${baseUrl}${search}&keyword=${keyword}&page=1&token=59a4e43d0179b04b5056178b`).then((res)=>{
+        API.get(`${baseUrl}${search}&keyword=${keyword}&page=1&token=593d1f70af36444423ebc533`).then((res)=>{
           console.log(res);
           this.origin = false;
           this.totalPage = Math.ceil(res.response.total_num/10);
@@ -144,7 +144,7 @@
         const search = 'quan.searchClick';
         const baseUrl = 'http://quan-dev.xiaoheiban.cn/api/?method=';
         const keyword = this.searchContent;
-        API.get(`${baseUrl}${search}&keyword=${keyword}&page=${this.page}&token=59a4e43d0179b04b5056178b`).then((res)=>{
+        API.get(`${baseUrl}${search}&keyword=${keyword}&page=${this.page}&token=593d1f70af36444423ebc533`).then((res)=>{
           console.log('11111');
           this.origin = false;
           if(haveMore){

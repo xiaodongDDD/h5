@@ -131,7 +131,7 @@
       getAudios(){
         const detail = 'quan.articleDetail';
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=59a4e43d0179b04b5056178b`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=593d1f70af36444423ebc533`;
         API.get(url).then(res=>{
           console.log(res);
           this.buyTime = res.response.buy_time;
