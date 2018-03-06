@@ -1,6 +1,6 @@
 // const basic = 'http://quan-dev.xiaoheiban.cn'
 
-const token = '59a4e43d0179b04b5056178b'
+const token = '593d1f70af36444423ebc533'
 export const API = {
   get: (url) => {
     return window.fetch(`${url}&token=${token}`, {

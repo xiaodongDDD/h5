@@ -114,7 +114,6 @@
       loadMore() {
         this.loading = true
         this.current_page++
-        console.log(111)
         if(this.total_page > 1 && this.current_page <= this.total_page) {
           API.get(`api/?method=quan.commentList&article_id=4&page=${this.current_page}&type=2`)
             .then(res => {
@@ -132,6 +131,9 @@
         API.get(`api/?method=quan.commentManage&comment_id=${comment_id}&status=${status}`).then( res => {
           console.log(res)
         } )
+      },
+      isFavorite() {
+      	this.isFavorite = !this.isFavorite;
       }
     },
     mounted () {
@@ -173,7 +175,7 @@
     <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{article_comment_list.length}}</a></span><img
             :src="isFavorite?favoriteImage:favoriteImageNo"
             class="comment-favorite"
-            @click="isFavorite = !isFavorite"></div>
+            @click="isFavorite()"></div>
 
     <div class="comment-box-container" v-show="showCommentBox">
       <div class="comment-box">

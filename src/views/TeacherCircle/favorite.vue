@@ -11,7 +11,7 @@
          content: '删除收藏',
          style: { background: 'red',
          color: '#fff' },
-         handler: cancel,
+         handler: () => cancelFa(fm.article_id),
        }]">
         <div class="favorite">
           <div class="favorite-header">
@@ -110,7 +110,6 @@
         if(this.loading_number > this.total_page) {
           this.isAll = '到底啦!'
         }
-
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
           API.get(`api/?method=quan.collectClick&page=${this.loading_number}`)
             .then(res => {
@@ -159,11 +158,21 @@
 		     	}
 				}
 	  	},
+	  	cancelFa(id) {
+				let method = 'quan.uncollect';
+				let str = '&article_id=' + id;
+				console.log(this.token); return false;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+					console.log(res);
+				})
+	  	}
     },
     mounted() {
       API.get(`/api/?method=quan.collectClick&page=${this.loading_number}`).then(res => {
         res = res.response
-        console.log(res)
+//      console.log(res)
         this.collect_list = res.collect_list
         this.total_page = parseInt(res.collect_sum / 10) + 1
         this.total_page <= 1 ? this.isAll = '':this.isAll = '加载中...'

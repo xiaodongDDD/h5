@@ -70,8 +70,8 @@
               <p>{{item.brief?item.brief.substring(0, 17):''}}</p>
               <div class="recommend-follow" >
                 <p>{{item.followeds}}万人关注</p>
-                <button @click="follow(item)" class="follow-btn" :class="{'hidden': isFollow}"><i class="follow-heart"></i><span>关注</span></button>
-                <button @click="unFollow(item)" class="btn-ok" :class="{'hidden': !isFollow}"><i class="follow-ok"></i></button>
+                <button @click="follow(item,index)" class="follow-btn" v-if='item.is_follow == 0'><i class="follow-heart"></i><span>关注{{item.followStatus}}</span></button>
+                <button @click="unFollow(item,index)" class="btn-ok" v-else><i class="follow-ok"></i></button>
               </div>
             </li>
             <li class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
@@ -184,7 +184,7 @@
       goTeacherDetail(id) {
       	if(this.useragent == 0){
       		var path = '/teachers?uid' + id;
-		      this.$router.push({path: path});
+//		      this.$router.push({path: path});
       	}else{
       		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
         	JSAction.openUrl(teacherUrl)
@@ -244,15 +244,18 @@
       toTeacherDetails(){
        // console.log('教师详情');
       },
-      follow(item){
+      follow(item,index){
 				let method = 'quan.follow';
 				let str = '&uid=' + item.uid;
-				const fUri = this.basePath + method + str;
-				API.get(fUri).then(result => {
-					console.log(JSON.stringify(result));
-					let data = result.response;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+//					console.log(res);
+					let data = res.data.response;
 					if(data.status == 200){
-						this.isFollow = true;
+//						this.isFollow = true;
+						this.followList[index].is_follow = 1;
+//						console.log(this.followList[index].followStatus);
 						Toast({
 		          message: '关注成功',
 		          position: 'middle',
@@ -265,7 +268,7 @@
 						  showCancelButton: false
 						});
 					}
-				});
+				})
       },
       unFollow(item) {
       	console.log(item);
@@ -306,8 +309,6 @@
       },
     },
     mounted() {    	
-//  	this.userAgent();
-    	
       let method = 'quan.index';
 			const url = this.basePath + method;
 //    const url =  this.basePath + `method=${method}` + this.token;
@@ -315,14 +316,8 @@
         res = res.response;
 //      console.log(JSON.stringify(res));
         this.swipeImage = res.ad_list;
-        this.indexList = res.article_list.slice(0, 2);
-        
-        this.followList = res.teacher_list;
-        let len = this.followList.length;
-        for(let i=0; i<len; i++){
-        	this.followList[i].followStatus = '0';
-        }
-        
+        this.indexList = res.article_list.slice(0, 2);        
+        this.followList = res.teacher_list;        
         this.bottomList = res.article_list.slice(2,res.article_list.length-2);
       })
     },
