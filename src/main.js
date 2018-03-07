@@ -22,6 +22,7 @@ Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 Vue.prototype.basePath = 'http://quan-dev.xiaoheiban.cn/api/?method=';
 Vue.prototype.token = '&token=593d1f70af36444423ebc533';
+Vue.prototype.useragent = 0;
 
 /* eslint-disable no-new */
 

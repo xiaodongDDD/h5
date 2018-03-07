@@ -24,7 +24,7 @@
           <!--文章列表-->
             <div>
             <ul class="index-list">
-              <li  v-for="item in articleList" @click="goTODetails(item.type,item.article_id)">
+              <li  v-for="item in articleList" @click="getDetails(item.type,item.article_id)">
                 <div class="list-head">
                   <img :src="item.img" class="head-image">
                   <span class="head-name">{{item.user_name}}</span>
@@ -34,9 +34,9 @@
                   <span class="content-word">{{item.title}}</span>
                   <div class="content-bottom">
                     <span class="content-comment">{{item.comments | comments(item.comments)}}评论</span>
-                    <span class="content-integral" v-if="item.is_charge>0">{{item.points}}积分</span>
+                    <!--<span class="content-integral" v-if="item.is_charge>0">{{item.points}}积分</span>-->
                     <!--<span class="content-integral" v-else-if="item.buyState<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>-->
-                    <span class="content-integral" v-else-if="item.is_charge==0">免费</span>
+                    <!--<span class="content-integral" v-else-if="item.is_charge==0">免费</span>-->
                   </div>
                   <img :src="item.cover" class="content-image">
                   <img src="../../assets/img/ic_video_play_video.png" class="video-button" v-show="item.type == 3">
@@ -119,6 +119,41 @@
           console.log(err);
         })
       },
+      getDetails(type,id){
+//    	console.log(id); return false;
+				if(this.useragent == 0){
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          var path = '/article?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          var path = '/audio?' + id;
+		          this.$router.push({path: path});
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          var path = '/video?' + id;
+		          this.$router.push({path: path});
+		     	}
+				}else{
+					switch (type) {
+		        case 1:
+		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          JSAction.openUrl(arurl);
+		          break;
+		        case 2:
+		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          JSAction.openUrl(auurl);
+		          break;
+		        default:
+		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+		          JSAction.openUrl(viurl);
+		     	}
+				}
+	  	},
       loadBottom:function() {
         // 上拉加载
         this.more();// 上拉触发的分页查询

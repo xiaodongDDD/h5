@@ -3,7 +3,7 @@
     <div class="teacherCircle-container">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
-        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"> <img :src="item.ad_img" alt=""></mt-swipe-item>
+        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"> <img :src="item.ad_img"  alt=""></mt-swipe-item>
       </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
@@ -70,8 +70,8 @@
               <p>{{item.brief?item.brief.substring(0, 17):''}}</p>
               <div class="recommend-follow" >
                 <p>{{item.followeds}}万人关注</p>
-                <button @click="follow(item,index)" class="follow-btn" v-if='item.is_follow == 0'><i class="follow-heart"></i><span>关注{{item.followStatus}}</span></button>
-                <button @click="unFollow(item,index)" class="btn-ok" v-else><i class="follow-ok"></i></button>
+                <button @click.stop="follow(item,index)" class="follow-btn" v-if="item.is_follow == 0"><i class="follow-heart"></i><span>关注</span></button>
+                <button @click.stop="unFollow(item,index)" class="btn-ok" v-else><i class="follow-ok"></i></button>
               </div>
             </li>
             <li class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
@@ -160,7 +160,6 @@
             total_teacher_page: 1,
             teacher_loading: '加载中',
             isFollow: false,
-            useragent: 0
       }
     },
     methods:{
@@ -184,7 +183,7 @@
       goTeacherDetail(id) {
       	if(this.useragent == 0){
       		var path = '/teachers?uid' + id;
-//		      this.$router.push({path: path});
+		      this.$router.push({path: path});
       	}else{
       		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
         	JSAction.openUrl(teacherUrl)
@@ -194,15 +193,13 @@
 				var sUserAgent=navigator.userAgent;
 		    var mobileAgents=['Android','iPhone','Symbian','WindowsPhone','iPod','BlackBerry','Windows CE'];
 		    for( var i=0;i<mobileAgents.length;i++){
-		        if(sUserAgent.indexOf(mobileAgents[i]) > -1){
-		            this.useragent = 1;
-		            break;
-		        }
+	        if(sUserAgent.indexOf(mobileAgents[i]) > -1){
+	            this.useragent = 1;
+	            break;
+	        }
 		    }
-//		    console.log(this.useragent);
 			},
       getDetails(type,id){
-//    	console.log(id); return false;
 				if(this.useragent == 0){
 					switch (type) {
 		        case 1:
@@ -250,12 +247,10 @@
 				const fUri = this.basePath + method + str + this.token;
 				this.axios.get(fUri)
 				.then(res => {
-//					console.log(res);
+					console.log(res);
 					let data = res.data.response;
 					if(data.status == 200){
-//						this.isFollow = true;
 						this.followList[index].is_follow = 1;
-//						console.log(this.followList[index].followStatus);
 						Toast({
 		          message: '关注成功',
 		          position: 'middle',
@@ -270,8 +265,29 @@
 					}
 				})
       },
-      unFollow(item) {
-      	console.log(item);
+      unFollow(item,index) {
+      	let method = 'quan.unfollow';
+				let str = '&uid=' + item.uid;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+					console.log(res);
+					let data = res.data.response;
+					if(data.status == 200){
+						this.followList[index].is_follow = 0;
+						Toast({
+		          message: '取消关注成功',
+		          position: 'middle',
+		          duration: 2000
+		        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
+				})
       },
       loadBottom() {
         this.more();
@@ -309,6 +325,8 @@
       },
     },
     mounted() {    	
+//  	this.userAgent();
+    	
       let method = 'quan.index';
 			const url = this.basePath + method;
 //    const url =  this.basePath + `method=${method}` + this.token;
@@ -316,8 +334,14 @@
         res = res.response;
 //      console.log(JSON.stringify(res));
         this.swipeImage = res.ad_list;
-        this.indexList = res.article_list.slice(0, 2);        
-        this.followList = res.teacher_list;        
+        this.indexList = res.article_list.slice(0, 2);
+        
+        this.followList = res.teacher_list;
+        let len = this.followList.length;
+        for(let i=0; i<len; i++){
+        	this.followList[i].followStatus = '0';
+        }
+        
         this.bottomList = res.article_list.slice(2,res.article_list.length-2);
       })
     },

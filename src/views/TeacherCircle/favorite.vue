@@ -11,7 +11,7 @@
          content: '删除收藏',
          style: { background: 'red',
          color: '#fff' },
-         handler: () => cancelFa(fm.article_id),
+         handler: () => cancelFa(fm.article_id,index),
        }]">
         <div class="favorite">
           <div class="favorite-header">
@@ -24,8 +24,8 @@
               <p>{{fm.title}}</p>
               <div>
                 <span>{{fm.comments}}评论</span>
-                <span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
-                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>
+                <!--<span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
+                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>-->
               </div>
             </div>
             <div class="favorite-image" >
@@ -80,8 +80,7 @@
         loading_number: 1,
         total_page: '',
         realDeleteId: '',
-        fakeDeleteId: '',
-        useragent: 0
+        fakeDeleteId: ''
       }
     },
     methods: {
@@ -158,21 +157,34 @@
 		     	}
 				}
 	  	},
-	  	cancelFa(id) {
+	  	cancelFa(id,index) {
 				let method = 'quan.uncollect';
 				let str = '&article_id=' + id;
-				console.log(this.token); return false;
 				const fUri = this.basePath + method + str + this.token;
 				this.axios.get(fUri)
 				.then(res => {
-					console.log(res);
+					let data = res.data.response;
+					if(data.status == 200){
+						this.collect_list.splice(index,1);
+						Toast({
+		          message: '取消收藏成功',
+		          position: 'middle',
+		          duration: 2000
+		        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
 				})
 	  	}
     },
     mounted() {
       API.get(`/api/?method=quan.collectClick&page=${this.loading_number}`).then(res => {
         res = res.response
-//      console.log(res)
+//      console.log(res);
         this.collect_list = res.collect_list
         this.total_page = parseInt(res.collect_sum / 10) + 1
         this.total_page <= 1 ? this.isAll = '':this.isAll = '加载中...'

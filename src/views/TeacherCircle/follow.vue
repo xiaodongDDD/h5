@@ -13,7 +13,7 @@
                 :right="[{
          content: '取消关注',
          style: { background: 'red', color: '#fff' },
-         handler: cancel
+         handler: () => cancelFo(tm.uid,index)
        }]">
           <div class="follower">
             <div class="basic-message">
@@ -54,6 +54,8 @@
   import { timestampToTime } from '../../service/timestamp'
   import MtSwipeItem from '../../../node_modules/mint-ui/packages/swipe/src/swipe-item'
   import MtCellSwipe from '../../../node_modules/mint-ui/packages/cell-swipe/src/cell-swipe'
+  import { Toast } from 'mint-ui'
+  import { MessageBox } from 'mint-ui'
   export default {
     name: "follow",
     data() {
@@ -103,10 +105,14 @@
       getTimestamp(timestamp) {
         return timestampToTime(timestamp)
       },
-
-      goDetail(id) {
-        const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?${id}`;
-        JSAction.openUrl(teacherUrl);
+      goDetail(id) {        
+        if(this.useragent == 0){
+      		var path = '/teachers?' + id;
+		      this.$router.push({path: path});
+      	}else{
+      		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?${id}`;
+        	JSAction.openUrl(teacherUrl);
+      	}
       },
 
       isDel(data) {
@@ -118,10 +124,33 @@
           //console.log(this.teacherMessages)
         }
       },
+      cancelFo(id,index){
+//    	console.log(id);
+      	let method = 'quan.unfollow';
+				let str = '&uid=' + id;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+					let data = res.data.response;
+					if(data.status == 200){
+						this.teacherMessages.splice(index,1);
+						Toast({
+		          message: '取消关注成功',
+		          position: 'middle',
+		          duration: 2000
+		        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
+				})
+      },
       loadMore() {
         this.loading = true
         this.loading_number++
-        console.log(111)
         if(this.loading_number > this.total_page) {
           this.isAll = '到底啦!'
         }
