@@ -4,7 +4,7 @@
       <!--视频-->
       <div class="v-audio">
         <audio :src="articleDetail.media" ref="media"></audio>
-        <experienceOver :tips="timeOver" v-show="isTryOver" height="160" type="视频"></experienceOver>
+        <!--<experienceOver :tips="timeOver" v-show="isTryOver" height="160" type="视频"></experienceOver>-->
         <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">

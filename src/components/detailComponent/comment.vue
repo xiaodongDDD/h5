@@ -4,28 +4,15 @@
   import { API } from '../../service/api'
   import { timestampToTime } from '../../service/timestamp'
   import { InfiniteScroll } from 'mint-ui'
+  import { Toast } from 'mint-ui'
+  import { MessageBox } from 'mint-ui'
   export default {
     data: () => ({
       isFavorite: true,
       favoriteImage: favoriteOK,
       favoriteImageNo: favorite,
       showCommentBox: false,
-      article_comment_list: [{
-          "comment_id": 2,                    // 评论id
-          "article_id": 1,                    // 文章id
-          "type": 2,                          // 评论类型（1是评论，2是回复）
-          "reply_id": 1,                      // 回复某条评论的评论id
-          "content": "没错，哈哈",             // 回复/评论内容
-          "from_uid": 2,                      // 发表该条评论的用户id
-          "from_username": "曹操",            // 发表该条评论的用户名
-          "from_heading": "",                 // 发表该条评论的用户头像
-          "to_uid": 8,                        // 该条评论所回复的用户id
-          "to_username": "孙策",               // 该条评论所回复的用户名
-          "to_heading": "6,cf963a43e891",     // 该条评论所回复的用户头像
-          "create_time": 1517334171,          // 评论 发表时间
-          "status": 2                         // 评论状态（0删除，1未上架，2已上架，3已下架，4审核不通过）
-        }
-      ],
+      article_comment_list: [],
       commentText: '',
       replyMe: {
         answer: false,
@@ -37,6 +24,7 @@
       current_page: 1,
       originLength:0,//控制长度
       is_show: false,
+      article_id: ''
     }),
     watch:{
       commentText: function (commentText) {
@@ -114,7 +102,6 @@
       loadMore() {
         this.loading = true
         this.current_page++
-        console.log(111)
         if(this.total_page > 1 && this.current_page <= this.total_page) {
           API.get(`api/?method=quan.commentList&article_id=4&page=${this.current_page}&type=2`)
             .then(res => {
@@ -132,11 +119,39 @@
         API.get(`api/?method=quan.commentManage&comment_id=${comment_id}&status=${status}`).then( res => {
           console.log(res)
         } )
+      },
+      isFavorited() {
+      	let method = '';
+      	if(this.isFavorite){
+      		method = 'quan.uncollect';
+      	}else{
+      		method = 'quan.collect';
+      	}
+				let str = '&article_id=' + this.article_id;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+					let data = res.data.response;
+					if(data.status == 200){
+						Toast({
+		          message: data.msg,
+		          position: 'middle',
+		          duration: 2000
+		        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
+				})
+      	this.isFavorite = !this.isFavorite;
       }
     },
     mounted () {
     	let article_id = window.location.href.split('?')[1] || 4;
-    	console.log(article_id);
+    	this.article_id = article_id;
 //    let article_id = location.href.split('article_id=')||4
       API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
         .then(res => {
@@ -173,7 +188,7 @@
     <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{article_comment_list.length}}</a></span><img
             :src="isFavorite?favoriteImage:favoriteImageNo"
             class="comment-favorite"
-            @click="isFavorite = !isFavorite"></div>
+            @click="isFavorited"></div>
 
     <div class="comment-box-container" v-show="showCommentBox">
       <div class="comment-box">

@@ -56,21 +56,7 @@
     data() {
       return{
         title: '收藏',
-        collect_list: [{
-          "uid": 3,
-          "user_name": '李白',
-          "img": 'http://img.jj59.com/upload/userup/109827/1510Z3641-c47.jpg',
-          "article_id": 12,
-          "title": "文章标题",
-          "cover": "http://img.jj59.com/upload/userup/109827/1510Z3641-c47.jpg",  // 文章封面图
-          "media": "http://video.jj59.com/upload/media/109827/12412-ct7.mp4",     // 媒体文件地址
-          "is_charge": 0,               // 文章 是否收费(0免费  1收费)
-          "points": 12,                 // 文章 所需积分(免费的文章 所需积分为0)
-          "create_time": "1517332304",  // 文章创建时间
-          "update_time": "1517332917",  // 文章修改时间
-          "type": 1,                     // 文章类型， 1是图文， 2是语音  3是视屏
-          "comments": 2390              // 文章的评论数
-        }],
+        collect_list: [],
         isAll: '',
         myMessage: {
           isShow: false,
@@ -106,7 +92,7 @@
       loadMore() {
         this.loading = true;
         this.loading_number++;
-        if(this.loading_number > this.total_page) {
+        if(this.loading_number >= this.total_page) {
           this.isAll = '到底啦!'
         }
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
@@ -118,7 +104,7 @@
                   this.collect_list.push(last[i])
                 }
                 this.loading = false;
-              }, 2000)
+              }, 1000)
             })
         }
       },
@@ -182,11 +168,11 @@
 	  	}
     },
     mounted() {
-      API.get(`/api/?method=quan.collectClick&page=${this.loading_number}`).then(res => {
-        res = res.response
-//      console.log(res);
-        this.collect_list = res.collect_list
-        this.total_page = parseInt(res.collect_sum / 10) + 1
+    	let aUrl = `/api/?method=quan.collectClick&page=${this.loading_number}` + this.token;
+      this.axios.get(aUrl).then(res => {
+        res = res.data.response;
+        this.collect_list = res.collect_list;
+        this.total_page = Math.ceil(res.collect_sum / 10);
         this.total_page <= 1 ? this.isAll = '':this.isAll = '加载中...'
       })
     },
@@ -257,7 +243,10 @@
       p {
           font-size: 17px;
            color: #000;
-           width: 90%;
+           width: 100%;
+           line-height: 21px;
+           height: 66px;
+           overflow: hidden;
       }
       div {
         color: #aaa;
@@ -273,5 +262,9 @@
     height: 2vh;
     border: none;
   }
-
+	.loadings{
+		height: 40px;
+		line-height: 40px;
+	}
+	
 </style>

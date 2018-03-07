@@ -13,7 +13,8 @@
       isAll: false,
       followImage: heartNO,
       article:false,
-      teacherSay:''
+      teacherSay:'',
+      uid: ''
     }),
     methods: {
       showAll() {
@@ -42,12 +43,14 @@
           },err=>{});
         }
       },
+      getUid(){
+        this.uid = window.location.href.split('?')[1]
+      },
       //获取教师详情
       getData(){
         const teacherDetail = 'quan.teacherDetail';
-        const uid = 2;
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${uid}&page=${page}&token=593d1f70af36444423ebc533`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${this.uid}&page=${page}&token=593d1f70af36444423ebc533`;
         API.get(url).then((res)=>{
           console.log(res);
           if(res.response.is_follow===1){
@@ -64,8 +67,9 @@
         },(err)=>{})
       }
     },
-    created() {
-       this.getData()
+    mounted() {
+    	this.getUid();
+      this.getData();
     },
     metaInfo: {
       meta: [{

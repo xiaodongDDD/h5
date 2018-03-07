@@ -21,13 +21,15 @@
               <div class="teacher-message">
                 <h2>{{tm.teacher_name}}</h2>
                 <ul>
-                  <li>{{tm.description?`${tm.description.substring(0, 60)}...`:''}}</li>
+                  <!--<li>{{tm.description?`${tm.description.substring(0, 60)}...`:''}}</li>-->
+                  <li>{{tm.description}}</li>
                 </ul>
               </div>
             </div>
             <div class="txt-content" v-show="tm.brief">
               <img src="../../assets/img/ic_txt.png"/>
-              <span>{{tm.brief?`${tm.brief.substring(0, 15)}...`:' '}}</span>
+              <!--<span>{{tm.brief?`${tm.brief.substring(0, 15)}...`:' '}}</span>-->
+              <span>{{tm.brief}}</span>
             </div>
             <div class="bottom-bar">
 
@@ -121,32 +123,33 @@
             console.log(res)
             this.teacherMessages.splice(this.fakeDeleteIndex, 1)
           })
-          //console.log(this.teacherMessages)
         }
       },
       cancelFo(id,index){
-//    	console.log(id);
-      	let method = 'quan.unfollow';
-				let str = '&uid=' + id;
-				const fUri = this.basePath + method + str + this.token;
-				this.axios.get(fUri)
-				.then(res => {
-					let data = res.data.response;
-					if(data.status == 200){
-						this.teacherMessages.splice(index,1);
-						Toast({
-		          message: '取消关注成功',
-		          position: 'middle',
-		          duration: 2000
-		        });
-					}else{
-						MessageBox({
-						  title: '提示',
-						  message: data.msg,
-						  showCancelButton: false
-						});
-					}
-				})
+      	MessageBox.confirm('不再关注这位老师了吗？','确定取消关注吗').then(action => {
+      		let method = 'quan.unfollow';
+					let str = '&uid=' + id;
+					const fUri = this.basePath + method + str + this.token;
+					this.axios.get(fUri)
+					.then(res => {
+						let data = res.data.response;
+						if(data.status == 200){
+							this.teacherMessages.splice(index,1);
+							Toast({
+			          message: '取消关注成功',
+			          position: 'middle',
+			          duration: 2000
+			        });
+						}else{
+							MessageBox({
+							  title: '提示',
+							  message: data.msg,
+							  showCancelButton: false
+							});
+						}
+					})
+      	});
+      	
       },
       loadMore() {
         this.loading = true
@@ -170,13 +173,12 @@
       },
     },
     mounted() {
-      API.get(`api/?method=quan.followClick&page=${this.loading_number}`).then(res => {
-        res = res.response
-        console.log(res)
+    	let url = `api/?method=quan.followClick&page=${this.loading_number}` + this.token;
+      this.axios.get(url).then(res => {
+        res = res.data.response
         this.teacherMessages = res.teacher_list
-        this.total_page = parseInt(res.follow_sum / 10) + 1
+        this.total_page = Math.ceil(res.follow_sum / 10);
       })
-
     },
     metaInfo: {
       title: "关注",
@@ -242,6 +244,7 @@
    height: 28px;
    line-height: 28px;
    padding-left: 10px;
+   overflow: hidden;
   }
   .txt-content img {
       width: 2.7vw;
@@ -286,5 +289,9 @@
   .bottom-bar{
   	color: #aaa;
   	padding-right: 0;
+  }
+  .loadings{
+  	height: 40px;
+  	line-height: 40px;
   }
 </style>

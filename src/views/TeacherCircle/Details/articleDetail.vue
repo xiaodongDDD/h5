@@ -40,13 +40,14 @@
         const detail = 'quan.articleDetail';
         const page = 1;
         const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=593d1f70af36444423ebc533`;
-        API.get(url).then(res=>{
-          console.log(res);
-          if(res.response){
-            this.isBuy = res.response.is_buy;
-            this.buyTime = res,response.buy_time;
-            this.article = Object.assign(res.response.article_detail);
-            this.isFree = res.response.article_detail.is_charge===0?true:false
+        this.axios.get(url).then(res => {
+//        console.log(res);return false;
+					let data = res.data.response;
+          if(data.status == 200){
+            this.isBuy = data.is_buy;
+            this.buyTime = data.buy_time;
+            this.article = Object.assign(data.article_detail);
+            this.isFree = data.article_detail.is_charge===0?true:false
           }else{
             MessageBox({
 						  title: '提示',
@@ -71,7 +72,7 @@
 
 <template>
   <div style="position: relative">
-    <img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy>=1">
+    <!--<img src="../../../assets/img/ic_buy.png" class="buy-tab" v-show="isBuy>=1">-->
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
@@ -80,7 +81,7 @@
       <span>{{article.create_time | timestampToMD(article.create_time)}}</span>
     </div>
     <div style="position: relative">
-      <div v-html="article.show_content?article.show_content:article.content"></div>
+      <div class="article-content" v-html="article.show_content?article.show_content:article.content"></div>
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
@@ -142,13 +143,14 @@
 	        font-size: 14px;
 	      &:last-of-type {
 	        float: right;
+	        line-height: 30px;
+	        color: #AAAAAA;
 	      }
 	    }
 	
 	  }
-	
 	}
-
-
-
+	.article-content{
+		line-height: 24px;
+	}
 </style>

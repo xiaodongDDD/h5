@@ -55,7 +55,7 @@
       </div>
 
       <!--明师推荐-->
-      <div class="recommend-list">
+      <div class="recommend-list" v-show="followList.length > 0">
         <h5 class="recommend-title">不可错过的名师推荐</h5>
         <div class="recommend-all">
           <ul class="recommend-content"
@@ -82,7 +82,8 @@
       <mt-loadmore
               :bottom-method="loadBottom"
               :bottom-all-loaded="allLoaded"
-               ref="loadmore"
+              :autoFill = false
+              ref="loadmore"
       >
         <ul class="index-list">
           <li @click="getDetails(item.type,item.article_id)" v-for="item in bottomList">
@@ -105,7 +106,7 @@
         </ul>
         <div slot="bottom" class="mint-loadmore-bottom">
           <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↓</span>
-          <span v-show="bottomStatus === 'loading'">Loading...</span>
+          <span v-show="bottomStatus === 'loading'">加载中...</span>
         </div>
       </mt-loadmore>
     </div>
@@ -121,38 +122,9 @@
     data(){
           return {
             swipeImage: [],
-            followList:[
-              { uid:1,
-                followeds:'',
-                teacher_name:'',
-                teacher_img:'',
-                brief: ''},
-              // {id:5,followStatus:true,followNumber:'12'},
-            ],
-            indexList:[{
-                cover:'',
-                user_name:'李白',
-                create_time:'11：00',
-                comments:1.2,
-                points:30,
-                content:'',
-                type: '',
-                media: '',
-                title:'高中化学教育教学过程的优化策略及提升',
-                img: ''}],
-            bottomList:[{
-                cover: '',
-                user_name: '李白',
-                create_time: '',
-                people: 1.2,
-                img: '',
-                is_charge: '',
-                points: 30,
-                content: '',
-                title: '高中化学教育教学过程的优化策略及提升',
-                type: "",
-                media: ''},
-             ],
+            followList:[],
+            indexList:[],
+            bottomList:[],
             current_page: 1,
             bottomStatus: 'loading',
             allLoaded: true,
@@ -160,6 +132,7 @@
             total_teacher_page: 1,
             teacher_loading: '加载中',
             isFollow: false,
+            teacherPage: '',
       }
     },
     methods:{
@@ -167,17 +140,17 @@
       loadTeacher() {
         let scroll_distance = document.documentElement.clientWidth
         let document_distance = this.$refs.loading.getBoundingClientRect().left
-        if(this.current_teacher_page > this.total_teacher_page) {
+        
+        if(this.current_teacher_page >= this.teacherPage) {
           this.teacher_loading = '没有啦!'
         }
-        if(scroll_distance - document_distance === 60 && this.current_teacher_page <= this.total_teacher_page) {
+        if(scroll_distance - document_distance === 80 && this.current_teacher_page < this.teacherPage) {
           setTimeout(() => {
             this.current_teacher_page++
             API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
               this.followList = this.followList.concat(res.response.teacher_list)
-              this.total_teacher_page = parseInt(res.response.teacher_sum/10)
             })
-          }, 1500)
+          }, 1000)
         }
       },
       goTeacherDetail(id) {
@@ -200,43 +173,44 @@
 		    }
 			},
       getDetails(type,id){
+      	console.log(type);
 				if(this.useragent == 0){
 					switch (type) {
-		        case 1:
-		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
-		          var path = '/article?' + id;
+		        case '1':
+		          let path = '/article?' + id;
 		          this.$router.push({path: path});
 		          break;
-		        case 2:
-		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
-		          var path = '/audio?' + id;
-		          this.$router.push({path: path});
+		        case '2':
+		          let path1 = '/audio?' + id;
+		          this.$router.push({path: path1});
 		          break;
-		        default:
-		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-		          var path = '/video?' + id;
-		          this.$router.push({path: path});
+		        case '3':
+		          let path2 = '/video?' + id;
+		          this.$router.push({path: path2});
 		     	}
 				}else{
 					switch (type) {
-		        case 1:
+		        case '1':
 		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
 		          JSAction.openUrl(arurl);
 		          break;
-		        case 2:
+		        case '2':
 		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
 		          JSAction.openUrl(auurl);
 		          break;
-		        default:
+		        case '3':
 		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
 		          JSAction.openUrl(viurl);
 		     	}
 				}
       },
       goNext(path) {
-         this.$router.push({path: path}); return false;
-         let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
-         JSAction.openUrl(url)
+				if(this.useragent == 0){
+					this.$router.push({path: path});
+				}else{
+					let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
+         	JSAction.openUrl(url)
+				}
       },
       toTeacherDetails(){
        // console.log('教师详情');
@@ -291,8 +265,8 @@
       },
       loadBottom() {
         this.more();
-        // this.allLoaded = true;// 若数据已全部获取完毕
-        this.$refs.loadmore.onTopLoaded()
+//      this.allLoaded = true;// 若数据已全部获取完毕
+        this.$refs.loadmore.onTopLoaded();
       },
       more() {
         this.current_page++;
@@ -325,24 +299,15 @@
       },
     },
     mounted() {    	
-//  	this.userAgent();
-    	
       let method = 'quan.index';
 			const url = this.basePath + method;
-//    const url =  this.basePath + `method=${method}` + this.token;
       API.get(url).then(res => {
         res = res.response;
-//      console.log(JSON.stringify(res));
         this.swipeImage = res.ad_list;
         this.indexList = res.article_list.slice(0, 2);
-        
         this.followList = res.teacher_list;
-        let len = this.followList.length;
-        for(let i=0; i<len; i++){
-        	this.followList[i].followStatus = '0';
-        }
-        
-        this.bottomList = res.article_list.slice(2,res.article_list.length-2);
+        this.teacherPage = Math.ceil(res.teacher_sum / 10);
+        this.bottomList = res.article_list.slice(2,res.article_list.length);
       })
     },
   }
@@ -605,9 +570,10 @@
   }
 
   .teacher_loading {
-    width: 60px;
+    width: 80px;
     padding-top: 20%;
     text-align: center;
+    font-size: 14px;
   }
   .mint-swipe-indicator{
   	opacity: 0.7;
