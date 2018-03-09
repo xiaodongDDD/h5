@@ -20,10 +20,11 @@ export default {
 //      console.log(document.cookie)
 //    })
 //  },
-  beforeCreate(){
-    API.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
+  /*beforeCreate(){
+  	var url = this.basePath + this.token;
+    API.get(url).then(res=>{
     },err=>{})
-  }
+  }*/
 }
 </script>
 
