@@ -287,6 +287,7 @@
   color: #000000;
   letter-spacing: 0px;
   line-height: 25px;
+  word-break: break-word;
 }
 .v-main .v-con .con-img{
   margin: 15px 0;

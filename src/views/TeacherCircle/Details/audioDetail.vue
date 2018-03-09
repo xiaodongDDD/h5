@@ -131,7 +131,7 @@
       getAudios(){
         const detail = 'quan.articleDetail';
         const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1&token=593d1f70af36444423ebc533`;
+        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${detail}&article_id=${this.articleId}&page=${page}&type=1`;
         API.get(url).then(res=>{
           console.log(res);
           this.buyTime = res.response.buy_time;
@@ -290,6 +290,7 @@
     color: #000000;
     letter-spacing: 0px;
     line-height: 25px;
+    word-break: break-word;
   }
   .v-main .v-con .con-img{
     margin: 15px 0;

@@ -150,7 +150,7 @@
             API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
               this.followList = this.followList.concat(res.response.teacher_list)
             })
-          }, 1000)
+          }, 500)
         }
       },
       goTeacherDetail(id) {
@@ -162,16 +162,6 @@
         	JSAction.openUrl(teacherUrl)
       	}
       },
-			userAgent() {
-				var sUserAgent=navigator.userAgent;
-		    var mobileAgents=['Android','iPhone','Symbian','WindowsPhone','iPod','BlackBerry','Windows CE'];
-		    for( var i=0;i<mobileAgents.length;i++){
-	        if(sUserAgent.indexOf(mobileAgents[i]) > -1){
-	            this.useragent = 1;
-	            break;
-	        }
-		    }
-			},
       getDetails(type,id){
       	console.log(type);
 				if(this.useragent == 0){
@@ -298,9 +288,10 @@
         }
       },
     },
-    mounted() {    	
+    mounted() {
       let method = 'quan.index';
 			const url = this.basePath + method;
+//			this.axios.
       API.get(url).then(res => {
         res = res.response;
         this.swipeImage = res.ad_list;

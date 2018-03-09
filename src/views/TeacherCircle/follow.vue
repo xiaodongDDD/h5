@@ -173,7 +173,8 @@
       },
     },
     mounted() {
-    	let url = `api/?method=quan.followClick&page=${this.loading_number}` + this.token;
+//  	let url = `api/?method=quan.followClick&page=${this.loading_number}` + this.token;
+			let url = this.basePath + `quan.followClick&page=${this.loading_number}` + this.token;
       this.axios.get(url).then(res => {
         res = res.data.response
         this.teacherMessages = res.teacher_list

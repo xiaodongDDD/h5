@@ -14,21 +14,17 @@
       showCommentBox: false,
       article_comment_list: [],
       commentText: '',
-      replyMessage: {
+      replyMe: {
         answer: false,
         author: '',
         comment_id: '',
         article_id: '',
-        content: '',
-        isReplyOther: false
       },
       total_page: '',
       current_page: 1,
       originLength:0,//控制长度
       is_show: false,
-      article_id: '',
-      loadList: [],
-      allLoaded: false
+      article_id: ''
     }),
     watch:{
       commentText: function (commentText) {
@@ -40,53 +36,53 @@
       }
     },
     methods: {
-      openCommentBox(type,username,commentid) {
-      	if(type == 1){
-      		this.replyMessage.isReplyOther = true;
-      		this.replyMessage.comment_id = commentid;
-      		this.commentText = `回复${username}:`;
-      		this.replyMessage.author = username;
-      	}else{
-      		this.replyMessage.isReplyOther = false;
-      		this.replyMessage.article_id = this.article_id;
-      		this.commentText = '';
-      	}
-      	this.showCommentBox = true;
+      openCommentBox(name = '', comment_id = '') {
+        this.showCommentBox = true
+        this.replyMe.author = name
+        this.replyMe.answer = !!name
+     //   console.log(this.replyMe.answer)
+        this.replyMe.comment_id = comment_id
+        this.commentText = name ? `回复${name}:   ` : ''
       },
-      publishComment() {
-      	let method = '';
-      	let obj = {};
-        if(this.replyMessage.isReplyOther){
-        	let spliceNum = 3 + this.replyMessage.author.length;
-          this.replyMessage.content = this.commentText.substring(spliceNum);
-          method = 'quan.commentReply';
-        	obj.comment_id = this.replyMessage.comment_id;
-        }else{
-        	this.replyMessage.content = this.commentText;
-        	method = 'quan.comment';
-        	obj.article_id = this.replyMessage.article_id;
+      publishComment(article_id = '') {
+        if (this.replyMe.answer) {
+          let spliceNum = 3 + this.replyMe.author.length;
+          this.commentText = this.commentText.substring(spliceNum);
         }
-        obj.content = this.replyMessage.content;
-        method = this.basePath + method + this.token;
-//      console.log(obj); 
-				this.axios.post(method,obj).then( res => {
-//					console.log(res);
-					let data = res.data.response;
-					if(data.status == 200){
-						Toast({
-		          message: data.msg,
-		          position: 'middle',
-		          duration: 2000
-		        });
-		        this.showCommentBox = false; 
-					}else{
-						MessageBox({
-						  title: '提示',
-						  message: data.msg,
-						  showCancelButton: false
-						});
-					}
-				})
+        const myReply = {
+          isReply: this.replyMe.answer,
+          rName: this.replyMe.author,
+          content: this.commentText,
+          from_uid: 2,                      // 发表该条评论的用户id
+          from_username: "aa",            // 发表该条评论的用户名
+          from_heading: "",                 // 发表该条评论的用户头像
+          to_uid: 8, // 该条评论所回复的用户id
+          type: 1,
+          to_username: "孙策",               // 该条评论所回复的用户名
+          to_heading: "6,cf963a43e891",     // 该条评论所回复的用户头像
+          create_time: 1517334171,          // 评论 发表时间
+          status: 2
+        }
+        let obj = {};
+        obj.article_id = article_id;
+        obj.content = myReply.content;
+        console.log(obj); 
+        if (!myReply.isReply) {
+        API.post('api/?method=quan.comment', obj)
+          .then(res => {
+          	console.log(res)
+            myReply.type = 2
+          })
+      } else {
+         API.post(`api/?method=quan.commentReply`, {
+           comment_id: this.replyMe.comment_id,
+           content: myReply.content
+         }).then(res => {
+           myReply.type = 1
+         })
+        }
+        this.article_comment_list.push(myReply);
+        this.showCommentBox = false
       },
       commentStatus(statusId) {
         switch (statusId) {
@@ -108,7 +104,6 @@
       loadMore() {
         this.loading = true
         this.current_page++
-        console.log('scroll')
         if(this.total_page > 1 && this.current_page <= this.total_page) {
           API.get(`api/?method=quan.commentList&article_id=4&page=${this.current_page}&type=2`)
             .then(res => {
@@ -122,30 +117,10 @@
             })
         }
       },
-      isUp(comment_id, status,index) {
-//    	console.log(this.article_comment_list); return false;
+      isUp(comment_id, status) {
         API.get(`api/?method=quan.commentManage&comment_id=${comment_id}&status=${status}`).then( res => {
-//        console.log(res); return false;
-					let data = res.response;
-					if(data.status == 200){
-						if(status == '1'){
-							this.article_comment_list[index].status = '2';
-						}else if(status == '2'){
-							this.article_comment_list[index].status = '3';
-						}
-						Toast({
-		          message: '操作成功',
-		          position: 'middle',
-		          duration: 2000
-		       });
-					}else{
-						MessageBox({
-						  title: '提示',
-						  message: data.msg,
-						  showCancelButton: false
-						});
-					}
-        })
+          console.log(res)
+        } )
       },
       isFavorited() {
       	let method = '';
@@ -174,14 +149,12 @@
 					}
 				})
       	this.isFavorite = !this.isFavorite;
-     },
-     loadBottom() {
-     	console.log(11111)
-     }
+      }
     },
     mounted () {
-    	let article_id = window.location.href.split('?')[1];
+    	let article_id = window.location.href.split('?')[1] || 4;
     	this.article_id = article_id;
+//    let article_id = location.href.split('article_id=')||4
       API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
         .then(res => {
           this.article_comment_list = res.response.comment_list
@@ -202,19 +175,19 @@
         infinite-scroll-disabled = "false"
         infinite-scroll-distance="10"
         infinite-scroll-immediate-check = true>
-	      <li v-for="(item,index) in article_comment_list" class="comment">
-	        <label>{{item.from_username}}<span v-show="item.type == 2"><a style="color: #AAAAAA">回复</a><a>{{item.to_username}}</a></span>:</label>
-	        <span class="contents">{{item.content}}</span>
-	        <div class="comment-bar">
-	          <span class="bar-0">{{getTime(item.create_time)}}</span>
-	          <span class="bar-1" v-show="is_show === 1" @click="isUp(item.comment_id, item.status,index)"><span v-if='item.status != 1'>{{commentStatus(item.status)}}</span><span v-else class='blcakt'>{{commentStatus(item.status)}}</span></span>
-	          <span class="bar-2" @click="openCommentBox(1,item.from_username, item.comment_id)">回复</span>
-	        </div>
-	      </li>
-	    </ul>	    
+      <li v-for="item in article_comment_list" class="comment">
+        <label>{{item.from_username}}<span v-show="item.type == 1"><a style="color: #AAAAAA">回复</a><a>{{item.to_username}}</a></span>:</label>
+        <span>{{item.content}}</span>
+        <div class="comment-bar">
+          <span class="bar-0">{{getTime(item.create_time)}}</span>
+          <span class="bar-1" v-show="is_show === 2" @click="isUp(item.comment_id, item.status)">{{commentStatus(item.status)}}</span>
+          <span class="bar-2" @click="openCommentBox(item.from_username, item.comment_id)">回复</span>
+        </div>
+      </li>
+    </ul>
     </div>
     <div class="comment-bottom">————到底啦————</div>
-    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox(2)" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{article_comment_list.length}}</a></span><img
+    <div class="reply-bar"><input placeholder="写评论" @click="openCommentBox('')" readonly="readonly"><span><img src="../../assets/img/comment_ic.png"><a style="vertical-align: top">{{article_comment_list.length}}</a></span><img
             :src="isFavorite?favoriteImage:favoriteImageNo"
             class="comment-favorite"
             @click="isFavorited"></div>
@@ -223,10 +196,9 @@
       <div class="comment-box">
         <h2>发表评论</h2>
         <textarea placeholder="请输入评论内容（6-300字）" v-model="commentText"></textarea>
-        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()" ref="publish">发表</button></div>
+        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment(4)" ref="publish">发表</button></div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -254,10 +226,7 @@
   .comment label, .comment span {
     vertical-align: bottom;
     word-break: break-all;
-    line-height: 24px;
-  }
-  .comment .contents{
-  	color: #AAAAAA;
+    line-height: 20px;
   }
    .comment a {
      color: #000;
@@ -284,10 +253,9 @@
     font-size: 14px;
     color: #AAA;
     text-align: center;
-    /*margin: 4vh 0;*/
+    margin: 4vh 0;
     padding-bottom: 4vh;
     box-sizing: border-box;
-    margin: 20px 0 50px;
   }
   .reply-bar {
     padding: 2vh 4vw;
@@ -296,7 +264,6 @@
     background-color: #fff;
     width: 100%;
     box-sizing: border-box;
-    border-top: 1px solid #EDEDED;
   }
   .reply-bar input {
     background: #F7F7F7;
@@ -362,8 +329,5 @@
     width: 60px;
     height: 30px;
     color: #AAA;
-  }
-  .blcakt{
-  	color: #000;
   }
 </style>

@@ -168,7 +168,8 @@
 	  	}
     },
     mounted() {
-    	let aUrl = `/api/?method=quan.collectClick&page=${this.loading_number}` + this.token;
+//  	let aUrl = `/api/?method=quan.collectClick&page=${this.loading_number}` + this.token;
+			let aUrl = this.basePath + `quan.collectClick&page=${this.loading_number}` + this.token;
       this.axios.get(aUrl).then(res => {
         res = res.data.response;
         this.collect_list = res.collect_list;
