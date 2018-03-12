@@ -211,6 +211,9 @@
 		.favorites{
 			width: 100%;
 		}
+		li{
+			margin-bottom: 5px;
+		}
 		.favorite-header{
 			width:100%;
 			
