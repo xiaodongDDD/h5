@@ -81,12 +81,18 @@
 
           this.articleList = this.articleList.concat(res.response.article_list)
           this.totalPage = Math.ceil(res.response.article_sum/10);
+          console.log(this.totalPage)
+          if(this.totalPage == 0){
+            this.isAll = '暂无文章!'
+            this.loading = true;
+          }
           console.log(this.totalPage+'pppppp');
         }, (err) => {
         })
       },
 
       loadMore() {
+        console.log();
         this.loading = false;
         this.loadingNumber++;
         if (this.loadingNumber > this.totalPage) {
@@ -101,24 +107,39 @@
 
       },
       goArticleDetail(type, id) {
-        switch (type) {
-          case 1:
-            const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
-            JSAction.openUrl(arurl);
-            break;
-          case 2:
-            const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
-            JSAction.openUrl(auurl);
-            break;
-          default:
-            const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-            JSAction.openUrl(viurl);
+        if(this.useragent == 0){
+          switch (type) {
+            case '1':
+              let path = '/article?' + id;
+              this.$router.push({path: path});
+              break;
+            case '2':
+              let path1 = '/audio?' + id;
+              this.$router.push({path: path1});
+              break;
+            case '3':
+              let path2 = '/video?' + id;
+              this.$router.push({path: path2});
+          }
+        }else{
+          switch (type) {
+            case '1':
+              const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+              JSAction.openUrl(arurl);
+              break;
+            case '2':
+              const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+              JSAction.openUrl(auurl);
+              break;
+            case '3':
+              const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+              JSAction.openUrl(viurl);
+          }
         }
       }
 
     },
     mounted() {
-      this.getUid();
       this.uid = window.location.href.split('?')[1]
       this.getData(1);
     },
