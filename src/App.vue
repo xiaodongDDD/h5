@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <div>
     <router-view/>
   </div>
 </template>
 
 <script>
-  import { API } from './service/api'
+//import { API } from './service/api'
 export default {
   name: 'App',
   components:{
@@ -20,10 +20,11 @@ export default {
 //      console.log(document.cookie)
 //    })
 //  },
-  beforeCreate(){
-    API.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
-    },err=>{})
-  }
+//beforeCreate(){
+//	API.get('http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b').then(res=>{
+//  },err=>{})
+//   this.$router.push({path:'http://quan-dev.xiaoheiban.cn?token=59a4e43d0179b04b5056178b'})
+//}
 }
 </script>
 

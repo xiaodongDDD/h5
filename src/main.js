@@ -25,7 +25,7 @@ Vue.prototype.token = '&token=593d1f70af36444423ebc533';
 //Vue.prototype.token = '&token=56f348170cf2cecf22cb8ce0';
 
 Vue.prototype.useragent = 0;
-
+ 
 /* eslint-disable no-new */
 
 router.beforeEach((to, from, next) => {
