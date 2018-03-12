@@ -8,7 +8,7 @@ module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     proxyTable: {
       '/':{
         target: 'http://quan-dev.xiaoheiban.cn/',

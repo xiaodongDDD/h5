@@ -290,7 +290,8 @@
     },
     mounted() {
       let method = 'quan.index';
-			const url = this.basePath + method;
+			const url = this.basePath + method + this.token;
+			console.log(url);
 //			this.axios.
       API.get(url).then(res => {
         res = res.response;
