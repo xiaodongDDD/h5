@@ -291,16 +291,16 @@
     mounted() {
       let method = 'quan.index';
 			const url = this.basePath + method + this.token;
-			console.log(url);
+//			console.log(url);
 //			this.axios.
-      API.get(url).then(res => {
+      /*API.get(url).then(res => {
         res = res.response;
         this.swipeImage = res.ad_list;
         this.indexList = res.article_list.slice(0, 2);
         this.followList = res.teacher_list;
         this.teacherPage = Math.ceil(res.teacher_sum / 10);
         this.bottomList = res.article_list.slice(2,res.article_list.length);
-      })
+      })*/
     },
   }
 </script>

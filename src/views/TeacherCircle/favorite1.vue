@@ -1,44 +1,44 @@
 <template>
-	<section>
-		<div class="favorite-container">
-			<ul v-infinite-scroll="loadMore"
-	          infinite-scroll-disabled = "false"
-	          infinite-scroll-distance="10"
-	          infinite-scroll-immediate-check = true>
-          		<li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)" @click="getDetails(fm.type,fm.article_id)">
-          			<mt-cell-swipe
-		              :right="[{
-				          content: '删除收藏',
-				          style: { background: 'red', color: '#fff' },
-				          handler: () => cancelFa(fm.article_id,index),
-		       		}]">
-			       		<div class="favorites">
-			       			<div class="favorite-header">
-			       				<img :src="fm.img">
-					            <span>{{fm.user_name}}</span>
-					            <span>{{getTimestamp(fm.create_time)}}</span>
-			       			</div>
-			       			<div class="favorite-content">
-			       				<div class="favorite-title">
-					              <p>{{fm.title}}</p>
-					              <div class="favorite-comments">
-					                <span>{{fm.comments}}评论</span>
-					                <!--<span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
-					                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>-->
-					              </div>
-					            </div>
-					            <div class="favorite-image" >
-					              <img :src="fm.cover"/>
-					            </div>
-			       			</div>
-			       		</div>
-		       		</mt-cell-swipe>
-          		</li>
-			</ul>
-			<div style="text-align: center" class="loadings">{{isAll}}</div>
-      		<Prompt :messages="myMessage" v-on:ensure="isDel"></Prompt>
-		</div>
-	</section>
+  <section>
+    <div class="favorite favorite-container">
+      <ul v-infinite-scroll="loadMore"
+          infinite-scroll-disabled = "false"
+          infinite-scroll-distance="10"
+          infinite-scroll-immediate-check = true>
+        <li v-for="(fm, index) in collect_list" @touchstart="getIndex(fm.article_id, index)" @click="getDetails(fm.type,fm.article_id)">
+          <mt-cell-swipe
+              :right="[{
+		          content: '删除收藏',
+		          style: { background: 'red', color: '#fff' },
+		          handler: () => cancelFa(fm.article_id,index),
+       		}]">
+	        <div class="favorite">
+	          <div class="favorite-header">
+	            <img :src="fm.img">
+	            <span>{{fm.user_name}}</span>
+	            <span>{{getTimestamp(fm.create_time)}}</span>
+	          </div>
+	          <div class="favorite-content">
+	            <div class="favorite-title">
+	              <p>{{fm.title}}</p>
+	              <div>
+	                <span>{{fm.comments}}评论</span>
+	                <!--<span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
+	                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>-->
+	              </div>
+	            </div>
+	            <div class="favorite-image" >
+	              <img :src="fm.cover"/>
+	            </div>
+	          </div>
+	        </div>
+	      </mt-cell-swipe>
+        </li>
+      </ul>
+      <div style="text-align: center" class="loadings">{{isAll}}</div>
+      <Prompt :messages="myMessage" v-on:ensure="isDel"></Prompt>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -191,8 +191,8 @@
   }
 </script>
 
-<style lang="less" type="text/less">
-	.mint-cell-wrapper {
+<style lang="scss">
+  .mint-cell-wrapper {
     padding: 0;
   }
   .mint-cell-value {
@@ -207,61 +207,72 @@
     line-height: 22px;
     font-size: 20px;
   }
-	.favorite-container{
-		.favorites{
-			width: 100%;
-		}
-		.favorite-header{
-			width:100%;
-			
-			img{
-				width: 28px;
-				height: 28px;
-				border-radius: 50%;
-			}
-			
-			span:last-child{
-				float: right;
-				line-height: 28px;
-				display: inline-block;
-			}
-		}
-		.favorite-content{
-	    display: flex;
-	    justify-content: space-between;
-	    margin-top: 10px;
-			img{
-				width: 86px;
-				height: 86px;
-			}
-			
-			.favorite-title{
-				float: left;
-	      margin-right: 15px;
-	      display: flex;
-	      align-content: space-between;
-	      flex-wrap: wrap;
-				line-height: 21px;
-				position: relative;
-				
-				p{
-					font-size: 17px;
-					color: #000000;
-					height: 63px;
-					overflow: hidden;
-				}
-				.favorite-comments{
-					position: absolute;
-					bottom: 0;
-				}
-			}
-			.favorite-image{
-				float: right;
-			}
-		}
-	}
+  .favorite {
+    width: 100%;
+    ul {
+      li {
+        margin-bottom: 1vh;
+      }
+    }
+  }
+  .favorite-header {
+    font-size: 14px;
+    color: #aaa;
+    img {
+      width: 8vw;
+      height: 8vw;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+    }
+    span {
+      &:last-of-type {
+        float: right;
+      }
+    }
+  }
+  .favorite-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5vh;
+    img {
+      width: 22vw;
+      height: 22vw;
+      border: 1px solid #ccc;
+    }
+    .favorite-title {
+      margin-right: 5vw;
+      display: flex;
+      align-content: space-between;
+      flex-wrap: wrap;
+      p {
+          font-size: 17px;
+           color: #000;
+           width: 100%;
+           line-height: 21px;
+           height: 66px;
+           overflow: hidden;
+      }
+      div {
+        color: #aaa;
+        font-size: 14px;
+        span {
+          margin-right: 5vw;
+        }
+      }
+    }
+  }
+  .have img {
+    width: 2.7vw;
+    height: 2vh;
+    border: none;
+  }
 	.loadings{
 		height: 40px;
 		line-height: 40px;
+	}
+	.favorite-container{
+		width: 100%!important;
+		/*height: auto!important;*/
+		margin-right: 0!important;
 	}
 </style>

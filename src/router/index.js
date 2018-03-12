@@ -36,16 +36,25 @@ export default new Router({
       path: '/favorite',
       name: 'Favorite',
       component: Favorite,
+      meta: {
+        title:"收藏"
+      }
     },
     {
       path: '/follow',
       name: 'Follow',
       component: Follow,
+      meta: {
+        title:"关注"
+      }
     },
     {
       path: '/search',
       name: 'Search',
       component: Search,
+      meta: {
+        title:"搜索"
+      }
     },
     {
       path: '/teachers',
