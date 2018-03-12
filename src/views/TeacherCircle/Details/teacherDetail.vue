@@ -3,18 +3,24 @@
   import Production from '../../../components/production.vue'
   import heartOK from '../../../assets/img/list_follow_ok.png'
   import heartNO from '../../../assets/img/list_follow.png'
-  import { Toast } from 'mint-ui';
-  import { API } from '../../../service/api'
+  import {Toast} from 'mint-ui';
+  import {API} from '../../../service/api'
+
   export default {
-    components: { Production },
+    components: {Production},
     data: () => ({
-      teacher: {},
+      teacher: {uid: window.location.href.split('?')[1]},
       isFollow: 0,
       isAll: false,
       followImage: heartNO,
-      article:false,
-      teacherSay:'',
-      uid: ''
+      article: false,
+      teacherSay: '',
+      uid: '',
+      articleList: [],
+      loading: false,
+      loadingNumber: 0,
+      totalPage: 1,
+      isAll: '加载中...'
     }),
     methods: {
       showAll() {
@@ -23,53 +29,98 @@
       },
       //关注or取消
       cancelFollow(uid) {
-        const follow = 'quan.follow';
-        const unfollow = 'quan.unfollow';
-        if(this.followImage === heartNO){
-          this.followImage = heartOK;
-          const url = `http://quan-dev.xiaoheiban.cn/api/?method=${follow}&uid=${uid}&token=593d1f70af36444423ebc533`;
-          API.get(url).then(res=>{
-            Toast('关注成功,教师圈将会优先推荐他的文章');
-            ++this.teacher.followeds;
-          },err=>{})
-        }else{
-          const unurl =`http://quan-dev.xiaoheiban.cn/api/?method=${unfollow}&uid=${uid}&token=593d1f70af36444423ebc533`;
-          API.get(unurl).then(res=>{
-            this.followImage = heartNO;
-            if(this.teacher.followeds>0){
-              --this.teacher.followeds
-            }
-            Toast('取消关注成功');
-          },err=>{});
+        let method;
+        if (this.followImage === heartNO) {
+          method = 'quan.follow';
+        } else {
+          method = 'quan.unfollow';
         }
+        let str = '&uid=' + uid;
+        const fUri = this.basePath + method + str + this.token;
+        this.axios.get(fUri)
+          .then(res => {
+            let data = res.data.response;
+            if (data.status == 200) {
+              if (this.followImage === heartNO) {
+                Toast('关注成功,教师圈将会优先推荐他的文章');
+                ++this.teacher.followeds;
+                this.followImage = heartOK;
+              } else {
+                Toast('取消关注成功');
+                --this.teacher.followeds;
+                this.followImage = heartNO;
+              }
+            } else {
+            }
+          })
+
       },
-      getUid(){
-        this.uid = window.location.href.split('?')[1]
+      getUid() {
+
+        console.log(this.uid);
       },
       //获取教师详情
-      getData(){
-        const teacherDetail = 'quan.teacherDetail';
-        const page = 1;
-        const url = `http://quan-dev.xiaoheiban.cn/api/?method=${teacherDetail}&uid=${this.uid}&page=${page}&token=593d1f70af36444423ebc533`;
-        API.get(url).then((res)=>{
+      getData(page) {
+        console.log(this.uid);
+        let method = 'quan.teacherDetail';
+        let str = '&uid=' + this.uid + '&page=' + page;
+        const url = this.basePath + method + str + this.token;
+        API.get(url).then((res) => {
           console.log(res);
-          if(res.response.is_follow===1){
+          if (res.response.is_follow === 1) {
             this.followImage = heartOK
           }
-          if(res.response.article_list.length>0){
+          if (res.response.article_list.length > 0) {
             this.article = true
           }
           this.teacher = Object.assign(res.response.teacher_detail);
-          if(this.teacher.description.length >= 67){
+          if (this.teacher.description.length >= 67) {
             this.teacherSay = this.teacher.description.substring(0, 67) + '...';
             this.isAll = true
           }
-        },(err)=>{})
+
+          this.articleList = this.articleList.concat(res.response.article_list)
+          this.totalPage = Math.ceil(res.response.article_sum/10);
+          console.log(this.totalPage+'pppppp');
+        }, (err) => {
+        })
+      },
+
+      loadMore() {
+        this.loading = false;
+        this.loadingNumber++;
+        if (this.loadingNumber > this.totalPage) {
+          this.isAll = '到底啦!'
+          this.loading = true;
+        }
+        if (this.totalPage > 1 && this.loadingNumber <= this.totalPage) {
+          this.getData(this.loadingNumber);
+        }
+      },
+      getArticlesData() {
+
+      },
+      goArticleDetail(type, id) {
+        switch (type) {
+          case 1:
+            const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+            JSAction.openUrl(arurl);
+            break;
+          case 2:
+            const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+            JSAction.openUrl(auurl);
+            break;
+          default:
+            const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
+            JSAction.openUrl(viurl);
+        }
       }
+
     },
     mounted() {
-    	this.getUid();
-      this.getData();
+      this.getUid();
+      this.uid = window.location.href.split('?')[1]
+      this.getData(1);
     },
     metaInfo: {
       meta: [{
@@ -101,27 +152,50 @@
       <div class="detail-bottom">
         <span><img src="../../../assets/img/list_txt.png">
         <span>已发表文章{{ teacher.articles }}篇</span></span>
-        <span><span>已有{{ teacher.followeds }}人关注</span>  <img :src="followImage" @click="cancelFollow(teacher.uid)"></span>
+        <span><span>已有{{ teacher.followeds }}人关注</span>  <img :src="followImage"
+                                                              @click="cancelFollow(teacher.uid)"></span>
       </div>
     </div>
-    <Production :teacherId="teacher.uid"></Production>
+    <!--<Production :teacherId="teacher.uid"></Production>-->
+
+    <div class="products">
+      <ul v-infinite-scroll="loadMore"
+          infinite-scroll-disabled="loading"
+          infinite-scroll-distance="10">
+        <li v-for="item in articleList" class="product" @click="goArticleDetail(item.type,item.article_id)">
+          <div class="product-content">
+            <p>{{item.title}}</p>
+            <div class="product-bar">
+              <span>{{item.comments}}评论</span>
+              <span v-if="item.integration != 'ok'">{{item.points}}积分</span>
+              <span class="isHave" v-if="item.integration === 'ok'"><img src="../../../assets/img/ic_buy.png"><a>已购</a></span>
+              <span>{{item.time}}</span>
+            </div>
+          </div>
+          <img :src="item.cover">
+        </li>
+      </ul>
+      <div style="text-align: center" class="loadings">{{isAll}}</div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-   .teacher-detail {
-      padding: 4vw;
-     background-color: #fff;
-   }
-   .teacher-detail-header {
-     display: flex;
-     justify-content: space-between;
-     img {
-       height: 15vh;
-       width: 26.7vw;
-       border: 1px solid #ccc;
-     }
-   }
+  .teacher-detail {
+    padding: 4vw;
+    background-color: #fff;
+  }
+
+  .teacher-detail-header {
+    display: flex;
+    justify-content: space-between;
+    img {
+      height: 15vh;
+      width: 26.7vw;
+      border: 1px solid #ccc;
+    }
+  }
+
   .teacher-message {
     .teacher-name {
       font-family: PingFangSC-Regular;
@@ -139,14 +213,17 @@
       }
     }
   }
-   .teacher-say {
-     font-size: 14px;
-     margin-top: 2vh;
-     line-height: 20px;
-   }
-   .showAll {
-     color: #259BDA;
-   }
+
+  .teacher-say {
+    font-size: 14px;
+    margin-top: 2vh;
+    line-height: 20px;
+  }
+
+  .showAll {
+    color: #259BDA;
+  }
+
   .detail-bottom {
     font-size: 14px;
     width: 100%;
@@ -169,6 +246,74 @@
           height: 2vh;
         }
       }
+    }
+  }
+
+  .products {
+    margin-top: 2vh;
+  }
+
+  .product {
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5vh;
+    background-color: #fff;
+    margin-bottom: 1vh;
+  }
+
+  .product-content {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+  }
+
+  .product-content p {
+    margin-bottom: 2vh;
+    font-size: 17px;
+  }
+
+  .product img {
+    width: 22.3vw;
+    height: 12.5vh;
+  }
+
+  .product-bar {
+    font-size: 14px;
+    color: #AAA;
+    width: 100%;
+  }
+
+  .product-bar span {
+    width: 20%;
+  }
+
+  .product-bar span:first-of-type {
+    margin-right: 5%;
+  }
+
+  .product-bar span:last-of-type {
+    margin-left: 35%;
+  }
+
+  .isHave img {
+    width: 3vw;
+    height: 2vh;
+  }
+
+  .loadings img {
+    height: 30px;
+    width: 30px;
+    animation: loading 1000ms infinite linear;
+    margin-right: 10px;
+  }
+
+  @keyframes loading {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
     }
   }
 

@@ -140,7 +140,7 @@
       loadTeacher() {
         let scroll_distance = document.documentElement.clientWidth
         let document_distance = this.$refs.loading.getBoundingClientRect().left
-        
+
         if(this.current_teacher_page >= this.teacherPage) {
           this.teacher_loading = '没有啦!'
         }
@@ -155,7 +155,7 @@
       },
       goTeacherDetail(id) {
       	if(this.useragent == 0){
-      		var path = '/teachers?uid' + id;
+      		var path = '/teachers?' + id;
 		      this.$router.push({path: path});
       	}else{
       		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
