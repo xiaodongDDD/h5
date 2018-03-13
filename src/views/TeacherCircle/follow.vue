@@ -112,7 +112,7 @@
       		var path = '/teachers?' + id;
 		      this.$router.push({path: path});
       	}else{
-      		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?${id}`;
+      		const teacherUrl = this.jsPath + `teachers?${id}`;
         	JSAction.openUrl(teacherUrl);
       	}
       },

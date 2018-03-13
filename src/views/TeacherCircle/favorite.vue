@@ -19,6 +19,9 @@
 					            <span>{{getTimestamp(fm.create_time)}}</span>
 			       			</div>
 			       			<div class="favorite-content">
+					            <div class="favorite-image" >
+					              <img :src="fm.cover"/>
+					            </div>
 			       				<div class="favorite-title">
 					              <p>{{fm.title}}</p>
 					              <div class="favorite-comments">
@@ -26,9 +29,6 @@
 					                <!--<span v-show="fm.integration!='ok'">{{fm.is_charge != 0 ? `${fm.points}积分`:'免费'}}</span>
 					                <span class="have" v-show="fm.integration==='ok'"><img src="../../assets/img/ic_buy.png">  已购</span>-->
 					              </div>
-					            </div>
-					            <div class="favorite-image" >
-					              <img :src="fm.cover"/>
 					            </div>
 			       			</div>
 			       		</div>
@@ -114,17 +114,14 @@
 				if(this.useragent == 0){
 					switch (type) {
 		        case 1:
-		          arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
 		          var path = '/article?' + id;
 		          this.$router.push({path: path});
 		          break;
 		        case 2:
-		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
 		          var path = '/audio?' + id;
 		          this.$router.push({path: path});
 		          break;
 		        default:
-		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
 		          var path = '/video?' + id;
 		          this.$router.push({path: path});
 		     	}
@@ -132,17 +129,18 @@
 					switch (type) {
 		        case 1:
 		          arurl = this.jsPath + `article?${id}`;
+//		          console.log(arurl); return false;
 		          JSAction.openUrl(arurl);
 		          break;
 		        case 2:
 		          arurl = this.jsPath + `audio?${id}`;
-//		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+//		          console.log(arurl); return false;
 		          JSAction.openUrl(auurl);
 		          break;
 		        default:
 		          arurl = this.jsPath + `video?${id}`;
-//		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-		          JSAction.openUrl(viurl);
+//		          console.log(arurl); return false;
+		          JSAction.openUrl(arurl);
 		     	}
 				}
 	  	},
@@ -230,8 +228,6 @@
 			}
 		}
 		.favorite-content{
-	    display: flex;
-	    justify-content: space-between;
 	    margin-top: 10px;
 			img{
 				width: 86px;
@@ -239,12 +235,9 @@
 			}
 			
 			.favorite-title{
-				float: left;
-	      margin-right: 15px;
-	      display: flex;
-	      align-content: space-between;
-	      flex-wrap: wrap;
+			    margin-right: 90px;
 				line-height: 21px;
+				height: 86px;
 				position: relative;
 				
 				p{

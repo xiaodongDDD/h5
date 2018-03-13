@@ -3,7 +3,7 @@
     <div class="teacherCircle-container">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
-        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"> <img :src="item.ad_img"  alt=""></mt-swipe-item>
+        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"><img :src="item.ad_img"  alt=""></mt-swipe-item>
       </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
@@ -158,12 +158,13 @@
       		var path = '/teachers?' + id;
 		      this.$router.push({path: path});
       	}else{
-      		const teacherUrl = `http://quan-test.xiaoheiban.cn/#/teachers?uid=${id}`
+      		const teacherUrl = this.jsPath + `teachers?uid=${id}`
         	JSAction.openUrl(teacherUrl)
       	}
       },
       getDetails(type,id){
-      	console.log(type);
+//    	console.log(type);
+				let arurl = '';
 				if(this.useragent == 0){
 					switch (type) {
 		        case '1':
@@ -181,16 +182,19 @@
 				}else{
 					switch (type) {
 		        case '1':
-		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          arurl = this.jsPath + `article?${id}`;
+//		          console.log(arurl); return false;
 		          JSAction.openUrl(arurl);
 		          break;
 		        case '2':
-		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          arurl = this.jsPath + `audio?${id}`;
+//		          console.log(arurl); return false;
 		          JSAction.openUrl(auurl);
 		          break;
 		        case '3':
-		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-		          JSAction.openUrl(viurl);
+		          arurl = this.jsPath + `video?${id}`;
+//		          console.log(arurl); return false;
+		          JSAction.openUrl(arurl);
 		     	}
 				}
       },
@@ -198,7 +202,7 @@
 				if(this.useragent == 0){
 					this.$router.push({path: path});
 				}else{
-					let url = `http://quan-test.xiaoheiban.cn/#/${path}`;
+					let url = this.jsPath + `${path}`;
          	JSAction.openUrl(url)
 				}
       },
@@ -293,14 +297,14 @@
 			const url = this.basePath + method + this.token;
 //			console.log(url);
 //			this.axios.
-      /*API.get(url).then(res => {
+      API.get(url).then(res => {
         res = res.response;
         this.swipeImage = res.ad_list;
         this.indexList = res.article_list.slice(0, 2);
         this.followList = res.teacher_list;
         this.teacherPage = Math.ceil(res.teacher_sum / 10);
         this.bottomList = res.article_list.slice(2,res.article_list.length);
-      })*/
+      })
     },
   }
 </script>

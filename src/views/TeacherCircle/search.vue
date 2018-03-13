@@ -121,36 +121,34 @@
       },
       getDetails(type,id){
 //    	console.log(id); return false;
+				let arurl = '';
 				if(this.useragent == 0){
 					switch (type) {
 		        case 1:
-		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
 		          var path = '/article?' + id;
 		          this.$router.push({path: path});
 		          break;
 		        case 2:
-		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
 		          var path = '/audio?' + id;
 		          this.$router.push({path: path});
 		          break;
 		        default:
-		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
 		          var path = '/video?' + id;
 		          this.$router.push({path: path});
 		     	}
 				}else{
 					switch (type) {
 		        case 1:
-		          const arurl = `http://quan-test.xiaoheiban.cn/#/article?${id}`;
+		          arurl = this.jsPath + `article?${id}`;
 		          JSAction.openUrl(arurl);
 		          break;
 		        case 2:
-		          const auurl = `http://quan-test.xiaoheiban.cn/#/audio?${id}`;
+		          arurl = this.jsPath + `audio?${id}`;
 		          JSAction.openUrl(auurl);
 		          break;
 		        default:
-		          const viurl = `http://quan-test.xiaoheiban.cn/#/video?${id}`;
-		          JSAction.openUrl(viurl);
+		          arurl = this.jsPath + `video?${id}`;
+		          JSAction.openUrl(arurl);
 		     	}
 				}
 	  	},
