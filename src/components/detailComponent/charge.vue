@@ -23,7 +23,7 @@
   <!--<div class="charge" v-show="!isShow">-->
   <div>
     <!--<img src="../../assets/img/mask.png" class="charge-hide">-->
-    <div class="charge-message">
+    <!--<div class="charge-message">
       <p class="need-score">{{action}}完整{{category}}需要{{ articlePoint }}积分</p>
       <div class="score-enough" v-show="score.haveScore-score.needSore >= 0">
         <p class="have-score">{{`您共有${score.haveScore}积分`}}</p>
@@ -34,7 +34,7 @@
         <div>
         <button @click="getShow">直接购买￥1</button><button @click="getShow">免费获取积分</button></div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 

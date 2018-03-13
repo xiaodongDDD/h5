@@ -5,7 +5,7 @@
   import { API } from '../../../service/api'
   import { MessageBox } from 'mint-ui'
   export default {
-    components: { comment, charge, freePrompt },
+//  components: { comment, charge, freePrompt },
     filters:{
       timestampToMD:function (timestamp) {
         const date = new Date(timestamp * 1000);
@@ -91,12 +91,12 @@
       </div>
       <div class="charge-content" v-show = "isBuy<1">
         <img src="../../../assets/img/mask.png" class="charge-hide">
-        <charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>
+        <!--<charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>-->
       </div>
     </div>
   </div>
     <comment></comment>
-    <free-prompt></free-prompt>
+    <!--<free-prompt></free-prompt>-->
   </div>
 </template>
 

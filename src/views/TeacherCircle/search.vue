@@ -55,7 +55,6 @@
 <script>
   import { API } from '../../service/api';
   import { Loadmore } from 'mint-ui';
-  import { goTODetails } from '../../service/jsAction';
   export default {
     name: "search",
     components:{'v-loadmore':Loadmore},

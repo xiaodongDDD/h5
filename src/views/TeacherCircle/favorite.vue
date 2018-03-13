@@ -47,7 +47,6 @@
   import { InfiniteScroll } from 'mint-ui'
   import { timestampToTime } from '../../service/timestamp'
   import { MessageBox } from 'mint-ui'
-//import { goTODetails } from '../../service/jsAction'
   export default {
     name: "favorite",
     components:{

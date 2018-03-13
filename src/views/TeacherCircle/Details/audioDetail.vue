@@ -49,7 +49,7 @@
       <div class="comment-main">
         <comment></comment>
       </div>
-      <free-prompt></free-prompt>
+      <!--<free-prompt></free-prompt>-->
     </div>
   </section>
 </template>
@@ -66,8 +66,8 @@
     components:{
       comment: Comment,
       experienceOver,
-      charge,
-      freePrompt
+//    charge,
+//    freePrompt
     },
     filters:{
       timestampToMD:function (timestamp) {
