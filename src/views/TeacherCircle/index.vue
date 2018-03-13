@@ -4,6 +4,7 @@
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
         <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id">
+        	{{ token }}
         	<a :href="item.link"><img :src="item.ad_img"  alt=""></a>
         </mt-swipe-item>
       </mt-swipe>
@@ -81,13 +82,17 @@
         </div>
       </div>
 
-      <mt-loadmore
+      <!-- <mt-loadmore
               :bottom-method="loadBottom"
               :bottom-all-loaded="allLoaded"
               :autoFill = false
               ref="loadmore"
-      >
-        <ul class="index-list">
+      > -->
+        <ul
+         v-infinite-scroll="more"
+         infinite-scroll-disabled="isloading"
+         infinite-scroll-distance="0"
+         class="index-list">
           <li @click="getDetails(item.type,item.article_id)" v-for="item in bottomList">
             <div class="list-head">
               <img :src="item.img" class="head-image">
@@ -106,11 +111,12 @@
             </div>
           </li>
         </ul>
-        <div slot="bottom" class="mint-loadmore-bottom">
+        <div style="text-align: center" class="loadings">{{isAll}}</div>
+        <!-- <div slot="bottom" class="mint-loadmore-bottom">
           <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↓</span>
           <span v-show="bottomStatus === 'loading'">加载中...</span>
-        </div>
-      </mt-loadmore>
+        </div> -->
+      <!-- </mt-loadmore> -->
     </div>
   </section>
 </template>
@@ -127,7 +133,7 @@
             followList:[],
             indexList:[],
             bottomList:[],
-            current_page: 1,
+            current_page: 0,
             bottomStatus: 'loading',
             allLoaded: true,
             current_teacher_page: 1,
@@ -135,6 +141,8 @@
             teacher_loading: '加载中',
             isFollow: false,
             teacherPage: '',
+            isloading: false,
+            isAll:''
       }
     },
     methods:{
@@ -261,21 +269,36 @@
 				})
       },
       loadBottom() {
-        this.more();
-//      this.allLoaded = true;// 若数据已全部获取完毕
+        //this.more();
+        //this.allLoaded = true;// 若数据已全部获取完毕
         this.$refs.loadmore.onTopLoaded();
       },
       more() {
-        this.current_page++;
-        API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
+          this.isloading = true;
+        console.log('more...');
+          this.current_page++;
+        console.log('current_page:',this.current_page);
+        if(this.current_page > this.total_teacher_page) {
+          this.isAll = '到底啦!';
+          return;
+        }else{
+          //this.isAll = '加载中...';
+          API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
           .then(res => {
-            if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
-              this.allLoaded = false
-              }
-            for(let i = 0; i<res.response.article_list.length; i++) {
+            // if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
+            //   this.allLoaded = false
+            //   }
+            console.log('res:',res);
+            setTimeout(()=>{
+              for(let i = 0; i<res.response.article_list.length; i++) {
               this.bottomList.push( res.response.article_list[i] )
-            }
+              }
+              this.isloading = false;
+              console.log('请求中....');
+            },2000);
           })
+        }
+        
       },
       timestampToTime(timestamp) {
         let date = new Date(timestamp * 1000);
@@ -294,10 +317,16 @@
           return `${Y}/${M}/${D}`
         }
       },
+      loadMore() {
+        //console.log('loadmore...');
+      }
     },
     mounted() {
       let method = 'quan.index';
-			const url = this.basePath + method + this.token;
+      this.token = window.location.href.split('?')[1];
+      
+//			const url = this.basePath + method + this.token;
+			const url = this.basePath + method + '&token=' + this.token;
 //			console.log(url);
 //			this.axios.
       API.get(url).then(res => {
@@ -305,7 +334,7 @@
         this.swipeImage = res.ad_list;
         this.indexList = res.article_list.slice(0, 2);
         this.followList = res.teacher_list;
-        this.teacherPage = Math.ceil(res.teacher_sum / 10);
+        this.total_teacher_page = Math.ceil(res.teacher_sum / 10);
         this.bottomList = res.article_list.slice(2,res.article_list.length);
       })
     },
