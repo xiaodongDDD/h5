@@ -22,7 +22,7 @@
                 <h2>{{tm.teacher_name}}</h2>
                 <ul>
                   <!--<li>{{tm.description?`${tm.description.substring(0, 60)}...`:''}}</li>-->
-                  <li>{{tm.description}}</li>
+                  <li v-html="tm.description"> </li>
                 </ul>
               </div>
             </div>
@@ -168,10 +168,6 @@
                 this.loading = false
               }, 500)
         	})
-          /*API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
-            .then(res => {
-              
-          })*/
         }
 
       },
@@ -257,6 +253,9 @@
     }
   .txt-content span {
       font-size: 14px;
+      display: inline-block;
+      width: 90%;
+      overflow: hidden;
     }
   .bottom-bar {
     font-size: 14px;

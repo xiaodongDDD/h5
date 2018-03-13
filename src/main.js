@@ -26,7 +26,7 @@ Vue.prototype.jsPath = 'http://quan-test.xiaoheiban.cn/#/';
 //Vue.prototype.token = '&token=56f348170cf2cecf22cb8ce0';
 
 Vue.prototype.useragent = 1;
- 
+
 /* eslint-disable no-new */
 
 router.beforeEach((to, from, next) => {

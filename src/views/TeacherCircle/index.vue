@@ -4,7 +4,6 @@
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
         <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id">
-        	{{ token }}
         	<a :href="item.link"><img :src="item.ad_img"  alt=""></a>
         </mt-swipe-item>
       </mt-swipe>
@@ -63,7 +62,10 @@
         <div class="recommend-all">
           <ul class="recommend-content"
               id="teacher-list"
-              @scroll="loadTeacher"
+		          v-infinite-scroll="loadTeacher"
+		          infinite-scroll-disabled="isloading"
+		          infinite-scroll-distance="0"
+		          infinite-scroll-immediate-check = true
               ref="teacher_list">
             <li class="recommend-detail" v-for="(item,index) in followList" :key="item.id" @click="goTeacherDetail(item.uid)">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
@@ -92,6 +94,7 @@
          v-infinite-scroll="more"
          infinite-scroll-disabled="isloading"
          infinite-scroll-distance="0"
+         infinite-scroll-immediate-check = true
          class="index-list">
           <li @click="getDetails(item.type,item.article_id)" v-for="item in bottomList">
             <div class="list-head">
@@ -142,25 +145,30 @@
             isFollow: false,
             teacherPage: '',
             isloading: false,
-            isAll:''
+            isAll:'',
+            total_article_page: 1
       }
     },
     methods:{
       //列表内容点击的详情
       loadTeacher() {
-        let scroll_distance = document.documentElement.clientWidth
-        let document_distance = this.$refs.loading.getBoundingClientRect().left
-
-        if(this.current_teacher_page >= this.teacherPage) {
-          this.teacher_loading = '没有啦!'
-        }
-        if(scroll_distance - document_distance === 80 && this.current_teacher_page < this.teacherPage) {
-          setTimeout(() => {
-            this.current_teacher_page++
-            API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`).then(res => {
+				this.isloading = true;
+				console.log(this.total_teacher_page)
+        if(this.current_teacher_page >= this.total_teacher_page) {
+          this.teacher_loading = '到底啦!';
+          return;
+        }else{
+        	this.current_teacher_page ++
+          API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`)
+          .then(res => {
+            console.log('res:',res);
+            setTimeout(()=>{
+              for(let i = 0; i<res.response.teacher_list.length; i++) {
               this.followList = this.followList.concat(res.response.teacher_list)
-            })
-          }, 500)
+              }
+              this.isloading = false;
+            },500);
+          })
         }
       },
       goTeacherDetail(id) {
@@ -274,28 +282,24 @@
         this.$refs.loadmore.onTopLoaded();
       },
       more() {
-          this.isloading = true;
-        console.log('more...');
-          this.current_page++;
-        console.log('current_page:',this.current_page);
-        if(this.current_page > this.total_teacher_page) {
+        this.isloading = true;
+        this.current_page++;
+        if(this.current_page > this.total_article_page) {
           this.isAll = '到底啦!';
           return;
         }else{
-          //this.isAll = '加载中...';
           API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
           .then(res => {
             // if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
             //   this.allLoaded = false
             //   }
-            console.log('res:',res);
             setTimeout(()=>{
               for(let i = 0; i<res.response.article_list.length; i++) {
               this.bottomList.push( res.response.article_list[i] )
               }
               this.isloading = false;
               console.log('请求中....');
-            },2000);
+            },500);
           })
         }
         
@@ -323,10 +327,7 @@
     },
     mounted() {
       let method = 'quan.index';
-      this.token = window.location.href.split('?')[1];
-      
-//			const url = this.basePath + method + this.token;
-			const url = this.basePath + method + '&token=' + this.token;
+			const url = this.basePath + method + this.token;
 //			console.log(url);
 //			this.axios.
       API.get(url).then(res => {
@@ -335,6 +336,7 @@
         this.indexList = res.article_list.slice(0, 2);
         this.followList = res.teacher_list;
         this.total_teacher_page = Math.ceil(res.teacher_sum / 10);
+        this.total_article_page = Math.ceil(res.aiticle_sum / 10);
         this.bottomList = res.article_list.slice(2,res.article_list.length);
       })
     },

@@ -20,7 +20,7 @@
       loading: false,
       loadingNumber: 0,
       totalPage: 1,
-      isAll: '加载中...'
+      txt: '加载中...'
     }),
     methods: {
       showAll() {
@@ -82,7 +82,7 @@
           this.articleList = this.articleList.concat(res.response.article_list)
           this.totalPage = Math.ceil(res.response.article_sum/10);
           if(this.totalPage == 0){
-            this.isAll = '暂无文章!'
+            this.txt = '暂无文章!'
             this.loading = true;
           }
         }, (err) => {
@@ -93,7 +93,7 @@
         this.loading = false;
         this.loadingNumber++;
         if (this.loadingNumber > this.totalPage) {
-          this.isAll = '到底啦!'
+          this.txt = '到底啦!'
           this.loading = true;
         }
         if (this.totalPage > 1 && this.loadingNumber <= this.totalPage) {
@@ -164,8 +164,10 @@
           </ul>
         </div>
       </div>
+      <div v-html="teacherSay" class="teacher-say">
+  
+      </div>
       <div class="teacher-say">
-        {{ teacherSay }}
         <span class="showAll" @click="showAll" v-show="isAll">显示全部</span>
       </div>
       <div class="detail-bottom">
@@ -194,7 +196,7 @@
           <img :src="item.cover">
         </li>
       </ul>
-      <div style="text-align: center" class="loadings">{{isAll}}</div>
+      <div style="text-align: center" class="loadings">{{txt}}</div>
     </div>
   </div>
 </template>
