@@ -11,19 +11,19 @@
       <div class="top-nav">
         <ul>
           <li>
-            <div @click="goNext('search')"  style="display: inline-block;">
+            <div @click="goNext('search')">
               <img src="../../assets/img/ic_search.png" alt="">
               <span>搜索</span>
             </div>
           </li>
           <li>
-            <div @click="goNext('follow')" style="display: inline-block;">
+            <div @click="goNext('follow')">
               <img src="../../assets/img/ic_follow.png" alt="">
               <span>关注</span>
             </div>
           </li>
           <li>
-            <div @click="goNext('favorite')" style="display: inline-block;">
+            <div @click="goNext('favorite')">
               <img src="../../assets/img/ic_favorite.png" alt="">
               <span>收藏</span>
             </div>
@@ -160,7 +160,8 @@
       		var path = '/teachers?' + id;
 		      this.$router.push({path: path});
       	}else{
-      		const teacherUrl = this.jsPath + `teachers?uid=${id}`
+      		const teacherUrl = this.jsPath + `teachers?${id}`
+      		console.log(teacherUrl);
         	JSAction.openUrl(teacherUrl)
       	}
       },

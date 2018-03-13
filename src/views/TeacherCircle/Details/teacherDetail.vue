@@ -81,18 +81,15 @@
 
           this.articleList = this.articleList.concat(res.response.article_list)
           this.totalPage = Math.ceil(res.response.article_sum/10);
-          console.log(this.totalPage)
           if(this.totalPage == 0){
             this.isAll = '暂无文章!'
             this.loading = true;
           }
-          console.log(this.totalPage+'pppppp');
         }, (err) => {
         })
       },
 
       loadMore() {
-        console.log();
         this.loading = false;
         this.loadingNumber++;
         if (this.loadingNumber > this.totalPage) {

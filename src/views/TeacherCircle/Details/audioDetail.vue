@@ -66,8 +66,8 @@
     components:{
       comment: Comment,
       experienceOver,
-//    charge,
-//    freePrompt
+      charge,
+      freePrompt
     },
     filters:{
       timestampToMD:function (timestamp) {

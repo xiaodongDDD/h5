@@ -95,7 +95,17 @@
           this.isAll = '到底啦!'
         }
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
-          API.get(`api/?method=quan.collectClick&page=${this.loading_number}`)
+        	let furl = this.basePath + 'quan.collectClick' + `&page=${this.loading_number}` + this.token;
+        	this.axios.get(furl).then( res => {
+        		setTimeout(() => {
+                let last = res.data.response.collect_list
+                for(let i = 0; i < last.length; i ++) {
+                  this.collect_list.push(last[i])
+                }
+                this.loading = false
+              }, 500);
+        	})
+          /*API.get(`api/?method=quan.collectClick&page=${this.loading_number}`)
             .then(res => {
               setTimeout(() => {
                 let last = res.response.collect_list;
@@ -104,7 +114,7 @@
                 }
                 this.loading = false;
               }, 1000)
-            })
+            })*/
         }
       },
       getDetails(type,id){
@@ -144,27 +154,27 @@
 				}
 	  	},
 	  	cancelFa(id,index) {
-				let method = 'quan.uncollect';
-				let str = '&article_id=' + id;
-				const fUri = this.basePath + method + str + this.token;
-				this.axios.get(fUri)
-				.then(res => {
-					let data = res.data.response;
-					if(data.status == 200){
-						this.collect_list.splice(index,1);
-						Toast({
-		          message: '取消收藏成功',
-		          position: 'middle',
-		          duration: 2000
-		        });
-					}else{
-						MessageBox({
-						  title: '提示',
-						  message: data.msg,
-						  showCancelButton: false
-						});
-					}
-				})
+			let method = 'quan.uncollect';
+			let str = '&article_id=' + id;
+			const fUri = this.basePath + method + str + this.token;
+			this.axios.get(fUri)
+			.then(res => {
+				let data = res.data.response;
+				if(data.status == 200){
+					this.collect_list.splice(index,1);
+					Toast({
+	          message: '取消收藏成功',
+	          position: 'middle',
+	          duration: 2000
+	        });
+				}else{
+					MessageBox({
+					  title: '提示',
+					  message: data.msg,
+					  showCancelButton: false
+					});
+				}
+			})
 	  	}
     },
     mounted() {

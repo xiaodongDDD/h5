@@ -158,16 +158,20 @@
           this.isAll = '到底啦!'
         }
         if(this.total_page > 1 && this.loading_number <= this.total_page) {
-          API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
-            .then(res => {
-              setTimeout(() => {
-                let last = res.response.teacher_list
+        	let furl = this.basePath + 'quan.followClick' + `&page=${this.loading_number}` + this.token;
+        	this.axios.get(furl).then( res => {
+        		setTimeout(() => {
+                let last = res.data.response.teacher_list
                 for(let i = 0; i < last.length; i ++) {
                   this.teacherMessages.push(last[i])
                 }
                 this.loading = false
-              }, 2000)
-            })
+              }, 500)
+        	})
+          /*API.get(`api/?method=quan.followClick&page=${this.loading_number}`)
+            .then(res => {
+              
+          })*/
         }
 
       },

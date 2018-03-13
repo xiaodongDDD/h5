@@ -5,7 +5,7 @@
   import { API } from '../../../service/api'
   import { MessageBox } from 'mint-ui'
   export default {
-//  components: { comment, charge, freePrompt },
+    components: { comment, charge, freePrompt },
     filters:{
       timestampToMD:function (timestamp) {
         const date = new Date(timestamp * 1000);
