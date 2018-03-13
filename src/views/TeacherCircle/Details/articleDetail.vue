@@ -89,10 +89,10 @@
         <span>{{ buyTime | timestampToYMD(buyTime)}}</span>
         <span>已购</span>
       </div>
-      <div class="charge-content" v-show = "isBuy<1">
+      <!--<div class="charge-content" v-show = "isBuy<1">
         <img src="../../../assets/img/mask.png" class="charge-hide">
-        <!--<charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>-->
-      </div>
+        <charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>
+      </div>-->
     </div>
   </div>
     <comment></comment>
