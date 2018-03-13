@@ -3,9 +3,7 @@
     <div class="teacherCircle-container">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
-        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id">
-        	<a :href="item.link"><img :src="item.ad_img"  alt=""></a>
-        </mt-swipe-item>
+        <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id" :href="item.link"><img :src="item.ad_img"  alt=""></mt-swipe-item>
       </mt-swipe>
       <!--跳转链接-->
       <div class="top-nav">
