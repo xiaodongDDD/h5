@@ -33,9 +33,9 @@
     watch:{
       commentText: function (commentText) {
         if(commentText.length>this.originLength){
-          this.$refs.publish.style = 'background: #F8E71C;color:#000;'
+          this.$refs.publish.style = 'color:#259BDA;'
         }else{
-          this.$refs.publish.style = 'background: #DDDDDD;color:#aaa;'
+          this.$refs.publish.style = 'color:#aaa;'
         }
       }
     },
@@ -52,6 +52,17 @@
       		this.commentText = '';
       	}
       	this.showCommentBox = true;
+      },
+      changeText() {
+      	console.log(this.commentText.length)
+      	if(this.commentText.length>0){
+          this.$refs.publish.style = 'color:#259BDA;'
+        }else{
+          this.$refs.publish.style = 'color:#aaa;'
+        }
+      },
+      hideCommentBox() {
+      	this.showCommentBox = false;
       },
       publishComment() {
       	let method = '';
@@ -219,11 +230,13 @@
             class="comment-favorite"
             @click="isFavorited"></div>
 
-    <div class="comment-box-container" v-show="showCommentBox">
-      <div class="comment-box">
-        <h2>发表评论</h2>
-        <textarea placeholder="请输入评论内容（6-300字）" v-model="commentText"></textarea>
-        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()" ref="publish">发表</button></div>
+    <div class="comment-box-container" v-show="showCommentBox" @click="hideCommentBox">
+      <div class="comment-box"  @click.stop="showCommentBox = true">
+        <!--<h2>发表评论</h2>-->
+        <div class="publish"><!--<span @click="showCommentBox = false">取消</span>--><button @click="publishComment()" ref="publish">发送</button></div>
+        <div class="areaDiv">
+        	<textarea placeholder="请输入评论内容（6-300字）" v-model="commentText" @onchange="changeText"></textarea>
+        </div>
       </div>
     </div>
     
@@ -328,7 +341,7 @@
     position: inherit;
     bottom: 0;
     width: 100%;
-    height: 32%;
+    /*height: 32%;*/
     background-color: #fff;
     padding: 2vh 4vw;
     box-sizing: border-box;
@@ -338,30 +351,39 @@
     font-size: 14px;
     color: #AAA;
   }
+  .areaDiv{
+  	margin-right: 60px;
+  }
   .comment-box textarea {
-    margin: 1vh 0;
+    /*margin: 1vh 0;*/
     font-size: 14px;
     background: #F7F7F7;
     border-radius: 2px;
-    width: 90%;
-    height: 60%;
+    width: 100%;
+    /*height: 60%;*/
+    height: 30px;
+    line-height: 30px;
     outline:none;
     resize:none;
     border: none;
-    padding: 1vh 4vw;
+    padding: 3px 5px;
   }
   .publish {
-    display: flex;
+    /*display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center;*/
+   float: right;
+   width: 40px;
   }
   .publish button {
-    background: #DDD;
+    /*background: #DDD;*/
     border-radius: 2px;
     font-size: 14px;
-    width: 60px;
+    width: 40px;
     height: 30px;
     color: #AAA;
+    line-height: 38px;
+    font-size: 17px;
   }
   .blcakt{
   	color: #000;

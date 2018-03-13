@@ -327,6 +327,9 @@
       }
     },
     mounted() {
+//  	let token = window.location.href;
+//  	alert(token);
+    	
       let method = 'quan.index';
 			const url = this.basePath + method + this.token;
 //			console.log(url);
