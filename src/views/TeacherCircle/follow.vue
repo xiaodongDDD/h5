@@ -62,16 +62,7 @@
     name: "follow",
     data() {
       return {
-        teacherMessages :[
-          { teacher_img: '',
-            teacher_name: '',
-            description: '',
-            brief: '',
-            followeds: '',
-            articles: '',
-            article_last_time: '',
-            uid: ''
-          }],
+        teacherMessages :[],
         loading_number: 1,
         total_page: 0,
         realDeleteIndex : 0,
@@ -112,8 +103,10 @@
       		var path = '/teachers?' + id;
 		      this.$router.push({path: path});
       	}else{
-      		const teacherUrl = this.jsPath + `teachers?${id}`;
-        	JSAction.openUrl(teacherUrl);
+      		let teacherUrl = this.jsPath + `teachers?${id}`;
+//    		let teacherUrl = 'http://quan-test.xiaoheiban.cn/h5/index.html#/' + `teachers?${id}`;
+//      	JSAction.openUrl(teacherUrl);
+					window.location.href = teacherUrl;
       	}
       },
 

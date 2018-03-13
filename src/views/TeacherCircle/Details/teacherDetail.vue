@@ -61,7 +61,7 @@
       },
       //获取教师详情
       getData(page) {
-        console.log(this.uid);
+//      alert(this.uid);
         let method = 'quan.teacherDetail';
         let str = '&uid=' + this.uid + '&page=' + page;
         const url = this.basePath + method + str + this.token;
@@ -123,15 +123,18 @@
           switch (type) {
             case '1':
               arurl = this.jsPath + `article?${id}`;
-              JSAction.openUrl(arurl);
+//            JSAction.openUrl(arurl);
+							window.location.href = arurl;
               break;
             case '2':
               arurl = this.jsPath + `audio?${id}`;
-              JSAction.openUrl(auurl);
+//            JSAction.openUrl(auurl);
+							window.location.href = arurl;
               break;
             case '3':
               arurl = this.jsPath + `video?${id}`;
-              JSAction.openUrl(arurl);
+//            JSAction.openUrl(arurl);
+							window.location.href = arurl;
           }
         }
       }

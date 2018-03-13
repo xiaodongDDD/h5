@@ -139,15 +139,18 @@
 					switch (type) {
 		        case 1:
 		          arurl = this.jsPath + `article?${id}`;
-		          JSAction.openUrl(arurl);
+//		          JSAction.openUrl(arurl);
+				  		window.location.href = arurl;
 		          break;
 		        case 2:
 		          arurl = this.jsPath + `audio?${id}`;
-		          JSAction.openUrl(auurl);
+//		          JSAction.openUrl(arurl);
+				  		window.location.href = arurl;
 		          break;
 		        default:
 		          arurl = this.jsPath + `video?${id}`;
-		          JSAction.openUrl(arurl);
+//		          JSAction.openUrl(arurl);
+				  		window.location.href = arurl;
 		     	}
 				}
 	  	},

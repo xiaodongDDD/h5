@@ -7,6 +7,7 @@
         	<a :href="item.link"><img :src="item.ad_img"  alt=""></a>
         </mt-swipe-item>
       </mt-swipe>
+      
       <!--跳转链接-->
       <div class="top-nav">
         <ul>
@@ -153,7 +154,7 @@
       //列表内容点击的详情
       loadTeacher() {
 				this.isloading = true;
-				console.log(this.total_teacher_page)
+				alert(this.total_teacher_page)
         if(this.current_teacher_page >= this.total_teacher_page) {
           this.teacher_loading = '到底啦!';
           return;
@@ -208,7 +209,7 @@
 		        case '2':
 		          arurl = this.jsPath + `audio?${id}`;
 //		          console.log(arurl); return false;
-		          JSAction.openUrl(auurl);
+		          JSAction.openUrl(arurl);
 		          break;
 		        case '3':
 		          arurl = this.jsPath + `video?${id}`;
