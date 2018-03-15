@@ -1,7 +1,7 @@
 // const basic = 'http://quan-dev.xiaoheiban.cn'
 
 //const token = '593d1f70af36444423ebc533'
-const token = '56f348170cf2cecf22cb8ce0'
+const token = ''
 
 export const API = {
   get: (url) => {

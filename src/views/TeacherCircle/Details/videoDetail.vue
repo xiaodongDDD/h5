@@ -3,9 +3,9 @@
     <div class="v-main">
       <!--视频-->
       <div class="v-video">
-        <video width="100%" height="210" :src="articleDetail.media" ref="media" poster="../../../assets/img/64451924_p3.jpg"></video>
+        <video width="100%" height="210px" style="display:block;" :src="articleDetail.media" ref="media" :poster="articleDetail.cover"></video>
         <!--<experienceOver :tips="timeOver" v-show="isTryOver" height="210" type="视频"></experienceOver>-->
-        <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
+        <div class="outer" ref="outdiv"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
@@ -117,7 +117,7 @@
     methods:{
       play(){
         this.$refs.media.play();
-        this.$refs.out.style = 'display:none;';
+        this.$refs.outdiv.style.display = 'none';
         this.originStatus = false;
         this.playStatus = false;
       },
@@ -143,7 +143,7 @@
     },
     beforeMount(){
       this.getArticleId();//获取articleId
-      this.getAudios()//获取数据
+      this.getAudios();//获取数据
     },
     mounted() {
     	this.getArticleId();
@@ -169,6 +169,22 @@
           this.playStatus = true;
         })
       };
+
+      //判断手机类型
+      var ua = navigator.userAgent.toLowerCase();
+      var temp = document.querySelector('.v-video').getAttribute('class');
+
+      if(/android/.test(ua)){
+          console.log('android');
+          temp = temp.concat(' special');
+          document.querySelector('.v-video').setAttribute('class',temp);
+        }else{
+          console.log('others');
+          temp = temp.replace('special','')
+          document.querySelector('.v-video').setAttribute('class',temp);
+        }
+
+
     }
   }
 </script>
@@ -186,21 +202,30 @@
   width: 100%;
   height: 100%;
   background-color: #fff;
+  overflow: hidden;
 }
 .v-main .v-video{
   width: 100%;
   height: 210px;
   position: relative;
+  overflow: hidden;
+}
+.v-main .special{
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  top:-10px;
 }
 .v-main .v-video .v-control{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0,0,0,.5);
-  width: 100%;
-  height: 14px;
-  padding: 0 15px 14px 15px;
-  line-height: 14px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 32px;
+    /* padding: 0 15px 14px 15px; */
+    line-height: 14px;
 }
 .start{
   width: 22px;
@@ -220,7 +245,7 @@
 .v-main .outer{
   background-color: rgba(0,0,0,.5);
   width: 100%;
-  height: 100%;
+  height: 210px;
   position: absolute;
   left: 0;
   top: 0;
@@ -350,7 +375,7 @@ progress::-moz-progress-bar {
 .hide-line{
   width: 12px;
   height: 8px;
-  background-color: rgba(200,0,0,.5);
+  /*background-color: rgba(200,0,0,.5);*/
   position: absolute;
   right: 0;
   top: 0;

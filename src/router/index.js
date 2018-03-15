@@ -37,7 +37,7 @@ export default new Router({
       name: 'Favorite',
       component: Favorite,
       meta: {
-        title:"收藏"
+//      title:"收藏"
       }
     },
     {
@@ -45,7 +45,7 @@ export default new Router({
       name: 'Follow',
       component: Follow,
       meta: {
-        title:"关注"
+//      title:"关注"
       }
     },
     {
@@ -53,7 +53,7 @@ export default new Router({
       name: 'Search',
       component: Search,
       meta: {
-        title:"搜索"
+//      title:"搜索"
       }
     },
     {
@@ -61,7 +61,7 @@ export default new Router({
       name: 'TDetail',
       component: TDetail,
       meta: {
-        title:"教师详情"
+//      title:"教师详情"
       }
     },
     {
@@ -69,7 +69,7 @@ export default new Router({
       name: 'Article',
       component: Article,
       meta: {
-        title: "文章详情"
+//      title: "文章详情"
       }
     },
     {
@@ -77,7 +77,7 @@ export default new Router({
       name: 'VDetail',
       component: VDetail,
       meta: {
-        title: "视频详情"
+//      title: "视频详情"
       }
     },
     {
@@ -85,7 +85,7 @@ export default new Router({
       name: 'Audio',
       component: Audio,
       meta: {
-        title: "音频详情"
+//      title: "音频详情"
       }
     },
     {

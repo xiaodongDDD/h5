@@ -8,9 +8,13 @@
 //import { API } from './service/api'
 export default {
   name: 'App',
-  components:{
-
-  },
+  components:{},
+  watch: {  
+    $route(to, from) {  
+        /*console.log(to);  
+        console.log(from); */
+    }  
+	},
   data(){
     return{
     }
@@ -28,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
   @import "assets/css/reset.css";
   @import "../node_modules/mint-ui/lib/style.css";
   @import "assets/css/common.css";
@@ -40,5 +44,40 @@ export default {
   height: 100%;
   font-family: PingFangSC-Light;
 }
-
+.mint-msgbox{
+	color: #FFF;
+	background-color: #2B2B2B;
+	border: 2px solid #E3C277;
+	border-radius: 10px;
+	padding-top: 10px;
+	
+	.mint-msgbox-content{
+		border: none;
+	}
+	.mint-msgbox-message{
+		color: #FFFFFF;
+		font-size: 17px;
+	}
+}
+.mint-msgbox-title{
+	color: #FFF;
+	font-size: 20px;
+}
+.mint-msgbox-btns{
+	padding-bottom: 15px;
+	
+	.mint-msgbox-btn{
+		background-color: #2B2B2B;
+		color: #F8E71C;
+		font-size: 17px;
+		border: none;
+	}
+}
+.loadings{
+	height: 40px;
+	line-height: 40px;
+}
+.v-main .v-con img{
+	max-width: 100%;
+}
 </style>

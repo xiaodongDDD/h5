@@ -197,7 +197,7 @@
     background-color: #fff;
   }
   .follow {
-    margin-bottom: 1vh;
+    margin-bottom: 5px;
   }
   .follower {
     width: 100%;
@@ -241,13 +241,16 @@
    overflow: hidden;
   }
   .txt-content img {
-      width: 2.7vw;
-      height: 2.2vh;
+      width: 10px;
+      height: 13px;
+      margin-top: -2px;
     }
   .txt-content span {
       font-size: 14px;
       display: inline-block;
       width: 90%;
+      height: 28px;
+      line-height: 26px;
       overflow: hidden;
     }
   .bottom-bar {
@@ -256,15 +259,15 @@
     line-height: 14px;
   }
   .favorite {
-    width: 3.1vw;
-    height: 1.9vh;
-    margin-right: 3vw;
+    width: 12px;
+    height: 11px;
+    margin-right: 5px;
   }
   .txt img {
-    width: 2.6vw;
-    height: 1.9vh;
-    margin-right: 3vw;
-    margin-left: 3vw;
+    width: 9px;
+    height: 11px;
+    margin-right: 5px;
+    margin-left: 15px;
   }
   .last-update {
     display: inline-block;
@@ -290,5 +293,9 @@
   .loadings{
   	height: 40px;
   	line-height: 40px;
+  }
+  .mint-cell-value{
+  	padding: 12px;
+  	box-sizing: border-box!important;
   }
 </style>

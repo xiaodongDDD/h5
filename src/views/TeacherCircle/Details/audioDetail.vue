@@ -4,8 +4,10 @@
       <!--视频-->
       <div class="v-audio">
         <audio :src="articleDetail.media" ref="media"></audio>
+        <div v-if="articleDetail.cover != ''" class="audio-cover"><img :src="articleDetail.cover" alt="" /></div>
+        <div v-else class="audio-cover"><img src="../../../assets/img/bg.png" alt="" /></div>
         <!--<experienceOver :tips="timeOver" v-show="isTryOver" height="160" type="视频"></experienceOver>-->
-        <div class="outer" ref="out"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
+        <div class="outer" ref="outdiv"><img src="../../../assets/img/ic_video_play_video.png" class="palyload" @click="play"></div>
         <span class="videoTime" v-show="originStatus">{{videoData.duration}}</span>
         <div class="v-control" v-if="!originStatus">
           <div><img src="../../../assets/img/play_fill.svg" @click="play" class="start" v-if="playStatus"></div>
@@ -120,7 +122,7 @@
     methods:{
       play(){
         this.$refs.media.play();
-        this.$refs.out.style = 'display:none;';
+        this.$refs.outdiv.style.display = 'none';
         this.originStatus = false;
         this.playStatus = false;
       },
@@ -193,7 +195,7 @@
     width: 100%;
     height: 160px;
     position: relative;
-    background: url("../../../assets/img/bg.png") center center no-repeat;
+    /*background: url("../../../assets/img/bg.png") center center no-repeat;*/
   }
   .v-main .v-audio .v-control{
     position: absolute;
@@ -358,5 +360,18 @@
     right: 0;
     top: 0;
     z-index: 10000;
+  }
+  .audio-cover{
+  	width: 100%;
+  	height: 160px;
+  	position: absolute;
+  	left: 0;
+  	top: 0;
+  	text-align: center;
+  	
+  	img{
+  		/*width: 100%;*/
+  		height: 160px;
+  	}
   }
 </style>

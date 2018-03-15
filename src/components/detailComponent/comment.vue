@@ -32,7 +32,7 @@
     }),
     watch:{
       commentText: function (commentText) {
-        if(commentText.length>this.originLength){
+        if(commentText.length !== ''){
           this.$refs.publish.style = 'color:#259BDA;'
         }else{
           this.$refs.publish.style = 'color:#aaa;'
@@ -187,17 +187,22 @@
       	this.isFavorite = !this.isFavorite;
      },
      loadBottom() {
-     	console.log(11111)
+//   	console.log(11111)
      }
     },
     mounted () {
     	let article_id = window.location.href.split('?')[1];
     	this.article_id = article_id;
-      API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
+    	
+    	let curl = this.basePath + 'quan.commentList' + `&article_id=${article_id}&page=${ this.current_page }&type=2`;
+    	
+//    API.get(`api/?method=quan.commentList&article_id=${article_id}&page=${ this.current_page }&type=2`)
+        this.axios.get(curl)
         .then(res => {
-          this.article_comment_list = res.response.comment_list
-          this.is_show = res.response.is_show
-          this.total_page = parseInt(res.response.comment_sum / 10) + 1
+          this.article_comment_list = res.data.response.comment_list
+          this.is_show = res.data.response.is_show
+          this.isFavorite = res.data.response.is_collect
+          this.total_page = parseInt(res.data.response.comment_sum / 10) + 1
         }
       )
     }
@@ -232,11 +237,11 @@
 
     <div class="comment-box-container" v-show="showCommentBox" @click="hideCommentBox">
       <div class="comment-box"  @click.stop="showCommentBox = true">
-        <!--<h2>发表评论</h2>-->
-        <div class="publish"><!--<span @click="showCommentBox = false">取消</span>--><button @click="publishComment()" ref="publish">发送</button></div>
+        <h2>发表评论</h2>
         <div class="areaDiv">
         	<textarea placeholder="请输入评论内容（6-300字）" v-model="commentText" @onchange="changeText"></textarea>
         </div>
+        <div class="publish"><span @click="showCommentBox = false">取消</span><button @click="publishComment()" ref="publish">发送</button></div>
       </div>
     </div>
     
@@ -342,6 +347,7 @@
     bottom: 0;
     width: 100%;
     /*height: 32%;*/
+   	height: 180px;
     background-color: #fff;
     padding: 2vh 4vw;
     box-sizing: border-box;
@@ -352,37 +358,36 @@
     color: #AAA;
   }
   .areaDiv{
-  	margin-right: 60px;
+  	/*margin-right: 60px;*/
   }
   .comment-box textarea {
-    /*margin: 1vh 0;*/
+    margin-top: 5px;
     font-size: 14px;
     background: #F7F7F7;
     border-radius: 2px;
     width: 100%;
-    /*height: 60%;*/
-    height: 30px;
-    line-height: 30px;
+    height: 85px;
+    /*line-height: 30px;*/
     outline:none;
     resize:none;
     border: none;
-    padding: 3px 5px;
+    padding: 5px 0px;
+    text-indent: 10px;
   }
   .publish {
-    /*display: flex;
+    display: flex;
     justify-content: space-between;
-    align-items: center;*/
-   float: right;
-   width: 40px;
+    align-items: center;
+    margin-top: 10px;
   }
   .publish button {
-    /*background: #DDD;*/
+    background: #DDD;
     border-radius: 2px;
     font-size: 14px;
-    width: 40px;
-    height: 30px;
+    width: 70px;
+    height: 32px;
     color: #AAA;
-    line-height: 38px;
+    line-height: 32px;
     font-size: 17px;
   }
   .blcakt{

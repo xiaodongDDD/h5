@@ -76,7 +76,7 @@
   <div class="article-detail">
     <h2>{{article.title}}</h2>
     <div class="author-bar">
-      <img :src="article.teacher_img" alt="头像">
+      <img :src="article.teacher_img">
       <span>{{article.teacher_name}}</span>
       <span>{{article.create_time | timestampToMD(article.create_time)}}</span>
     </div>
@@ -85,10 +85,10 @@
       <!--<div class="attachment">-->
         <!--&lt;!&ndash;<img src="../../../assets/img/triangle_down_fill.svg">&ndash;&gt;-->
       <!--</div>-->
-      <div class="have-message" v-show="isBuy===1">
+      <!--<div class="have-message" v-show="isBuy===1">
         <span>{{ buyTime | timestampToYMD(buyTime)}}</span>
         <span>已购</span>
-      </div>
+      </div>-->
       <!--<div class="charge-content" v-show = "isBuy<1">
         <img src="../../../assets/img/mask.png" class="charge-hide">
         <charge category="文章" action="阅读" :points="article.user_points" :articlePoint="article.points"></charge>
@@ -135,8 +135,8 @@
 	    color: #222;
 	    margin-bottom: 3vh;
 	    img {
-	      width: 8vw;
-	      height: 4.5vh;
+	      width: 28px;
+	      height: 28px;
 	      border-radius: 50%;
 	    }
 	    span {

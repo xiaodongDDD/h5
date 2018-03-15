@@ -45,6 +45,7 @@
                 Toast('关注成功,教师圈将会优先推荐他的文章');
                 ++this.teacher.followeds;
                 this.followImage = heartOK;
+                this.returnIndex = true;
               } else {
                 Toast('取消关注成功');
                 --this.teacher.followeds;
@@ -66,7 +67,7 @@
         let str = '&uid=' + this.uid + '&page=' + page;
         const url = this.basePath + method + str + this.token;
         API.get(url).then((res) => {
-          console.log(res);
+//        console.log(res);
           if (res.response.is_follow === 1) {
             this.followImage = heartOK
           }
@@ -143,6 +144,11 @@
     mounted() {
       this.uid = window.location.href.split('?')[1]
       this.getData(1);
+
+      window.addEventListener("popstate", function(e) {
+        console.log('back...');
+        window.history.back();
+      }, false);
     },
     metaInfo: {
       meta: [{
@@ -191,8 +197,8 @@
             <p>{{item.title}}</p>
             <div class="product-bar">
               <span>{{item.comments}}评论</span>
-              <span v-if="item.integration != 'ok'">{{item.points}}积分</span>
-              <span class="isHave" v-if="item.integration === 'ok'"><img src="../../../assets/img/ic_buy.png"><a>已购</a></span>
+              <!--<span v-if="item.integration != 'ok'">{{item.points}}积分</span>-->
+              <!--<span class="isHave" v-if="item.integration === 'ok'"><img src="../../../assets/img/ic_buy.png"><a>已购</a></span>-->
               <span>{{item.time}}</span>
             </div>
           </div>
@@ -260,21 +266,21 @@
     span {
       &:first-of-type {
         img {
-          width: 3vw;
-          height: 2.3vh;
+          width: 10px;
+          height: 11px;
         }
       }
       &:last-of-type {
         img {
-          width: 4vw;
-          height: 2vh;
+          width: 15px;
+          height: 13px;
         }
       }
     }
   }
 
   .products {
-    margin-top: 2vh;
+    margin-top: 10px;
   }
 
   .product {
@@ -282,7 +288,7 @@
     justify-content: space-between;
     padding: 2.5vh;
     background-color: #fff;
-    margin-bottom: 1vh;
+    margin-bottom: 5px;
   }
 
   .product-content {

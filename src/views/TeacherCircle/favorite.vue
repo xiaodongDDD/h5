@@ -82,7 +82,7 @@
       isDel(data) {
         if(data) {
           API.get(`api/?method=quan.uncollect&article_id=${this.realDeleteId}`).then(res => {
-            console.log(res)
+//          console.log(res)
             this.collect_list.splice(this.fakeDeleteId, 1)
           })
           //console.log(this.teacherMessages)
@@ -105,23 +105,12 @@
                 this.loading = false
               }, 500);
         	})
-          /*API.get(`api/?method=quan.collectClick&page=${this.loading_number}`)
-            .then(res => {
-              setTimeout(() => {
-                let last = res.response.collect_list;
-                for(let i = 0; i < last.length; i ++) {
-                  this.collect_list.push(last[i])
-                }
-                this.loading = false;
-              }, 1000)
-            })*/
         }
       },
       getDetails(type,id){
-//    	console.log(id); return false;
-				let arurl = '';
-				if(this.useragent == 0){
-					switch (type) {
+			let arurl = '';
+			if(this.useragent == 0){
+				switch (type) {
 		        case 1:
 		          var path = '/article?' + id;
 		          this.$router.push({path: path});
@@ -133,51 +122,47 @@
 		        default:
 		          var path = '/video?' + id;
 		          this.$router.push({path: path});
-		     	}
-				}else{
-					switch (type) {
+			    }
+			}else{
+				switch (type) {
 		        case 1:
 		          arurl = this.jsPath + `article?${id}`;
-//		          console.log(arurl); return false;
-//		          JSAction.openUrl(arurl);
 				  window.location.href = arurl;
 		          break;
 		        case 2:
 		          arurl = this.jsPath + `audio?${id}`;
-//		          console.log(arurl); return false;
-//		          JSAction.openUrl(arurl);
 				  window.location.href = arurl;
 		          break;
 		        default:
 		          arurl = this.jsPath + `video?${id}`;
-//		          console.log(arurl); return false;
-//		          JSAction.openUrl(arurl);
 				  window.location.href = arurl;
 		     	}
 			}
 	  	},
 	  	cancelFa(id,index) {
-			let method = 'quan.uncollect';
-			let str = '&article_id=' + id;
-			const fUri = this.basePath + method + str + this.token;
-			this.axios.get(fUri)
-			.then(res => {
-				let data = res.data.response;
-				if(data.status == 200){
-					this.collect_list.splice(index,1);
-					Toast({
-	          message: '取消收藏成功',
-	          position: 'middle',
-	          duration: 2000
-	        });
-				}else{
-					MessageBox({
-					  title: '提示',
-					  message: data.msg,
-					  showCancelButton: false
-					});
-				}
-			})
+	  		MessageBox.confirm('要从收藏中删除这篇文章吗？','删除收藏').then(action => {
+	  			let method = 'quan.uncollect';
+				let str = '&article_id=' + id;
+				const fUri = this.basePath + method + str + this.token;
+				this.axios.get(fUri)
+				.then(res => {
+					let data = res.data.response;
+					if(data.status == 200){
+						this.collect_list.splice(index,1);
+						Toast({
+				          message: '取消收藏成功',
+				          position: 'middle',
+				          duration: 2000
+				        });
+					}else{
+						MessageBox({
+						  title: '提示',
+						  message: data.msg,
+						  showCancelButton: false
+						});
+					}
+				})
+	  		})
 	  	}
     },
     mounted() {
@@ -267,9 +252,5 @@
 				float: right;
 			}
 		}
-	}
-	.loadings{
-		height: 40px;
-		line-height: 40px;
 	}
 </style>

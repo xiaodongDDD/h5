@@ -1,6 +1,7 @@
 <template>
   <section>
     <div class="teacherCircle-container">
+    	<mt-loadmore :top-method="loadTop" ref="loadmore">
       <!--轮播图-->
       <mt-swipe :auto="4000" class="swipeContent">
         <mt-swipe-item v-for="item in swipeImage" :key="item.ad_id">
@@ -37,7 +38,7 @@
       <div>
         <ul class="index-list">
           <li @click="getDetails(item.type,item.article_id)" v-for="item in indexList">
-            <div class="list-head">
+            <div class="list-head"> <!--:onerror="defaultHeader"-->
               <img :src="item.img" class="head-image">
               <span class="head-name">{{item.user_name}}</span>
               <span class="head-time">{{timestampToTime(item.create_time)}}</span>
@@ -71,16 +72,17 @@
             <li class="recommend-detail" v-for="(item,index) in followList" :key="item.id" @click="goTeacherDetail(item.uid)">
               <div class="detail-top" @click="toTeacherDetails(item.id)">
                 <img :src="item.teacher_img" class="recommend-headImage">
+                <!--<img :src="item.teacher_img" onerror="src=''../../../assets/img/bg.png''" class="recommend-headImage">-->
                 <h5>{{item.teacher_name}}</h5>
               </div>
               <p>{{item.brief?item.brief.substring(0, 17):''}}</p>
               <div class="recommend-follow" >
-                <p>{{item.followeds}}万人关注</p>
+                <p>{{item.followeds}}人关注</p>
                 <button @click.stop="follow(item,index)" class="follow-btn" v-if="item.is_follow == 0"><i class="follow-heart"></i><span>关注</span></button>
                 <button @click.stop="unFollow(item,index)" class="btn-ok" v-else><i class="follow-ok"></i></button>
               </div>
             </li>
-            <li class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
+            <li v-show="hadMore" class="teacher_loading" ref="loading" >{{ teacher_loading }}</li>
           </ul>
         </div>
       </div>
@@ -106,7 +108,7 @@
             <div class="list-content">
               <span class="content-word">{{item.title}}</span>
               <div class="content-bottom">
-                <span class="content-comment">{{item.comments}}万评论</span>
+                <span class="content-comment">{{item.comments}}评论</span>
                 <!--<span class="content-integral" v-if="item.points>0">{{item.points}}积分</span>
                 <span class="content-integral" v-else-if="item.points<0"><i class="is-buy" style="top:50%;margin-top:-4px;"></i>&nbsp;&nbsp;&nbsp;已购</span>
                 <span class="content-integral" v-else-if="item.points==0">免费</span>-->
@@ -121,6 +123,7 @@
           <span v-show="bottomStatus === 'loading'">加载中...</span>
         </div> -->
       <!-- </mt-loadmore> -->
+      </mt-loadmore>
     </div>
   </section>
 </template>
@@ -137,7 +140,7 @@
             followList:[],
             indexList:[],
             bottomList:[],
-            current_page: 0,
+            current_page: 1,
             bottomStatus: 'loading',
             allLoaded: true,
             current_teacher_page: 1,
@@ -147,28 +150,38 @@
             teacherPage: '',
             isloading: false,
             isAll:'',
-            total_article_page: 1
+            total_article_page: 1,
+            returnInde: false,
+            hadMore: false
       }
+    },
+    watch: {
+//  	returnIndex: fetchDate
+    	returnIndex: function(val){
+    		alert(val)
+    	}
     },
     methods:{
       //列表内容点击的详情
+      loadTop() {
+      	window.location.reload();
+      	this.returnIndex = true;
+      },
       loadTeacher() {
 				this.isloading = true;
-				alert(this.total_teacher_page)
         if(this.current_teacher_page >= this.total_teacher_page) {
           this.teacher_loading = '到底啦!';
           return;
         }else{
         	this.current_teacher_page ++
-          API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`)
+        	let uuurl = this.basePath + 'quan.unfollowTeachersList' + `&page=${this.current_teacher_page}&type=2`;
+//        API.get(`api/?method=quan.unfollowTeachersList&page=${this.current_teacher_page}&type=2`)
+          this.axios.get(uuurl)
           .then(res => {
-            console.log('res:',res);
-            setTimeout(()=>{
-              for(let i = 0; i<res.response.teacher_list.length; i++) {
-              this.followList = this.followList.concat(res.response.teacher_list)
-              }
+              for(let i = 0; i<res.data.response.teacher_list.length; i++) {
+              this.followList = this.followList.concat(res.data.response.teacher_list)
               this.isloading = false;
-            },500);
+            }
           })
         }
       },
@@ -178,7 +191,6 @@
 		      this.$router.push({path: path});
       	}else{
       		const teacherUrl = this.jsPath + `teachers?${id}`
-      		console.log(teacherUrl);
         	JSAction.openUrl(teacherUrl)
       	}
       },
@@ -203,17 +215,14 @@
 					switch (type) {
 		        case '1':
 		          arurl = this.jsPath + `article?${id}`;
-//		          console.log(arurl); return false;
 		          JSAction.openUrl(arurl);
 		          break;
 		        case '2':
 		          arurl = this.jsPath + `audio?${id}`;
-//		          console.log(arurl); return false;
 		          JSAction.openUrl(arurl);
 		          break;
 		        case '3':
 		          arurl = this.jsPath + `video?${id}`;
-//		          console.log(arurl); return false;
 		          JSAction.openUrl(arurl);
 		     	}
 				}
@@ -235,7 +244,7 @@
 				const fUri = this.basePath + method + str + this.token;
 				this.axios.get(fUri)
 				.then(res => {
-					console.log(res);
+//					console.log(res);
 					let data = res.data.response;
 					if(data.status == 200){
 						this.followList[index].is_follow = 1;
@@ -289,18 +298,15 @@
           this.isAll = '到底啦!';
           return;
         }else{
-          API.get(`api/?method=quan.articleList&page=${this.current_page}&type=2`)
+        	let aaurl = this.basePath + `quan.articleList&page=${this.current_page}&type=2`;
+          this.axios.get(aaurl)
           .then(res => {
-            // if(this.current_page >= parseInt(res.response.article_sum/10)+1) {
-            //   this.allLoaded = false
-            //   }
-            setTimeout(()=>{
-              for(let i = 0; i<res.response.article_list.length; i++) {
-              this.bottomList.push( res.response.article_list[i] )
-              }
-              this.isloading = false;
-              console.log('请求中....');
-            },500);
+          	if(res.data.response.status == 200){
+	              for(let i = 0; i<res.data.response.article_list.length; i++) {
+	              this.bottomList.push( res.data.response.article_list[i] )
+	              this.isloading = false;
+	            }
+          	}
           })
         }
         
@@ -324,25 +330,30 @@
       },
       loadMore() {
         //console.log('loadmore...');
+      },
+      fetchData() {
+      	let method = 'quan.index';
+				const url = this.basePath + method + this.token;
+	//    API.get(url)
+				this.axios.get(url)
+	      .then(res => {
+	        res = res.data.response;
+	        this.swipeImage = res.ad_list;
+	        this.indexList = res.article_list.slice(0, 2);
+	        this.followList = res.teacher_list;
+	        this.total_teacher_page = Math.ceil(res.teacher_sum / 10);
+	        this.total_article_page = Math.ceil(res.aiticle_sum / 10);
+	        
+	        if(this.total_teacher_page > 1){
+	        	this.hadMore = true;
+	        }
+	        
+	        this.bottomList = res.article_list.slice(2,res.article_list.length);
+	      })
       }
     },
     mounted() {
-//  	let token = window.location.href;
-//  	alert(token);
-    	
-      let method = 'quan.index';
-			const url = this.basePath + method + this.token;
-//			console.log(url);
-//			this.axios.
-      API.get(url).then(res => {
-        res = res.response;
-        this.swipeImage = res.ad_list;
-        this.indexList = res.article_list.slice(0, 2);
-        this.followList = res.teacher_list;
-        this.total_teacher_page = Math.ceil(res.teacher_sum / 10);
-        this.total_article_page = Math.ceil(res.aiticle_sum / 10);
-        this.bottomList = res.article_list.slice(2,res.article_list.length);
-      })
+      this.fetchData();
     },
   }
 </script>
@@ -395,7 +406,7 @@
 
   .index-list .list-head .head-time {
     position: absolute;
-    right: 30px;
+    right: 15px;
     top: 2px;
   }
 
@@ -617,5 +628,9 @@
   }
   .hidden{
   	display: none!important;
+  }
+  .teacherCircle-container .top-nav li img{
+  	width: 20px;
+  	height: 20px;
   }
 </style>
